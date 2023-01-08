@@ -8,8 +8,8 @@ A Golang front-end for
 Because GoTorch requires C libraries and some compilation, it cannot be
 simply installed using `go get`. Instead, the recomended installation
 pathway is to add gotorch as a git submodule in the `pkg` package of your
-Go project, or otherwise check the files in directly, i.e., from the 
-top-level of your project, run:
+Go project, or otherwise check the files in directly. To add gotorch as
+a submodule, from the top-level of your project, run:
 
 ```shell
 git submodule add https://github.com/Kautenja/gotorch pkg/gotorch
@@ -22,8 +22,17 @@ Once gotorch has been cloned, it must be compiled using:
 ```
 
 This will download the libtorch binary for your system and compile the CGoTorch
-wrapper for interfacing with CGO. One may refer to the 
-[example](https://github.com/Kautenja/gotorch-example) project for a working
+wrapper for interfacing with CGO.
+
+Golang must be told to use this local directory in-place of the remote code
+by adding the following to your `god.mod`
+
+```go.mod
+replace github.com/Kautenja/gotorch v1.11.0 => ./pkg/gotorch
+```
+
+You may refer to the 
+[example project](https://github.com/Kautenja/gotorch-example) for a working
 demonstration of this approach.
 
 ## Development
