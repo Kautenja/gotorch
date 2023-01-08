@@ -32,6 +32,19 @@ import (
     T "github.com/Kautenja/gotorch/vision/transforms"
 )
 
+
+func TestPadIfNeededTransformPanicsOnZeroSize(t *testing.T) {
+    assert.PanicsWithValue(t, "size should be greater than 0", func() {
+        T.LongestMaxSize(0, F.InterpolateBilinear, false, false)
+    })
+}
+
+func TestPadIfNeededTransformPanicsOnNegativeSize(t *testing.T) {
+    assert.PanicsWithValue(t, "size should be greater than 0", func() {
+        T.LongestMaxSize(-1, F.InterpolateBilinear, false, false)
+    })
+}
+
 func TestLongestMaxSizeTransformPanicsOn0DimensionalInput(t *testing.T) {
     tensor := torch.NewTensor([]float32{})
     assert.PanicsWithValue(t, "LongestMaxSize requires tensor with 3 or more dimensions", func() {

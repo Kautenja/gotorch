@@ -36,6 +36,30 @@ import (
 // MARK: Panics
 // ---------------------------------------------------------------------------
 
+func TestPadIfNeededTransformPanicsOnZeroHeight(t *testing.T) {
+    assert.PanicsWithValue(t, "min_height should be greater than 0", func() {
+        T.PadIfNeeded(0, 2, F.PadConstant, 0)
+    })
+}
+
+func TestPadIfNeededTransformPanicsOnZeroWidth(t *testing.T) {
+    assert.PanicsWithValue(t, "min_width should be greater than 0", func() {
+        T.PadIfNeeded(2, 0, F.PadConstant, 0)
+    })
+}
+
+func TestPadIfNeededTransformPanicsOnNegativeHeight(t *testing.T) {
+    assert.PanicsWithValue(t, "min_height should be greater than 0", func() {
+        T.PadIfNeeded(-1, 2, F.PadConstant, 0)
+    })
+}
+
+func TestPadIfNeededTransformPanicsOnNegativeWidth(t *testing.T) {
+    assert.PanicsWithValue(t, "min_width should be greater than 0", func() {
+        T.PadIfNeeded(2, -1, F.PadConstant, 0)
+    })
+}
+
 func TestPadIfNeededTransformPanicsOn0DimensionalInput(t *testing.T) {
     tensor := torch.NewTensor([]float32{})
     assert.PanicsWithValue(t, "PadIfNeeded requires tensor with 2 or more dimensions", func() {
