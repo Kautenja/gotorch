@@ -175,6 +175,26 @@ func TestPad(t *testing.T) {
 }
 
 // >>> a = torch.tensor([[0, 1], [2, 3]])
+// >>> torch.nn.functional.pad(a, (0, 1, 0, 1), value=1)
+// tensor([[0, 1, 1],
+//         [2, 3, 1],
+//         [1, 1, 1]])
+func TestPadWithConstantValue(t *testing.T) {
+    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+    output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant, 1)
+    assert.NotNil(t, output.T)
+    expected := torch.NewTensor([][]int64{{0, 1, 1}, {2, 3, 1}, {1, 1, 1}})
+    assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
+}
+
+func TestPadPanicsOnPaddingValueLengthGreaterThan1(t *testing.T) {
+    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+    assert.PanicsWithValue(t, "value should contain 0 or 1 values", func() {
+        F.Pad(tensor, []int64{0, 0, 0, 0}, F.PadConstant, 1, 1)
+    })
+}
+
+// >>> a = torch.tensor([[0, 1], [2, 3]])
 // >>> torch.nn.functional.pad(a, (0, 1, 0, 1, 1))
 // Traceback (most recent call last):
 //   File "<stdin>", line 1, in <module>
