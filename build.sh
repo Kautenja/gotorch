@@ -18,35 +18,36 @@ else
     LOGICAL_CORES=$(nproc --ignore=1)
 fi
 
-# Download libtorch for MacOS (CPU)
-function download_libtorch_macos() {
+function download_libtorch_x86_darwin() {
     if [[ ! -d "$DIR/build/libtorch" ]]; then
         (cd build; curl --url "https://download.pytorch.org/libtorch/cpu/libtorch-macos-1.11.0.zip" --output "libtorch.zip")
     fi
 }
 
-# Download libtorch for arm Linux (CPU)
-function download_libtorch_arm_linux() {
+function download_libtorch_arm64_darwin() {
     if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; curl --url "https://github.com/ljk53/pytorch-rpi/raw/master/libtorch-rpi-cxx11-abi-shared-1.11.0.zip" --output "libtorch.zip")
+        (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-arm64-darwin-1.11.0.zip')
     fi
 }
 
-# Download libtorch for x86 Linux (CPU)
 function download_libtorch_x86_linux(){
     if [[ ! -d "$DIR/build/libtorch" ]]; then
         (cd build; curl --url 'https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-1.11.0%2Bcpu.zip' --output "libtorch.zip")
     fi
 }
 
-# Download libtorch for aarch64 Linux (CPU)
-function download_libtorch_aarch_linux(){
+function download_libtorch_armv7l_linux() {
+    if [[ ! -d "$DIR/build/libtorch" ]]; then
+        (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-armv7l-linux-1.11.0.zip')
+    fi
+}
+
+function download_libtorch_aarch64_linux(){
     if [[ ! -d "$DIR/build/libtorch" ]]; then
         (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-aarch64-linux-1.11.0.zip')
     fi
 }
 
-# Download libtorch for Linux (CPU & CUDA)
 function download_libtorch_cuda() {
     CUDA_VERSION=$("$NVCC" --version | grep release | grep -Eo "[0-9]+.[0-9]+" | head -1)
     if [[ "$CUDA_VERSION" == "10.1" ]]; then
@@ -66,12 +67,16 @@ mkdir -p build
 
 echo "Building CGoTorch for $ARCH $OS with $LOGICAL_CORES threads"
 if [[ "$OS" == "darwin" ]]; then
-    download_libtorch_macos
+    if [[ "$ARCH" == "arm64" ]]; then
+        download_libtorch_arm64_darwin
+    else
+        download_libtorch_x86_darwin
+    fi
 elif [[ "$OS" == "linux" ]]; then
     if [[ "$ARCH" == "aarch64" ]]; then
-        download_libtorch_aarch_linux
+        download_libtorch_aarch64_linux
     elif [[ "$ARCH" =~ arm* ]]; then
-        download_libtorch_arm_linux
+        download_libtorch_armv7l_linux
     elif "$NVCC" --version > /dev/null; then
         if ! download_libtorch_cuda; then
             download_libtorch_x86_linux
