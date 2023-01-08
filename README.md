@@ -25,7 +25,7 @@ This will download the libtorch binary for your system and compile the CGoTorch
 wrapper for interfacing with CGO.
 
 Golang must be told to use this local directory in-place of the remote code
-by adding the following to your `god.mod`
+by adding the following to your `go.mod`
 
 ```go.mod
 replace github.com/Kautenja/gotorch v1.11.0 => ./pkg/gotorch
