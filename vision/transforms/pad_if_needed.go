@@ -43,7 +43,11 @@ type PadIfNeededTransformer struct {
 }
 
 // Create a new PadIfNeededTransformer with given parameters.
-func PadIfNeeded(min_height, min_width int64, mode F.PadMode, value ...float64) *PadIfNeededTransformer {
+func PadIfNeeded(
+    min_height, min_width int64,
+    mode F.PadMode,
+    value ...float64,
+) *PadIfNeededTransformer {
     if min_height <= 0 { panic("min_height should be greater than 0") }
     if min_width <= 0 { panic("min_width should be greater than 0") }
     return &PadIfNeededTransformer{min_height, min_width, mode, value}
