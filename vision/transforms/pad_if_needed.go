@@ -51,5 +51,6 @@ func PadIfNeeded(min_height, min_width int64, mode F.PadMode, value ...float64) 
 
 // Forward pass an image through the transformer to pad it if needed.
 func (t PadIfNeededTransformer) Forward(tensor torch.Tensor) torch.Tensor {
-    return T.PadIfNeeded(tensor, t.min_height, t.min_width, t.mode, t.value...)
+    outputs, _ := T.PadIfNeeded(tensor, t.min_height, t.min_width, t.mode, t.value...)
+    return outputs
 }

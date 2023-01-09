@@ -60,8 +60,9 @@ func TestPadIfNeededIdentity2D(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     })
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededIdentity3D(t *testing.T) {
@@ -70,8 +71,9 @@ func TestPadIfNeededIdentity3D(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 3, 4)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededIdentity4D(t *testing.T) {
@@ -80,8 +82,9 @@ func TestPadIfNeededIdentity4D(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 1, 3, 4)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededIdentity5D(t *testing.T) {
@@ -90,8 +93,9 @@ func TestPadIfNeededIdentity5D(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 1, 1, 3, 4)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 // ---------------------------------------------------------------------------
@@ -106,8 +110,9 @@ func TestPadIfNeededNoOp2D(t *testing.T) {
         {4, 5, 6, 7, 0},
         {0, 1, 2, 3, 0},
     })
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededNoOp3D(t *testing.T) {
@@ -118,8 +123,9 @@ func TestPadIfNeededNoOp3D(t *testing.T) {
         {4, 5, 6, 7, 0},
         {0, 1, 2, 3, 0},
     }).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededNoOp4D(t *testing.T) {
@@ -130,8 +136,9 @@ func TestPadIfNeededNoOp4D(t *testing.T) {
         {4, 5, 6, 7, 0},
         {0, 1, 2, 3, 0},
     }).Unsqueeze(0).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 func TestPadIfNeededNoOp5D(t *testing.T) {
@@ -142,8 +149,9 @@ func TestPadIfNeededNoOp5D(t *testing.T) {
         {4, 5, 6, 7, 0},
         {0, 1, 2, 3, 0},
     }).Unsqueeze(0).Unsqueeze(0).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 3, 4, F.PadConstant, 0)
     assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, []int64{0, 0, 0, 0}, padding)
 }
 
 // ---------------------------------------------------------------------------
@@ -156,7 +164,7 @@ func TestPadIfNeededHeight(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 4, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 4, 4, F.PadConstant, 0)
     expected := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
@@ -164,6 +172,7 @@ func TestPadIfNeededHeight(t *testing.T) {
         {0, 0, 0, 0},
     }).Unsqueeze(0)
     assert.True(t, outputs.Equal(expected), "Got %v expected %v", outputs, expected)
+    assert.Equal(t, []int64{0, 0, 0, 1}, padding)
 }
 
 func TestPadIfNeededWidth(t *testing.T) {
@@ -173,7 +182,7 @@ func TestPadIfNeededWidth(t *testing.T) {
         {8, 9, 8},
         {8, 9, 8},
     }).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 4, 4, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 4, 4, F.PadConstant, 0)
     expected := torch.NewTensor([][]float32{
         {0, 1, 2, 0},
         {4, 5, 6, 0},
@@ -181,6 +190,7 @@ func TestPadIfNeededWidth(t *testing.T) {
         {8, 9, 8, 0},
     }).Unsqueeze(0)
     assert.True(t, outputs.Equal(expected), "Got %v expected %v", outputs, expected)
+    assert.Equal(t, []int64{0, 1, 0, 0}, padding)
 }
 
 func TestPadIfNeeded(t *testing.T) {
@@ -189,7 +199,7 @@ func TestPadIfNeeded(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).Unsqueeze(0)
-    outputs := T.PadIfNeeded(tensor, 5, 5, F.PadConstant, 0)
+    outputs, padding := T.PadIfNeeded(tensor, 5, 5, F.PadConstant, 0)
     expected := torch.NewTensor([][]float32{
         {0, 0, 0, 0, 0},
         {0, 1, 2, 3, 0},
@@ -198,4 +208,5 @@ func TestPadIfNeeded(t *testing.T) {
         {0, 0, 0, 0, 0},
     }).Unsqueeze(0)
     assert.True(t, outputs.Equal(expected), "Got %v expected %v", outputs, expected)
+    assert.Equal(t, []int64{0, 1, 1, 1}, padding)
 }

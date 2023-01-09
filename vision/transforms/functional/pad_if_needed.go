@@ -32,25 +32,26 @@ import (
 
 // Pad the input tensor to the given minimum height and width. If padding is
 // necessary, use the given padding mode. When the padding mode is constant,
-// use the given constant padding value.
+// use the given constant padding value. Returns the padded tensor and the
+// padding that was applied in [left, right, top, bottom] format.
 func PadIfNeeded(
     tensor torch.Tensor,
     min_height, min_width int64,
     mode F.PadMode,
     value ...float64,
-) torch.Tensor {
+) (torch.Tensor, []int64) {
     shape := tensor.Shape()
     dim := len(shape)
     if dim < 2 { panic("PadIfNeeded requires tensor with 2 or more dimensions") }
     H := math.Max(0.0, (float64(min_height) - float64(shape[int64(dim - 2)])) / 2)
+    top := int64(math.Floor(H))
+    bottom := int64(math.Ceil(H))
     W := math.Max(0.0, (float64(min_width) - float64(shape[int64(dim - 1)])) / 2)
+    left := int64(math.Floor(W))
+    right := int64(math.Ceil(W))
+    padding := []int64{left, right, top, bottom}
     // Padding vectors are constructed from the last dimension backwards. This
     // is convenient for vision where the format is NCHW typically. I.e., we
     // can always create a length 4 slice in [left, right, top, bottom] format.
-    return F.Pad(tensor, []int64{
-        int64(math.Floor(W)),
-        int64(math.Ceil(W)),
-        int64(math.Floor(H)),
-        int64(math.Ceil(H)),
-    }, mode, value...)
+    return F.Pad(tensor, padding, mode, value...), padding
 }
