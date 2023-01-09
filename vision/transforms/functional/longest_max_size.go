@@ -33,6 +33,7 @@ import (
 // Resize a tensor to have the longest size equal to `size`. If interpolation
 // is required, e.g., if the tensor has max size less than or equal to `size`,
 // use the given mode, corner alignment setting, and optional anti-aliasing.
+// Returns the resized tensor and the scale factor used to resize the tensor.
 func LongestMaxSize(
     tensor torch.Tensor,
     size int64,
