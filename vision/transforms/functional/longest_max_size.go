@@ -32,24 +32,25 @@ import (
 
 // Resize a tensor to have the longest size equal to `size`. If interpolation
 // is required, e.g., if the tensor has max size less than or equal to `size`,
-// use the given interpolation mode, corner alignment setting, and optional
-// anti-aliasing.
+// use the given mode, corner alignment setting, and optional anti-aliasing.
 func LongestMaxSize(
     tensor torch.Tensor,
     size int64,
     interpolation F.InterpolateMode,
     alignCorners, antialias bool,
-) torch.Tensor {
+) (torch.Tensor, float64) {
     shape := tensor.Shape()
     dim := len(shape)
-    if dim < 3 { panic("LongestMaxSize requires tensor with 3 or more dimensions") }
+    if dim < 3 {
+        panic("LongestMaxSize requires tensor with 3 or more dimensions")
+    }
     H := float64(shape[int64(dim - 2)])
     W := float64(shape[int64(dim - 1)])
     scale := float64(size) / math.Max(H, W)
     if scale != 1.0 {
-        Htarget := int64(scale * H)
-        Wtarget := int64(scale * W)
-        return F.InterpolateSize(tensor, []int64{Htarget, Wtarget}, interpolation, alignCorners, antialias)
+        return F.InterpolateSize(tensor,
+            []int64{int64(scale * H), int64(scale * W)},
+            interpolation, alignCorners, antialias), scale
     }
-    return tensor
+    return tensor, 1.0
 }

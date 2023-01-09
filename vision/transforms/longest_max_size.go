@@ -53,5 +53,7 @@ func LongestMaxSize(size int64,
 
 // Forward pass an image through to resize with longest max size.
 func (t LongestMaxSizeTransformer) Forward(tensor torch.Tensor) torch.Tensor {
-    return T.LongestMaxSize(tensor, t.size, t.interpolation, t.alignCorners, t.antialias)
+    outputs, _ := T.LongestMaxSize(tensor, t.size,
+        t.interpolation, t.alignCorners, t.antialias)
+    return outputs
 }

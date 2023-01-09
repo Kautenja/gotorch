@@ -59,8 +59,9 @@ func TestLongestMaxSizeIdentity(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 1, 3, 4)
-    output := T.LongestMaxSize(tensor, 4, F.InterpolateBilinear, false, false)
-    assert.True(t, output.Equal(tensor))
+    outputs, scale := T.LongestMaxSize(tensor, 4, F.InterpolateBilinear, false, false)
+    assert.True(t, outputs.Equal(tensor))
+    assert.Equal(t, 1.0, scale)
 }
 
 func TestLongestMaxSizeShrink(t *testing.T) {
@@ -69,7 +70,8 @@ func TestLongestMaxSizeShrink(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 1, 3, 4)
-    outputs := T.LongestMaxSize(tensor, 3, F.InterpolateBilinear, true, false)
+    outputs, scale := T.LongestMaxSize(tensor, 3, F.InterpolateBilinear, true, false)
+    assert.Equal(t, 3.0/4.0, scale)
     expected := torch.NewTensor([][]float32{
         {0.0, 1.5, 3.0},
         {8.0, 8.5, 7.0},
@@ -83,7 +85,8 @@ func TestLongestMaxSizeGrow(t *testing.T) {
         {4, 5, 6, 7},
         {8, 9, 8, 7},
     }).View(1, 1, 3, 4)
-    outputs := T.LongestMaxSize(tensor, 5, F.InterpolateBilinear, true, false)
+    outputs, scale := T.LongestMaxSize(tensor, 5, F.InterpolateBilinear, true, false)
+    assert.Equal(t, 5.0/4.0, scale)
     expected := torch.NewTensor([][]float32{
         {0.0, 0.75, 1.5, 2.25, 3.0},
         {4.0, 4.75, 5.5, 6.25, 7.0},
