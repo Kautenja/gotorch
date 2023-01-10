@@ -1,7 +1,14 @@
-# GoTorch
+<p align="center">
+<img
+    src="https://user-images.githubusercontent.com/2184469/211366276-5e1b5bf2-0ec6-48e8-9718-679992809c35.png"
+    width="80%"
+    alt="GoTorch"
+/>
+</p>
 
-A Golang front-end for
-[libtorch](https://pytorch.org/cppdocs/api/library_root.html).
+-----
+
+GoTorch is a Golang front-end for [pytorch](https://github.com/pytorch/pytorch).
 
 ## Installation
 
