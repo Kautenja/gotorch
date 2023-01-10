@@ -19,33 +19,23 @@ else
 fi
 
 function download_libtorch_x86_darwin() {
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; curl --url "https://download.pytorch.org/libtorch/cpu/libtorch-macos-1.11.0.zip" --output "libtorch.zip")
-    fi
+    (cd ${DIR}/build; curl --url "https://download.pytorch.org/libtorch/cpu/libtorch-macos-1.11.0.zip" --output "libtorch.zip")
 }
 
 function download_libtorch_arm64_darwin() {
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-arm64-darwin-1.11.0.zip')
-    fi
+    (cd ${DIR}/build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-arm64-darwin-1.11.0.zip')
 }
 
 function download_libtorch_x86_linux(){
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; curl --url 'https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-1.11.0%2Bcpu.zip' --output "libtorch.zip")
-    fi
+    (cd ${DIR}/build; curl --url 'https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-1.11.0%2Bcpu.zip' --output "libtorch.zip")
 }
 
 function download_libtorch_armv7l_linux() {
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-armv7l-linux-1.11.0.zip')
-    fi
+    (cd ${DIR}/build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-armv7l-linux-1.11.0.zip')
 }
 
 function download_libtorch_aarch64_linux(){
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-aarch64-linux-1.11.0.zip')
-    fi
+    (cd ${DIR}/build; wget -O "libtorch.zip" 'https://github.com/Kautenja/libtorch-binaries/releases/download/v1.0.0/libtorch-shared-with-deps-aarch64-linux-1.11.0.zip')
 }
 
 function download_libtorch_cuda() {
@@ -55,39 +45,43 @@ function download_libtorch_cuda() {
     elif [[ "$CUDA_VERSION" == "10.2" ]]; then
         CUDA_VERSION="102"
     else
-        echo "Not supported CUDA version. $CUDA_VERSION"
+        echo "Unsupported CUDA version: $CUDA_VERSION"
         return -1
     fi
-    if [[ ! -d "$DIR/build/libtorch" ]]; then
-        (cd build; curl -url 'https://download.pytorch.org/libtorch/cu$CUDA_VERSION/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcu$CUDA_VERSION.zip' --output "libtorch.zip")
-    fi
+    (cd ${DIR}/build; curl -url 'https://download.pytorch.org/libtorch/cu$CUDA_VERSION/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcu$CUDA_VERSION.zip' --output "libtorch.zip")
 }
 
-mkdir -p build
+mkdir -p ${DIR}/build
 
-echo "Building CGoTorch for $ARCH $OS with $LOGICAL_CORES threads"
-if [[ "$OS" == "darwin" ]]; then
-    if [[ "$ARCH" == "arm64" ]]; then
-        download_libtorch_arm64_darwin
-    else
-        download_libtorch_x86_darwin
-    fi
-elif [[ "$OS" == "linux" ]]; then
-    if [[ "$ARCH" == "aarch64" ]]; then
-        download_libtorch_aarch64_linux
-    elif [[ "$ARCH" =~ arm* ]]; then
-        download_libtorch_armv7l_linux
-    elif "$NVCC" --version > /dev/null; then
-        if ! download_libtorch_cuda; then
+if [[ ! -d "$DIR/build/libtorch" ]]; then
+    echo "Downloading libtorch for $ARCH $OS to $DIR/build/libtorch"
+    if [[ "$OS" == "darwin" ]]; then
+        if [[ "$ARCH" == "arm64" ]]; then
+            download_libtorch_arm64_darwin
+        else
+            download_libtorch_x86_darwin
+        fi
+    elif [[ "$OS" == "linux" ]]; then
+        if [[ "$ARCH" == "aarch64" ]]; then
+            download_libtorch_aarch64_linux
+        elif [[ "$ARCH" =~ arm* ]]; then
+            download_libtorch_armv7l_linux
+        elif "$NVCC" --version > /dev/null; then
+            if ! download_libtorch_cuda; then
+                download_libtorch_x86_linux
+            fi
+        else
             download_libtorch_x86_linux
         fi
     else
-        download_libtorch_x86_linux
+        echo "Unsupported OS ($OS) and architecture ($ARCH) combination for libtorch"
+        exit 1
     fi
+    (cd ${DIR}/build; unzip -o libtorch.zip)
 fi
 
-(cd build; unzip -o libtorch.zip)
-(cd build; cmake -DCMAKE_PREFIX_PATH=$(pwd)/libtorch ..)
-(cd build; make -j${LOGICAL_CORES})
+echo "Building libcgotorch for $ARCH $OS with $LOGICAL_CORES threads"
+(cd ${DIR}/build; cmake -DCMAKE_PREFIX_PATH=$(pwd)/libtorch ..)
+(cd ${DIR}/build; make -j${LOGICAL_CORES})
 
 popd > /dev/null
