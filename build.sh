@@ -86,7 +86,7 @@ elif [[ "$OS" == "linux" ]]; then
     fi
 fi
 
-(cd build; unzip -qq -o libtorch.zip)
+(cd build; unzip -o libtorch.zip)
 (cd build; cmake -DCMAKE_PREFIX_PATH=$(pwd)/libtorch ..)
 (cd build; make -j${LOGICAL_CORES})
 
