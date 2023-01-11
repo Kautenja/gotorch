@@ -33,3 +33,12 @@ const char* Torch_Device(Device* device, const char* device_name) {
 }
 
 void Torch_Device_Free(Device device) { delete device; }
+
+bool Torch_IsDevice(const char* device_name) {
+    try {
+        auto device = torch::Device(device_name);
+    } catch (const std::exception &error) {
+        return false;
+    }
+    return true;
+}

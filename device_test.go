@@ -50,3 +50,8 @@ func TestDevicePanicWithUnknown(t *testing.T) {
     }()
     _ = torch.NewDevice("unknown")
 }
+
+func TestIsDevice(t *testing.T) {
+    assert.True(t, torch.IsDevice("cpu"))
+    assert.False(t, torch.IsDevice("asdf"))
+}

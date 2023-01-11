@@ -44,15 +44,22 @@ type Device struct {
 }
 
 // NewDevice returns a Device
-func NewDevice(deviceType string) Device {
+func NewDevice(deviceName string) Device {
     var device C.Device
-    deviceTypeString := C.CString(deviceType)
-    defer C.free(unsafe.Pointer(deviceTypeString))
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device, deviceTypeString)))
+    deviceNameCString := C.CString(deviceName)
+    defer C.free(unsafe.Pointer(deviceNameCString))
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device, deviceNameCString)))
     // Set the finalizer for the Go structure to free the heap-allocated C
     // memory when the garbage collector finalizes the object.
     runtime.SetFinalizer((*unsafe.Pointer)(&device), func(t *unsafe.Pointer) {
         C.Torch_Device_Free(C.Device(*t))
     })
     return Device{device}
+}
+
+/// Return true if the given device is valid, false otherwise.
+func IsDevice(deviceName string) bool {
+    deviceNameCString := C.CString(deviceName)
+    defer C.free(unsafe.Pointer(deviceNameCString))
+    return bool(C.Torch_IsDevice(deviceNameCString))
 }

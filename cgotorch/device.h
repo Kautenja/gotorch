@@ -40,6 +40,11 @@ const char* Torch_Device(Device *device, const char* device_name);
 /// @param device The Device to free from the heap.
 void Torch_Device_Free(Device device);
 
+/// @brief Return true if the given string refers to a valid compute device.
+/// @param device_name The name of the device to check
+/// @returns True if the `device_name` is a valid torch::device
+bool Torch_IsDevice(const char* device_name);
+
 #ifdef __cplusplus
 }
 #endif
