@@ -2050,7 +2050,7 @@ of the tensor to return 1-dimensional vectors.
 				
 			
 				
-				<h3 id="Decode">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6154:6196#L146">Decode</a>
+				<h3 id="Decode">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6178:6220#L147">Decode</a>
 					<a class="permalink" href="gotorch.html#Decode">&#xb6;</a>
 					
 					
@@ -2304,7 +2304,7 @@ of the tensor to return 1-dimensional vectors.
 				
 			
 				
-				<h3 id="Load">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=5063:5101#L120">Load</a>
+				<h3 id="Load">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=5087:5125#L121">Load</a>
 					<a class="permalink" href="gotorch.html#Load">&#xb6;</a>
 					
 					
@@ -2442,40 +2442,40 @@ of the tensor to return 1-dimensional vectors.
 				
 			
 				
-				<h3 id="NewTensor">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=3278:3317#L75">NewTensor</a>
+				<h3 id="NewTensor">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=3252:3291#L75">NewTensor</a>
 					<a class="permalink" href="gotorch.html#NewTensor">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func NewTensor(data interface{}) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				<p>Create a tensor from a Go slice.
+				<p>Create a new tensor from a Go slice.
 
 				
 				
 			
 				
-				<h3 id="NewTensorFromBlob">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=2891:2969#L64">NewTensorFromBlob</a>
+				<h3 id="NewTensorFromBlob">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=2861:2939#L64">NewTensorFromBlob</a>
 					<a class="permalink" href="gotorch.html#NewTensorFromBlob">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func NewTensorFromBlob(data <a href="http://localhost:42768/pkg/unsafe/">unsafe</a>.<a href="http://localhost:42768/pkg/unsafe/#Pointer">Pointer</a>, dtype <a href="gotorch.html#Dtype">Dtype</a>, sizes []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
 				<p>Create a new tensor that clones existing contiguous memory pointed to by
-data, of given data-type, and with given size. This function copies the input
-data to subsequent in-place operations performed on the tensor will not
-mutate the input data.
+data, of given data-type, and with given size. This function copies the
+input data, so subsequent in-place operations performed on the tensor will
+not mutate the input data.
 
 				
 				
 			
 				
-				<h3 id="NewTorchTensor">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=1832:1882#L39">NewTorchTensor</a>
+				<h3 id="NewTorchTensor">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=1799:1849#L39">NewTorchTensor</a>
 					<a class="permalink" href="gotorch.html#NewTorchTensor">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func NewTorchTensor(tensor *<a href="http://localhost:42768/pkg/unsafe/">unsafe</a>.<a href="http://localhost:42768/pkg/unsafe/#Pointer">Pointer</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				<p>Create a new tensor and configure garbage collection.
+				<p>Create a new tensor.
 
 				
 				
@@ -2613,13 +2613,14 @@ mutate the input data.
 				
 			
 				
-				<h3 id="Reshape">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8272:8322#L217">Reshape</a>
+				<h3 id="Reshape">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8567:8617#L223">Reshape</a>
 					<a class="permalink" href="gotorch.html#Reshape">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Reshape(tensor <a href="gotorch.html#Tensor">Tensor</a>, shape ...<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with an updated shape.
+
 				
 				
 			
@@ -2784,7 +2785,7 @@ mutate the input data.
 				
 			
 				
-				<h3 id="TensorFromBlob">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=2283:2358#L50">TensorFromBlob</a>
+				<h3 id="TensorFromBlob">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=2252:2327#L50">TensorFromBlob</a>
 					<a class="permalink" href="gotorch.html#TensorFromBlob">&#xb6;</a>
 					
 					
@@ -2793,7 +2794,7 @@ mutate the input data.
 				<p>Create a tensor view that wraps around existing contiguous memory pointed to
 by data, of given data-type, and with given size. This function does not
 copy the data buffer so in-place operations performed on the tensor will
-mutate the input data.
+mutate the input buffer.
 
 				
 				
@@ -3033,55 +3034,59 @@ mutate the input data.
 				
 			
 				
-				<h3 id="Tensor.Backward">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11531:11562#L323">Backward</a>
+				<h3 id="Tensor.Backward">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=12082:12113#L328">Backward</a>
 					<a class="permalink" href="gotorch.html#Tensor.Backward">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Backward()</pre>
-				
+				<p>Compute gradients based on the results of a forward pass through the tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.CastTo">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9671:9718#L262">CastTo</a>
+				<h3 id="Tensor.CastTo">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=10223:10270#L272">CastTo</a>
 					<a class="permalink" href="gotorch.html#Tensor.CastTo">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) CastTo(dtype <a href="gotorch.html#Dtype">Dtype</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with data cast to given type.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Clone">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4077:4112#L93">Clone</a>
+				<h3 id="Tensor.Clone">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4092:4127#L94">Clone</a>
 					<a class="permalink" href="gotorch.html#Tensor.Clone">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Clone() <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a clone of an existing tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.CopyTo">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9950:9999#L272">CopyTo</a>
+				<h3 id="Tensor.CopyTo">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=10559:10608#L283">CopyTo</a>
 					<a class="permalink" href="gotorch.html#Tensor.CopyTo">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) CopyTo(device <a href="gotorch.html#Device">Device</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with data copied to given device.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Copy_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9523:9559#L258">Copy_</a>
+				<h3 id="Tensor.Copy_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=10022:10058#L267">Copy_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Copy_">&#xb6;</a>
 					
 					
@@ -3094,19 +3099,20 @@ mutate the input data.
 				
 			
 				
-				<h3 id="Tensor.Detach">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11877:11913#L333">Detach</a>
+				<h3 id="Tensor.Detach">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=12554:12590#L340">Detach</a>
 					<a class="permalink" href="gotorch.html#Tensor.Detach">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Detach() <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with any taped gradients detached and grad disabled.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Dim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6785:6817#L165">Dim</a>
+				<h3 id="Tensor.Dim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6809:6841#L166">Dim</a>
 					<a class="permalink" href="gotorch.html#Tensor.Dim">&#xb6;</a>
 					
 					
@@ -3143,7 +3149,7 @@ mutate the input data.
 				
 			
 				
-				<h3 id="Tensor.Dtype">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6510:6544#L156">Dtype</a>
+				<h3 id="Tensor.Dtype">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=6534:6568#L157">Dtype</a>
 					<a class="permalink" href="gotorch.html#Tensor.Dtype">&#xb6;</a>
 					
 					
@@ -3156,7 +3162,7 @@ mutate the input data.
 				
 			
 				
-				<h3 id="Tensor.Encode">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=5673:5718#L134">Encode</a>
+				<h3 id="Tensor.Encode">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=5697:5742#L135">Encode</a>
 					<a class="permalink" href="gotorch.html#Tensor.Encode">&#xb6;</a>
 					
 					
@@ -3194,25 +3200,27 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Expand">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8653:8703#L231">Expand</a>
+				<h3 id="Tensor.Expand">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9066:9116#L239">Expand</a>
 					<a class="permalink" href="gotorch.html#Tensor.Expand">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Expand(shape ...<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Expand the dimensions of the tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.ExpandAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8990:9040#L242">ExpandAs</a>
+				<h3 id="Tensor.ExpandAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9472:9522#L251">ExpandAs</a>
 					<a class="permalink" href="gotorch.html#Tensor.ExpandAs">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) ExpandAs(other <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Expand the dimensions of the tensor to match that of a reference.
+
 				
 				
 				
@@ -3230,13 +3238,14 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Grad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11661:11695#L327">Grad</a>
+				<h3 id="Tensor.Grad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=12262:12296#L333">Grad</a>
 					<a class="permalink" href="gotorch.html#Tensor.Grad">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Grad() <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Access the underlying gradients of the tensor.
+
 				
 				
 				
@@ -3266,13 +3275,14 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Index">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=12728:12775#L355">Index</a>
+				<h3 id="Tensor.Index">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=12842:12889#L347">Index</a>
 					<a class="permalink" href="gotorch.html#Tensor.Index">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Index(index <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Access elements in a tensor using an index tensor for reference.
+
 				
 				
 				
@@ -3434,7 +3444,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Item">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=13348:13387#L378">Item</a>
+				<h3 id="Tensor.Item">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=13450:13489#L370">Item</a>
 					<a class="permalink" href="gotorch.html#Tensor.Item">&#xb6;</a>
 					
 					
@@ -3442,8 +3452,7 @@ before encoding.
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Item() interface{}</pre>
 				<p>Return the value of this tensor as a standard Go number. This only works for
 tensors with one element.
-@details
-users should do type assertion and get the value like:
+<p>Users can do type assertion and get the value like:
 <p>```
 <pre>if value, ok := a.Item().(float64); ok {
     // process the value
@@ -3705,43 +3714,46 @@ users should do type assertion and get the value like:
 				
 			
 				
-				<h3 id="Tensor.RequiresGrad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11220:11260#L313">RequiresGrad</a>
+				<h3 id="Tensor.RequiresGrad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11628:11668#L316">RequiresGrad</a>
 					<a class="permalink" href="gotorch.html#Tensor.RequiresGrad">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) RequiresGrad() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor is taping gradients.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Reshape">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7933:7984#L206">Reshape</a>
+				<h3 id="Tensor.Reshape">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8182:8233#L211">Reshape</a>
 					<a class="permalink" href="gotorch.html#Tensor.Reshape">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Reshape(shape ...<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with an updated shape.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.ReshapeAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8364:8415#L221">ReshapeAs</a>
+				<h3 id="Tensor.ReshapeAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=8737:8788#L228">ReshapeAs</a>
 					<a class="permalink" href="gotorch.html#Tensor.ReshapeAs">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) ReshapeAs(other <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with an updated shape according to a reference tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Save">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4577:4621#L108">Save</a>
+				<h3 id="Tensor.Save">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4601:4645#L109">Save</a>
 					<a class="permalink" href="gotorch.html#Tensor.Save">&#xb6;</a>
 					
 					
@@ -3754,32 +3766,33 @@ users should do type assertion and get the value like:
 				
 			
 				
-				<h3 id="Tensor.SetData">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9324:9362#L253">SetData</a>
+				<h3 id="Tensor.SetData">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=9823:9861#L262">SetData</a>
 					<a class="permalink" href="gotorch.html#Tensor.SetData">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) SetData(b <a href="gotorch.html#Tensor">Tensor</a>)</pre>
-				<p>SetData sets the tensor data held by b to a
+				<p>Sets the tensor data to that of a separate reference tensor.
 
 				
 				
 				
 			
 				
-				<h3 id="Tensor.SetRequiresGrad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11392:11447#L319">SetRequiresGrad</a>
+				<h3 id="Tensor.SetRequiresGrad">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=11863:11918#L323">SetRequiresGrad</a>
 					<a class="permalink" href="gotorch.html#Tensor.SetRequiresGrad">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) SetRequiresGrad(requiresGrad <a href="http://localhost:42768/pkg/builtin/#bool">bool</a>)</pre>
-				
+				<p>Set the gradient taping state of the tensor to a new value.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Shape">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7019:7055#L174">Shape</a>
+				<h3 id="Tensor.Shape">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7043:7079#L175">Shape</a>
 					<a class="permalink" href="gotorch.html#Tensor.Shape">&#xb6;</a>
 					
 					
@@ -3941,13 +3954,13 @@ users should do type assertion and get the value like:
 				
 			
 				
-				<h3 id="Tensor.String">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4345:4381#L100">String</a>
+				<h3 id="Tensor.String">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=4369:4405#L101">String</a>
 					<a class="permalink" href="gotorch.html#Tensor.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) String() <a href="http://localhost:42768/pkg/builtin/#string">string</a></pre>
-				<p>Convert the tensor to a string representation.
+				<p>Convert the tensor to a readable string representation.
 
 				
 				
@@ -4017,13 +4030,14 @@ users should do type assertion and get the value like:
 				
 			
 				
-				<h3 id="Tensor.To">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=10224:10282#L282">To</a>
+				<h3 id="Tensor.To">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=10913:10971#L294">To</a>
 					<a class="permalink" href="gotorch.html#Tensor.To">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) To(device <a href="gotorch.html#Device">Device</a>, dtype <a href="gotorch.html#Dtype">Dtype</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with data copied to given device and cast to given type.
+
 				
 				
 				
@@ -4129,25 +4143,28 @@ users should do type assertion and get the value like:
 				
 			
 				
-				<h3 id="Tensor.View">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7317:7365#L185">View</a>
+				<h3 id="Tensor.View">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7409:7457#L187">View</a>
 					<a class="permalink" href="gotorch.html#Tensor.View">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) View(shape ...<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with an updated view of the underlying data.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.ViewAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7650:7698#L196">ViewAs</a>
+				<h3 id="Tensor.ViewAs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/tensor.go?s=7853:7901#L200">ViewAs</a>
 					<a class="permalink" href="gotorch.html#Tensor.ViewAs">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) ViewAs(other <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor with an updated view of the underlying data that matches
+that of a reference tensor.
+
 				
 				
 				
