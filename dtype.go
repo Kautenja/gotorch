@@ -27,26 +27,26 @@ package torch
 
 import "reflect"
 
-// An enumeration of the data-types in libtorch.
+// An enumeration of the data-types available in torch.
 type Dtype int8
 const (
-    Byte Dtype = iota  // Byte Dtype 0
-    Char               // Char Dtype 1
-    Short              // Short Dtype 2
-    Int                // Int Dtype 3
-    Long               // Long Dtype 4
-    Half               // Half Dtype 5
-    Float              // Float Dtype 6
-    Double             // Double Dtype 7
-    ComplexHalf        // ComplexHalf Dtype 8
-    ComplexFloat       // ComplexFloat Dtype 9
-    ComplexDouble      // ComplexDouble Dtype 10
-    Bool               // Bool Dtype 11
-    QInt8              // QInt8 Dtype 12
-    QUInt8             // QUInt8 Dtype 13
-    QInt32             // QInt32 Dtype 14
-    BFloat16           // BFloat16 Dtype 15
-    Invalid Dtype = -1 // Invalid Dtype
+    Byte Dtype = iota
+    Char
+    Short
+    Int
+    Long
+    Half
+    Float
+    Double
+    ComplexHalf
+    ComplexFloat
+    ComplexDouble
+    Bool
+    QInt8
+    QUInt8
+    QInt32
+    BFloat16
+    Invalid Dtype = -1
 )
 
 var (
