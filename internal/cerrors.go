@@ -33,8 +33,8 @@ import (
     "errors"
 )
 
-// Panic if a system error is caught in the error buffer.
-// @param error A *C.Char to an error string that may be nil.
+// Panic if a system error is caught in the error buffer. err is a *C.Char to
+// an error string that may be nil.
 func PanicOnCException(err unsafe.Pointer) {
     if err != nil {
         defer C.free(err)  // TODO: it would be better to have the C-layer
@@ -44,12 +44,9 @@ func PanicOnCException(err unsafe.Pointer) {
     }
 }
 
-// @brief Create a new error from a verified char*.
-// @param err The char* that is guaranteed to not be nil.
-// @returns The formatted error structure.
-// @details
-// The input `err` is expected to be a valid char* that is managed by the
-// Golang context. When the string is copied, it will be freed using Cgo.
+// Create a new error from a verified char*. `err` is the char* that is
+// guaranteed to not be nil. `err` is expected to be managed by the Golang
+// context. When the string is copied, it will be freed using CGo.
 func NewTorchError(err unsafe.Pointer) error {
     defer C.free(err)  // TODO: it would be better to have the C-layer
     // perform the truncation to prevent unnecessary memory transfer.
