@@ -44,52 +44,62 @@ type ValueIndexPair struct {
 // MARK: Tensor Metadata
 // ---------------------------------------------------------------------------
 
+// Return the number of elements in the tensor.
 func Numel(tensor Tensor) int64 {
     var output C.int64_t
     C.Torch_Tensor_Numel(&output, C.Tensor(*tensor.T))
     return int64(output)
 }
 
+// Return the number of elements in the tensor.
 func (tensor Tensor) Numel() int64 {
     return Numel(tensor)
 }
 
+// Return true if the tensor of a complex data-type.
 func IsComplex(tensor Tensor) bool {
     var output C.bool
     C.Torch_Tensor_Is_Complex(&output, C.Tensor(*tensor.T))
     return bool(output)
 }
 
+// Return true if the tensor of a complex data-type.
 func (tensor Tensor) IsComplex() bool {
     return IsComplex(tensor)
 }
 
+// Return true if the (complex) tensor is in conjugated form.
 func IsConj(tensor Tensor) bool {
     var output C.bool
     C.Torch_Tensor_Is_Conj(&output, C.Tensor(*tensor.T))
     return bool(output)
 }
 
+// Return true if the (complex) tensor is in conjugated form.
 func (tensor Tensor) IsConj() bool {
     return IsConj(tensor)
 }
 
+// Return true if the tensor of a floating-point data-type.
 func IsFloatingPoint(tensor Tensor) bool {
     var output C.bool
     C.Torch_Tensor_Is_Floating_Point(&output, C.Tensor(*tensor.T))
     return bool(output)
 }
 
+// Return true if the tensor of a floating-point data-type.
 func (tensor Tensor) IsFloatingPoint() bool {
     return IsFloatingPoint(tensor)
 }
 
+// Return true if the tensor is a single non-zero element (i.e., scalar.)
 func IsNonzero(tensor Tensor) bool {
     var output C.bool
     C.Torch_Tensor_Is_Nonzero(&output, C.Tensor(*tensor.T))
     return bool(output)
 }
 
+// Return true if the tensor is a single non-zero element (i.e., scalar.)
 func (tensor Tensor) IsNonzero() bool {
     return IsNonzero(tensor)
 }
@@ -98,6 +108,7 @@ func (tensor Tensor) IsNonzero() bool {
 // MARK: Tensor Creation
 // ---------------------------------------------------------------------------
 
+// Create a new tensor of given size filled with zeros.
 func Zeros(size []int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -110,6 +121,7 @@ func Zeros(size []int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with zeros in the shape of a reference.
 func ZerosLike(reference Tensor) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -120,6 +132,7 @@ func ZerosLike(reference Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with ones.
 func Ones(size []int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -132,6 +145,7 @@ func Ones(size []int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with ones in the shape of a reference.
 func OnesLike(reference Tensor) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -142,6 +156,8 @@ func OnesLike(reference Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create an inclusive range tensor from begin position to end position along
+// integer step size.
 func Arange(begin, end, step float32, options TensorOptions) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Arange(
@@ -154,6 +170,8 @@ func Arange(begin, end, step float32, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create an exclusive range tensor from begin position to end position along
+// integer step size.
 func Range(begin, end, step float32, options TensorOptions) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Range(
@@ -166,6 +184,8 @@ func Range(begin, end, step float32, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create an linear space tensor from begin to end with given number of total
+// steps.
 func Linspace(begin, end float32, steps int64, options TensorOptions) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Linspace(
@@ -178,6 +198,8 @@ func Linspace(begin, end float32, steps int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create an logarithmic space tensor from begin to end with given number of
+// total steps.
 func Logspace(begin, end float32, steps int64, base float64, options TensorOptions) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Logspace(
@@ -191,6 +213,7 @@ func Logspace(begin, end float32, steps int64, base float64, options TensorOptio
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create an NxM identity matrix.
 func Eye(n, m int64, options TensorOptions) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Eye(
@@ -202,6 +225,7 @@ func Eye(n, m int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with empty values.
 func Empty(size []int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -214,6 +238,7 @@ func Empty(size []int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with empty values in the shape of a reference.
 func EmptyLike(reference Tensor) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -224,6 +249,7 @@ func EmptyLike(reference Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with static values.
 func Full(size []int64, value float32, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -236,6 +262,7 @@ func Full(size []int64, value float32, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with static values in the shape of a reference.
 func FullLike(reference Tensor, value float32) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -247,6 +274,7 @@ func FullLike(reference Tensor, value float32) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with uniform random values.
 func Rand(size []int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -259,6 +287,7 @@ func Rand(size []int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with uniform random values in the shape of a reference.
 func RandLike(reference Tensor) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -268,6 +297,7 @@ func RandLike(reference Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with random integers in [low, high).
 func RandInt(size []int64, low int64, high int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -282,6 +312,8 @@ func RandInt(size []int64, low int64, high int64, options TensorOptions) Tensor 
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with random integers in [low, high) in the shape of
+// a reference.
 func RandIntLike(reference Tensor, low int64, high int64) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -294,6 +326,7 @@ func RandIntLike(reference Tensor, low int64, high int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a new tensor of given size filled with Gaussian random values.
 func RandN(size []int64, options TensorOptions) Tensor {
     if len(size) == 0 { panic("size is empty") }
     var tensor C.Tensor
@@ -306,6 +339,8 @@ func RandN(size []int64, options TensorOptions) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// Create a tensor filled with Gaussian random values in the shape of a
+// reference.
 func RandNLike(reference Tensor) Tensor {
     if reference.T == nil { panic("input tensor is nil") }
     var tensor C.Tensor
@@ -316,7 +351,9 @@ func RandNLike(reference Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
+// ---------------------------------------------------------------------------
 // MARK: ToSlice
+// ---------------------------------------------------------------------------
 
 // Convert a torch Tensor to a Go slice. This function implies a flattening
 // of the tensor to return 1-dimensional vectors.
@@ -394,11 +431,15 @@ func ToSlice(tensor Tensor) interface{} {
     }
 }
 
+// Convert the Tensor to a Go slice. This function implies a flattening of the
+// tensor to return a 1-dimensional vector.
 func (tensor Tensor) ToSlice() interface{} {
     return ToSlice(tensor)
 }
 
+// ---------------------------------------------------------------------------
 // MARK: Maths
+// ---------------------------------------------------------------------------
 
 func Add(tensor, other Tensor, alpha float32) Tensor {
     var output C.Tensor
@@ -608,7 +649,9 @@ func (a Tensor) LogSoftmax(dim int64) Tensor {
 // TODO: func Clip(tensor Tensor, min, max interface{}) Tensor { }
 // TODO: func (tensor Tensor, min, max interface{}) Clip() Tensor { Clip(tensor, min, max) }
 
+// ---------------------------------------------------------------------------
 // MARK: Data layout
+// ---------------------------------------------------------------------------
 
 func Permute(tensor Tensor, dims ...int64) Tensor {
     var output C.Tensor
@@ -728,7 +771,9 @@ func Cat(tensors []Tensor, dim int64) Tensor {
 // func Concat(tensors []Tensor, dim int64) Tensor { return Cat(tensors, dim) }
 // func Concatenate(tensors []Tensor, dim int64) Tensor { return Cat(tensors, dim) }
 
+// ---------------------------------------------------------------------------
 // MARK: Selection
+// ---------------------------------------------------------------------------
 
 func Slice(tensor Tensor, dim, start, stop, step int64) Tensor {
     var output C.Tensor
@@ -1187,6 +1232,13 @@ func (tensor Tensor) VarMeanByDim(dim int, unbiased bool, keep_dims bool) (Tenso
 // MARK: Comparison Ops
 // ---------------------------------------------------------------------------
 
+// Return true if the two tensors are approximately equal to one another with
+// given relative and absolute tolerances.
+//
+// This function checks if all `tensor` and `other` satisfy the condition:
+//
+// |tensor − other| <= atol + rtol * |other|
+//
 func AllClose(tensor, other Tensor, rtol, atol float64) bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_AllClose(
@@ -1199,10 +1251,24 @@ func AllClose(tensor, other Tensor, rtol, atol float64) bool {
     return bool(output)
 }
 
+// Return true if the tensor is approximately equal to another with given
+// relative and absolute tolerances.
+//
+// This function checks if all `tensor` and `other` satisfy the condition:
+//
+// |tensor − other| <= atol + rtol * |other|
+//
 func (tensor Tensor) AllClose(other Tensor, rtol, atol float64) bool {
     return AllClose(tensor, other, rtol, atol)
 }
 
+// Create a new tensor describing the element-wise approximate equality of two
+// tensors with given relative and absolute tolerances.
+//
+// This function checks if all `tensor` and `other` satisfy the condition:
+//
+// |tensor − other| <= atol + rtol * |other|
+//
 func IsClose(tensor, other Tensor, rtol, atol float64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsClose(
@@ -1215,12 +1281,20 @@ func IsClose(tensor, other Tensor, rtol, atol float64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor describing the element-wise approximate equality of the
+// tensor to another with given relative and absolute tolerances.
+//
+// This function checks if all `tensor` and `other` satisfy the condition:
+//
+// |tensor − other| <= atol + rtol * |other|
+//
 func (tensor Tensor) IsClose(other Tensor, rtol, atol float64) Tensor {
     return IsClose(tensor, other, rtol, atol)
 }
 
 // TODO: Argsort
 
+// Create a new tensor comparing the element-wise equality of two tensors.
 func Eq(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Eq(
@@ -1231,10 +1305,12 @@ func Eq(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor comparing element-wise equality of the tensor to another.
 func (tensor Tensor) Eq(other Tensor) Tensor {
     return Eq(tensor, other)
 }
 
+// Return true if the two tensors are precisely equal element-wise.
 func Equal(tensor, other Tensor) bool {
     var output bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Equal(
@@ -1245,6 +1321,7 @@ func Equal(tensor, other Tensor) bool {
     return output
 }
 
+// Return true if the tensor is precisely equal to another element-wise.
 func (tensor Tensor) Equal(other Tensor) bool {
     return Equal(tensor, other)
 }

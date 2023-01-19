@@ -971,52 +971,59 @@
 		
 			
 			
-			<h2 id="AllClose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36857:36917#L1180">AllClose</a>
+			<h2 id="AllClose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39877:39937#L1232">AllClose</a>
 				<a class="permalink" href="gotorch.html#AllClose">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func AllClose(tensor, other <a href="gotorch.html#Tensor">Tensor</a>, rtol, atol <a href="http://localhost:42768/pkg/builtin/#float64">float64</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the two tensors are approximately equal to one another with
+given relative and absolute tolerances.
+<p>This function checks if all `tensor` and `other` satisfy the condition:
+<p>|tensor − other| &lt;= atol + rtol * |other|
+
 			
 			
 
 		
 			
 			
-			<h2 id="Equal">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38100:38137#L1228">Equal</a>
+			<h2 id="Equal">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42128:42165#L1304">Equal</a>
 				<a class="permalink" href="gotorch.html#Equal">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func Equal(tensor, other <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the two tensors are precisely equal element-wise.
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsComplex">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2124:2158#L47">IsComplex</a>
+			<h2 id="IsComplex">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2273:2307#L50">IsComplex</a>
 				<a class="permalink" href="gotorch.html#IsComplex">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func IsComplex(tensor <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the tensor of a complex data-type.
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsConj">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2342:2373#L57">IsConj</a>
+			<h2 id="IsConj">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2606:2637#L62">IsConj</a>
 				<a class="permalink" href="gotorch.html#IsConj">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func IsConj(tensor <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the (complex) tensor is in conjugated form.
+
 			
 			
 
@@ -1037,13 +1044,14 @@
 		
 			
 			
-			<h2 id="IsFloatingPoint">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2548:2588#L67">IsFloatingPoint</a>
+			<h2 id="IsFloatingPoint">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2934:2974#L74">IsFloatingPoint</a>
 				<a class="permalink" href="gotorch.html#IsFloatingPoint">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func IsFloatingPoint(tensor <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the tensor of a floating-point data-type.
+
 			
 			
 
@@ -1064,13 +1072,14 @@
 		
 			
 			
-			<h2 id="IsNonzero">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2791:2825#L77">IsNonzero</a>
+			<h2 id="IsNonzero">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3311:3345#L86">IsNonzero</a>
 				<a class="permalink" href="gotorch.html#IsNonzero">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func IsNonzero(tensor <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>Return true if the tensor is a single non-zero element (i.e., scalar.)
+
 			
 			
 
@@ -1091,13 +1100,14 @@
 		
 			
 			
-			<h2 id="Numel">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=1917:1948#L37">Numel</a>
+			<h2 id="Numel">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=1965:1996#L38">Numel</a>
 				<a class="permalink" href="gotorch.html#Numel">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func Numel(tensor <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#int64">int64</a></pre>
-			
+			<p>Return the number of elements in the tensor.
+
 			
 			
 
@@ -1132,7 +1142,7 @@
 		
 			
 			
-			<h2 id="StdMean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32402:32446#L1051">StdMean</a>
+			<h2 id="StdMean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35170:35214#L1096">StdMean</a>
 				<a class="permalink" href="gotorch.html#StdMean">&#xb6;</a>
 				
 				
@@ -1146,7 +1156,7 @@
 		
 			
 			
-			<h2 id="StdMeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32910:32999#L1064">StdMeanByDim</a>
+			<h2 id="StdMeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35678:35767#L1109">StdMeanByDim</a>
 				<a class="permalink" href="gotorch.html#StdMeanByDim">&#xb6;</a>
 				
 				
@@ -1160,7 +1170,7 @@
 		
 			
 			
-			<h2 id="ToSlice">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=10160:10199#L313">ToSlice</a>
+			<h2 id="ToSlice">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=12331:12370#L350">ToSlice</a>
 				<a class="permalink" href="gotorch.html#ToSlice">&#xb6;</a>
 				
 				
@@ -1175,7 +1185,7 @@ of the tensor to return 1-dimensional vectors.
 		
 			
 			
-			<h2 id="VarMean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35495:35539#L1145">VarMean</a>
+			<h2 id="VarMean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38263:38307#L1190">VarMean</a>
 				<a class="permalink" href="gotorch.html#VarMean">&#xb6;</a>
 				
 				
@@ -1189,7 +1199,7 @@ of the tensor to return 1-dimensional vectors.
 		
 			
 			
-			<h2 id="VarMeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35998:36087#L1158">VarMeanByDim</a>
+			<h2 id="VarMeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38766:38855#L1203">VarMeanByDim</a>
 				<a class="permalink" href="gotorch.html#VarMeanByDim">&#xb6;</a>
 				
 				
@@ -1945,7 +1955,7 @@ to IValues.)
 
 			
 				
-				<h3 id="Abs">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15914:15944#L497">Abs</a>
+				<h3 id="Abs">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18366:18396#L538">Abs</a>
 					<a class="permalink" href="gotorch.html#Abs">&#xb6;</a>
 					
 					
@@ -1956,7 +1966,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Abs_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16180:16211#L507">Abs_</a>
+				<h3 id="Abs_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18632:18663#L548">Abs_</a>
 					<a class="permalink" href="gotorch.html#Abs_">&#xb6;</a>
 					
 					
@@ -1967,7 +1977,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Add">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=12994:13046#L393">Add</a>
+				<h3 id="Add">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15446:15498#L434">Add</a>
 					<a class="permalink" href="gotorch.html#Add">&#xb6;</a>
 					
 					
@@ -1978,7 +1988,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="All">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25266:25296#L822">All</a>
+				<h3 id="All">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28034:28064#L867">All</a>
 					<a class="permalink" href="gotorch.html#All">&#xb6;</a>
 					
 					
@@ -1990,7 +2000,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="AllByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25668:25728#L834">AllByDim</a>
+				<h3 id="AllByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28436:28496#L879">AllByDim</a>
 					<a class="permalink" href="gotorch.html#AllByDim">&#xb6;</a>
 					
 					
@@ -2002,7 +2012,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Any">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26228:26258#L851">Any</a>
+				<h3 id="Any">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28996:29026#L896">Any</a>
 					<a class="permalink" href="gotorch.html#Any">&#xb6;</a>
 					
 					
@@ -2014,7 +2024,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="AnyByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26630:26690#L863">AnyByDim</a>
+				<h3 id="AnyByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29398:29458#L908">AnyByDim</a>
 					<a class="permalink" href="gotorch.html#AnyByDim">&#xb6;</a>
 					
 					
@@ -2026,18 +2036,20 @@ to IValues.)
 				
 			
 				
-				<h3 id="Arange">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=4581:4648#L135">Arange</a>
+				<h3 id="Arange">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=5517:5584#L151">Arange</a>
 					<a class="permalink" href="gotorch.html#Arange">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Arange(begin, end, step <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create an inclusive range tensor from begin position to end position along
+integer step size.
+
 				
 				
 			
 				
-				<h3 id="Argmax">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24276:24309#L789">Argmax</a>
+				<h3 id="Argmax">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27044:27077#L834">Argmax</a>
 					<a class="permalink" href="gotorch.html#Argmax">&#xb6;</a>
 					
 					
@@ -2049,7 +2061,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="ArgmaxByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24662:24725#L801">ArgmaxByDim</a>
+				<h3 id="ArgmaxByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27430:27493#L846">ArgmaxByDim</a>
 					<a class="permalink" href="gotorch.html#ArgmaxByDim">&#xb6;</a>
 					
 					
@@ -2061,7 +2073,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Argmin">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23346:23379#L760">Argmin</a>
+				<h3 id="Argmin">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26114:26147#L805">Argmin</a>
 					<a class="permalink" href="gotorch.html#Argmin">&#xb6;</a>
 					
 					
@@ -2073,7 +2085,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="ArgminByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23732:23795#L772">ArgminByDim</a>
+				<h3 id="ArgminByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26500:26563#L817">ArgminByDim</a>
 					<a class="permalink" href="gotorch.html#ArgminByDim">&#xb6;</a>
 					
 					
@@ -2085,7 +2097,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Cat">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21605:21649#L703">Cat</a>
+				<h3 id="Cat">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24215:24259#L746">Cat</a>
 					<a class="permalink" href="gotorch.html#Cat">&#xb6;</a>
 					
 					
@@ -2108,7 +2120,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Div">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15234:15271#L472">Div</a>
+				<h3 id="Div">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17686:17723#L513">Div</a>
 					<a class="permalink" href="gotorch.html#Div">&#xb6;</a>
 					
 					
@@ -2119,51 +2131,55 @@ to IValues.)
 				
 			
 				
-				<h3 id="Empty">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=6330:6384#L195">Empty</a>
+				<h3 id="Empty">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=7644:7698#L219">Empty</a>
 					<a class="permalink" href="gotorch.html#Empty">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Empty(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with empty values.
+
 				
 				
 			
 				
-				<h3 id="EmptyLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=6720:6759#L207">EmptyLike</a>
+				<h3 id="EmptyLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8107:8146#L232">EmptyLike</a>
 					<a class="permalink" href="gotorch.html#EmptyLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func EmptyLike(reference <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with empty values in the shape of a reference.
+
 				
 				
 			
 				
-				<h3 id="Eq">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37761:37797#L1214">Eq</a>
+				<h3 id="Eq">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41640:41676#L1288">Eq</a>
 					<a class="permalink" href="gotorch.html#Eq">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Eq(tensor, other <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor comparing the element-wise equality of two tensors.
+
 				
 				
 			
 				
-				<h3 id="Eye">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=6029:6079#L184">Eye</a>
+				<h3 id="Eye">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=7280:7330#L207">Eye</a>
 					<a class="permalink" href="gotorch.html#Eye">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Eye(n, m <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create an NxM identity matrix.
+
 				
 				
 			
 				
-				<h3 id="Flatten">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19685:19743#L633">Flatten</a>
+				<h3 id="Flatten">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22295:22353#L676">Flatten</a>
 					<a class="permalink" href="gotorch.html#Flatten">&#xb6;</a>
 					
 					
@@ -2174,29 +2190,31 @@ to IValues.)
 				
 			
 				
-				<h3 id="Full">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=7026:7094#L217">Full</a>
+				<h3 id="Full">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8477:8545#L243">Full</a>
 					<a class="permalink" href="gotorch.html#Full">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Full(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, value <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with static values.
+
 				
 				
 			
 				
-				<h3 id="FullLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=7445:7498#L229">FullLike</a>
+				<h3 id="FullLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8970:9023#L256">FullLike</a>
 					<a class="permalink" href="gotorch.html#FullLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func FullLike(reference <a href="gotorch.html#Tensor">Tensor</a>, value <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with static values in the shape of a reference.
+
 				
 				
 			
 				
-				<h3 id="Greater">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38797:38838#L1256">Greater</a>
+				<h3 id="Greater">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42898:42939#L1333">Greater</a>
 					<a class="permalink" href="gotorch.html#Greater">&#xb6;</a>
 					
 					
@@ -2207,7 +2225,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="GreaterEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38418:38464#L1242">GreaterEqual</a>
+				<h3 id="GreaterEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42519:42565#L1319">GreaterEqual</a>
 					<a class="permalink" href="gotorch.html#GreaterEqual">&#xb6;</a>
 					
 					
@@ -2218,7 +2236,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IndexSelect">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22690:22753#L740">IndexSelect</a>
+				<h3 id="IndexSelect">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25458:25521#L785">IndexSelect</a>
 					<a class="permalink" href="gotorch.html#IndexSelect">&#xb6;</a>
 					
 					
@@ -2229,18 +2247,22 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsClose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37284:37345#L1196">IsClose</a>
+				<h3 id="IsClose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40812:40873#L1262">IsClose</a>
 					<a class="permalink" href="gotorch.html#IsClose">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func IsClose(tensor, other <a href="gotorch.html#Tensor">Tensor</a>, rtol, atol <a href="http://localhost:42768/pkg/builtin/#float64">float64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor describing the element-wise approximate equality of two
+tensors with given relative and absolute tolerances.
+<p>This function checks if all `tensor` and `other` satisfy the condition:
+<p>|tensor − other| &lt;= atol + rtol * |other|
+
 				
 				
 			
 				
-				<h3 id="IsFinite">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41298:41333#L1354">IsFinite</a>
+				<h3 id="IsFinite">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45399:45434#L1431">IsFinite</a>
 					<a class="permalink" href="gotorch.html#IsFinite">&#xb6;</a>
 					
 					
@@ -2251,7 +2273,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsIn">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40951:40989#L1340">IsIn</a>
+				<h3 id="IsIn">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45052:45090#L1417">IsIn</a>
 					<a class="permalink" href="gotorch.html#IsIn">&#xb6;</a>
 					
 					
@@ -2262,7 +2284,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41584:41616#L1364">IsInf</a>
+				<h3 id="IsInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45685:45717#L1441">IsInf</a>
 					<a class="permalink" href="gotorch.html#IsInf">&#xb6;</a>
 					
 					
@@ -2273,7 +2295,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsNaN">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42430:42462#L1394">IsNaN</a>
+				<h3 id="IsNaN">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46531:46563#L1471">IsNaN</a>
 					<a class="permalink" href="gotorch.html#IsNaN">&#xb6;</a>
 					
 					
@@ -2284,7 +2306,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsNegInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42144:42179#L1384">IsNegInf</a>
+				<h3 id="IsNegInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46245:46280#L1461">IsNegInf</a>
 					<a class="permalink" href="gotorch.html#IsNegInf">&#xb6;</a>
 					
 					
@@ -2295,7 +2317,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsPosInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41858:41893#L1374">IsPosInf</a>
+				<h3 id="IsPosInf">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45959:45994#L1451">IsPosInf</a>
 					<a class="permalink" href="gotorch.html#IsPosInf">&#xb6;</a>
 					
 					
@@ -2306,7 +2328,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="IsReal">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42704:42737#L1404">IsReal</a>
+				<h3 id="IsReal">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46805:46838#L1481">IsReal</a>
 					<a class="permalink" href="gotorch.html#IsReal">&#xb6;</a>
 					
 					
@@ -2317,7 +2339,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Less">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39523:39561#L1284">Less</a>
+				<h3 id="Less">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43624:43662#L1361">Less</a>
 					<a class="permalink" href="gotorch.html#Less">&#xb6;</a>
 					
 					
@@ -2328,7 +2350,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="LessEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39156:39199#L1270">LessEqual</a>
+				<h3 id="LessEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43257:43300#L1347">LessEqual</a>
 					<a class="permalink" href="gotorch.html#LessEqual">&#xb6;</a>
 					
 					
@@ -2339,13 +2361,15 @@ to IValues.)
 				
 			
 				
-				<h3 id="Linspace">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=5271:5347#L159">Linspace</a>
+				<h3 id="Linspace">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=6395:6471#L179">Linspace</a>
 					<a class="permalink" href="gotorch.html#Linspace">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Linspace(begin, end <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>, steps <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create an linear space tensor from begin to end with given number of total
+steps.
+
 				
 				
 			
@@ -2362,7 +2386,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="LogSoftmax">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18375:18418#L588">LogSoftmax</a>
+				<h3 id="LogSoftmax">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20827:20870#L629">LogSoftmax</a>
 					<a class="permalink" href="gotorch.html#LogSoftmax">&#xb6;</a>
 					
 					
@@ -2373,18 +2397,20 @@ to IValues.)
 				
 			
 				
-				<h3 id="Logspace">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=5631:5721#L171">Logspace</a>
+				<h3 id="Logspace">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=6848:6938#L193">Logspace</a>
 					<a class="permalink" href="gotorch.html#Logspace">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Logspace(begin, end <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>, steps <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, base <a href="http://localhost:42768/pkg/builtin/#float64">float64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create an logarithmic space tensor from begin to end with given number of
+total steps.
+
 				
 				
 			
 				
-				<h3 id="MM">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46383:46410#L1565">MM</a>
+				<h3 id="MM">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=50484:50511#L1642">MM</a>
 					<a class="permalink" href="gotorch.html#MM">&#xb6;</a>
 					
 					
@@ -2395,7 +2421,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Max">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27210:27240#L883">Max</a>
+				<h3 id="Max">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29978:30008#L928">Max</a>
 					<a class="permalink" href="gotorch.html#Max">&#xb6;</a>
 					
 					
@@ -2407,7 +2433,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Maximum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39870:39911#L1298">Maximum</a>
+				<h3 id="Maximum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43971:44012#L1375">Maximum</a>
 					<a class="permalink" href="gotorch.html#Maximum">&#xb6;</a>
 					
 					
@@ -2418,7 +2444,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Mean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29289:29320#L949">Mean</a>
+				<h3 id="Mean">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32057:32088#L994">Mean</a>
 					<a class="permalink" href="gotorch.html#Mean">&#xb6;</a>
 					
 					
@@ -2430,7 +2456,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="MeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29661:29722#L961">MeanByDim</a>
+				<h3 id="MeanByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32429:32490#L1006">MeanByDim</a>
 					<a class="permalink" href="gotorch.html#MeanByDim">&#xb6;</a>
 					
 					
@@ -2442,7 +2468,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Median">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30211:30244#L980">Median</a>
+				<h3 id="Median">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32979:33012#L1025">Median</a>
 					<a class="permalink" href="gotorch.html#Median">&#xb6;</a>
 					
 					
@@ -2454,7 +2480,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Min">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28251:28281#L916">Min</a>
+				<h3 id="Min">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31019:31049#L961">Min</a>
 					<a class="permalink" href="gotorch.html#Min">&#xb6;</a>
 					
 					
@@ -2466,7 +2492,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Minimum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40229:40270#L1312">Minimum</a>
+				<h3 id="Minimum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44330:44371#L1389">Minimum</a>
 					<a class="permalink" href="gotorch.html#Minimum">&#xb6;</a>
 					
 					
@@ -2477,7 +2503,7 @@ to IValues.)
 				
 			
 				
-				<h3 id="Mul">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=14554:14591#L447">Mul</a>
+				<h3 id="Mul">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17006:17043#L488">Mul</a>
 					<a class="permalink" href="gotorch.html#Mul">&#xb6;</a>
 					
 					
@@ -2527,7 +2553,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="NotEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40588:40630#L1326">NotEqual</a>
+				<h3 id="NotEqual">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44689:44731#L1403">NotEqual</a>
 					<a class="permalink" href="gotorch.html#NotEqual">&#xb6;</a>
 					
 					
@@ -2538,29 +2564,31 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Ones">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3889:3942#L113">Ones</a>
+				<h3 id="Ones">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=4660:4713#L126">Ones</a>
 					<a class="permalink" href="gotorch.html#Ones">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Ones(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with ones.
+
 				
 				
 			
 				
-				<h3 id="OnesLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=4277:4315#L125">OnesLike</a>
+				<h3 id="OnesLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=5113:5151#L139">OnesLike</a>
 					<a class="permalink" href="gotorch.html#OnesLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func OnesLike(reference <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with ones in the shape of a reference.
+
 				
 				
 			
 				
-				<h3 id="Permute">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18872:18921#L603">Permute</a>
+				<h3 id="Permute">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21482:21531#L646">Permute</a>
 					<a class="permalink" href="gotorch.html#Permute">&#xb6;</a>
 					
 					
@@ -2571,7 +2599,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Pow">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17347:17395#L554">Pow</a>
+				<h3 id="Pow">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19799:19847#L595">Pow</a>
 					<a class="permalink" href="gotorch.html#Pow">&#xb6;</a>
 					
 					
@@ -2582,79 +2610,89 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Rand">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=7788:7841#L240">Rand</a>
+				<h3 id="Rand">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=9385:9438#L268">Rand</a>
 					<a class="permalink" href="gotorch.html#Rand">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Rand(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with uniform random values.
+
 				
 				
 			
 				
-				<h3 id="RandInt">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8472:8551#L261">RandInt</a>
+				<h3 id="RandInt">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=10232:10311#L291">RandInt</a>
 					<a class="permalink" href="gotorch.html#RandInt">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func RandInt(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, low <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, high <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with random integers in [low, high).
+
 				
 				
 			
 				
-				<h3 id="RandIntLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8938:9002#L275">RandIntLike</a>
+				<h3 id="RandIntLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=10792:10856#L307">RandIntLike</a>
 					<a class="permalink" href="gotorch.html#RandIntLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func RandIntLike(reference <a href="gotorch.html#Tensor">Tensor</a>, low <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, high <a href="http://localhost:42768/pkg/builtin/#int64">int64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with random integers in [low, high) in the shape of
+a reference.
+
 				
 				
 			
 				
-				<h3 id="RandLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=8176:8214#L252">RandLike</a>
+				<h3 id="RandLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=9855:9893#L281">RandLike</a>
 					<a class="permalink" href="gotorch.html#RandLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func RandLike(reference <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with uniform random values in the shape of a reference.
+
 				
 				
 			
 				
-				<h3 id="RandN">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=9320:9374#L287">RandN</a>
+				<h3 id="RandN">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=11247:11301#L320">RandN</a>
 					<a class="permalink" href="gotorch.html#RandN">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func RandN(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with Gaussian random values.
+
 				
 				
 			
 				
-				<h3 id="RandNLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=9710:9749#L299">RandNLike</a>
+				<h3 id="RandNLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=11723:11762#L334">RandNLike</a>
 					<a class="permalink" href="gotorch.html#RandNLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func RandNLike(reference <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with Gaussian random values in the shape of a
+reference.
+
 				
 				
 			
 				
-				<h3 id="Range">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=4927:4993#L147">Range</a>
+				<h3 id="Range">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=5963:6029#L165">Range</a>
 					<a class="permalink" href="gotorch.html#Range">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Range(begin, end, step <a href="http://localhost:42768/pkg/builtin/#float32">float32</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create an exclusive range tensor from begin position to end position along
+integer step size.
+
 				
 				
 			
@@ -2671,7 +2709,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Sigmoid">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18063:18092#L577">Sigmoid</a>
+				<h3 id="Sigmoid">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20515:20544#L618">Sigmoid</a>
 					<a class="permalink" href="gotorch.html#Sigmoid">&#xb6;</a>
 					
 					
@@ -2683,7 +2721,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Slice">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22211:22273#L723">Slice</a>
+				<h3 id="Slice">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24979:25041#L768">Slice</a>
 					<a class="permalink" href="gotorch.html#Slice">&#xb6;</a>
 					
 					
@@ -2694,7 +2732,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Sqrt">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16872:16903#L535">Sqrt</a>
+				<h3 id="Sqrt">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19324:19355#L576">Sqrt</a>
 					<a class="permalink" href="gotorch.html#Sqrt">&#xb6;</a>
 					
 					
@@ -2705,7 +2743,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Sqrt_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17142:17174#L545">Sqrt_</a>
+				<h3 id="Sqrt_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19594:19626#L586">Sqrt_</a>
 					<a class="permalink" href="gotorch.html#Sqrt_">&#xb6;</a>
 					
 					
@@ -2716,7 +2754,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Square">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16381:16414#L516">Square</a>
+				<h3 id="Square">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18833:18866#L557">Square</a>
 					<a class="permalink" href="gotorch.html#Square">&#xb6;</a>
 					
 					
@@ -2727,7 +2765,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Square_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16659:16693#L526">Square_</a>
+				<h3 id="Square_">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19111:19145#L567">Square_</a>
 					<a class="permalink" href="gotorch.html#Square_">&#xb6;</a>
 					
 					
@@ -2738,7 +2776,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Squeeze">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20110:20158#L648">Squeeze</a>
+				<h3 id="Squeeze">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22720:22768#L691">Squeeze</a>
 					<a class="permalink" href="gotorch.html#Squeeze">&#xb6;</a>
 					
 					
@@ -2749,7 +2787,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Stack">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21180:21226#L687">Stack</a>
+				<h3 id="Stack">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23790:23836#L730">Stack</a>
 					<a class="permalink" href="gotorch.html#Stack">&#xb6;</a>
 					
 					
@@ -2760,7 +2798,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Std">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31395:31425#L1021">Std</a>
+				<h3 id="Std">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34163:34193#L1066">Std</a>
 					<a class="permalink" href="gotorch.html#Std">&#xb6;</a>
 					
 					
@@ -2772,7 +2810,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="StdByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31779:31854#L1033">StdByDim</a>
+				<h3 id="StdByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34547:34622#L1078">StdByDim</a>
 					<a class="permalink" href="gotorch.html#StdByDim">&#xb6;</a>
 					
 					
@@ -2784,7 +2822,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Sub">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=13774:13826#L420">Sub</a>
+				<h3 id="Sub">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16226:16278#L461">Sub</a>
 					<a class="permalink" href="gotorch.html#Sub">&#xb6;</a>
 					
 					
@@ -2795,7 +2833,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Sum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33612:33642#L1083">Sum</a>
+				<h3 id="Sum">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36380:36410#L1128">Sum</a>
 					<a class="permalink" href="gotorch.html#Sum">&#xb6;</a>
 					
 					
@@ -2807,7 +2845,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="SumByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33966:34026#L1095">SumByDim</a>
+				<h3 id="SumByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36734:36794#L1140">SumByDim</a>
 					<a class="permalink" href="gotorch.html#SumByDim">&#xb6;</a>
 					
 					
@@ -2819,7 +2857,7 @@ not mutate the input data.
 				
 			
 				
-				<h3 id="Tanh">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17720:17746#L565">Tanh</a>
+				<h3 id="Tanh">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20172:20198#L606">Tanh</a>
 					<a class="permalink" href="gotorch.html#Tanh">&#xb6;</a>
 					
 					
@@ -2846,7 +2884,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Transpose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19276:19330#L618">Transpose</a>
+				<h3 id="Transpose">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21886:21940#L661">Transpose</a>
 					<a class="permalink" href="gotorch.html#Transpose">&#xb6;</a>
 					
 					
@@ -2857,7 +2895,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Unsqueeze">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20818:20865#L673">Unsqueeze</a>
+				<h3 id="Unsqueeze">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23428:23475#L716">Unsqueeze</a>
 					<a class="permalink" href="gotorch.html#Unsqueeze">&#xb6;</a>
 					
 					
@@ -2868,7 +2906,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Var">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34528:34558#L1115">Var</a>
+				<h3 id="Var">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37296:37326#L1160">Var</a>
 					<a class="permalink" href="gotorch.html#Var">&#xb6;</a>
 					
 					
@@ -2880,7 +2918,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="VarByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34892:34967#L1127">VarByDim</a>
+				<h3 id="VarByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37660:37735#L1172">VarByDim</a>
 					<a class="permalink" href="gotorch.html#VarByDim">&#xb6;</a>
 					
 					
@@ -2892,31 +2930,33 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Zeros">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3193:3247#L91">Zeros</a>
+				<h3 id="Zeros">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3843:3897#L102">Zeros</a>
 					<a class="permalink" href="gotorch.html#Zeros">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Zeros(size []<a href="http://localhost:42768/pkg/builtin/#int64">int64</a>, options <a href="gotorch.html#TensorOptions">TensorOptions</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor of given size filled with zeros.
+
 				
 				
 			
 				
-				<h3 id="ZerosLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3583:3622#L103">ZerosLike</a>
+				<h3 id="ZerosLike">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=4299:4338#L115">ZerosLike</a>
 					<a class="permalink" href="gotorch.html#ZerosLike">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func ZerosLike(reference <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a tensor filled with zeros in the shape of a reference.
+
 				
 				
 			
 
 			
 				
-				<h3 id="Tensor.Abs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16118:16151#L503">Abs</a>
+				<h3 id="Tensor.Abs">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18570:18603#L544">Abs</a>
 					<a class="permalink" href="gotorch.html#Tensor.Abs">&#xb6;</a>
 					
 					
@@ -2928,7 +2968,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Abs_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16317:16351#L512">Abs_</a>
+				<h3 id="Tensor.Abs_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18769:18803#L553">Abs_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Abs_">&#xb6;</a>
 					
 					
@@ -2940,7 +2980,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Add">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=13295:13355#L404">Add</a>
+				<h3 id="Tensor.Add">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15747:15807#L445">Add</a>
 					<a class="permalink" href="gotorch.html#Tensor.Add">&#xb6;</a>
 					
 					
@@ -2952,7 +2992,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Add_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=13398:13459#L408">Add_</a>
+				<h3 id="Tensor.Add_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15850:15911#L449">Add_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Add_">&#xb6;</a>
 					
 					
@@ -2964,7 +3004,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.All">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25525:25558#L829">All</a>
+				<h3 id="Tensor.All">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28293:28326#L874">All</a>
 					<a class="permalink" href="gotorch.html#Tensor.All">&#xb6;</a>
 					
 					
@@ -2977,7 +3017,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.AllByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26062:26123#L846">AllByDim</a>
+				<h3 id="Tensor.AllByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28830:28891#L891">AllByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.AllByDim">&#xb6;</a>
 					
 					
@@ -2990,19 +3030,23 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.AllClose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37163:37231#L1192">AllClose</a>
+				<h3 id="Tensor.AllClose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40425:40493#L1251">AllClose</a>
 					<a class="permalink" href="gotorch.html#Tensor.AllClose">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) AllClose(other <a href="gotorch.html#Tensor">Tensor</a>, rtol, atol <a href="http://localhost:42768/pkg/builtin/#float64">float64</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor is approximately equal to another with given
+relative and absolute tolerances.
+<p>This function checks if all `tensor` and `other` satisfy the condition:
+<p>|tensor − other| &lt;= atol + rtol * |other|
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Any">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26487:26520#L858">Any</a>
+				<h3 id="Tensor.Any">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29255:29288#L903">Any</a>
 					<a class="permalink" href="gotorch.html#Tensor.Any">&#xb6;</a>
 					
 					
@@ -3015,7 +3059,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.AnyByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27024:27085#L875">AnyByDim</a>
+				<h3 id="Tensor.AnyByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29792:29853#L920">AnyByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.AnyByDim">&#xb6;</a>
 					
 					
@@ -3028,7 +3072,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Argmax">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24527:24563#L796">Argmax</a>
+				<h3 id="Tensor.Argmax">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27295:27331#L841">Argmax</a>
 					<a class="permalink" href="gotorch.html#Tensor.Argmax">&#xb6;</a>
 					
 					
@@ -3041,7 +3085,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.ArgmaxByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25048:25112#L813">ArgmaxByDim</a>
+				<h3 id="Tensor.ArgmaxByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27816:27880#L858">ArgmaxByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.ArgmaxByDim">&#xb6;</a>
 					
 					
@@ -3054,7 +3098,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Argmin">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23597:23633#L767">Argmin</a>
+				<h3 id="Tensor.Argmin">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26365:26401#L812">Argmin</a>
 					<a class="permalink" href="gotorch.html#Tensor.Argmin">&#xb6;</a>
 					
 					
@@ -3067,7 +3111,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.ArgminByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=24118:24182#L784">ArgminByDim</a>
+				<h3 id="Tensor.ArgminByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=26886:26950#L829">ArgminByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.ArgminByDim">&#xb6;</a>
 					
 					
@@ -3171,7 +3215,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Div">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15496:15541#L482">Div</a>
+				<h3 id="Tensor.Div">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17948:17993#L523">Div</a>
 					<a class="permalink" href="gotorch.html#Tensor.Div">&#xb6;</a>
 					
 					
@@ -3183,7 +3227,7 @@ mutate the input buffer.
 				
 			
 				
-				<h3 id="Tensor.Div_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15577:15623#L486">Div_</a>
+				<h3 id="Tensor.Div_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18029:18075#L527">Div_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Div_">&#xb6;</a>
 					
 					
@@ -3222,25 +3266,27 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Eq">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38021:38065#L1224">Eq</a>
+				<h3 id="Tensor.Eq">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41981:42025#L1299">Eq</a>
 					<a class="permalink" href="gotorch.html#Tensor.Eq">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Eq(other <a href="gotorch.html#Tensor">Tensor</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor comparing element-wise equality of the tensor to another.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Equal">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38335:38380#L1238">Equal</a>
+				<h3 id="Tensor.Equal">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42436:42481#L1315">Equal</a>
 					<a class="permalink" href="gotorch.html#Tensor.Equal">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Equal(other <a href="gotorch.html#Tensor">Tensor</a>) <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor is precisely equal to another element-wise.
+
 				
 				
 				
@@ -3272,7 +3318,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Flatten">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20000:20059#L644">Flatten</a>
+				<h3 id="Tensor.Flatten">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22610:22669#L687">Flatten</a>
 					<a class="permalink" href="gotorch.html#Tensor.Flatten">&#xb6;</a>
 					
 					
@@ -3297,7 +3343,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.Greater">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39067:39116#L1266">Greater</a>
+				<h3 id="Tensor.Greater">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43168:43217#L1343">Greater</a>
 					<a class="permalink" href="gotorch.html#Tensor.Greater">&#xb6;</a>
 					
 					
@@ -3309,7 +3355,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.GreaterEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38698:38752#L1252">GreaterEqual</a>
+				<h3 id="Tensor.GreaterEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42799:42853#L1329">GreaterEqual</a>
 					<a class="permalink" href="gotorch.html#Tensor.GreaterEqual">&#xb6;</a>
 					
 					
@@ -3334,7 +3380,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IndexSelect">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23010:23074#L751">IndexSelect</a>
+				<h3 id="Tensor.IndexSelect">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25778:25842#L796">IndexSelect</a>
 					<a class="permalink" href="gotorch.html#Tensor.IndexSelect">&#xb6;</a>
 					
 					
@@ -3346,43 +3392,49 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsClose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37622:37691#L1208">IsClose</a>
+				<h3 id="Tensor.IsClose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41426:41495#L1281">IsClose</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsClose">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) IsClose(other <a href="gotorch.html#Tensor">Tensor</a>, rtol, atol <a href="http://localhost:42768/pkg/builtin/#float64">float64</a>) <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Create a new tensor describing the element-wise approximate equality of the
+tensor to another with given relative and absolute tolerances.
+<p>This function checks if all `tensor` and `other` satisfy the condition:
+<p>|tensor − other| &lt;= atol + rtol * |other|
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.IsComplex">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2270:2307#L53">IsComplex</a>
+				<h3 id="Tensor.IsComplex">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2472:2509#L57">IsComplex</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsComplex">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) IsComplex() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor of a complex data-type.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.IsConj">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2482:2516#L63">IsConj</a>
+				<h3 id="Tensor.IsConj">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2808:2842#L69">IsConj</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsConj">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) IsConj() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the (complex) tensor is in conjugated form.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.IsFinite">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41512:41550#L1360">IsFinite</a>
+				<h3 id="Tensor.IsFinite">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45613:45651#L1437">IsFinite</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsFinite">&#xb6;</a>
 					
 					
@@ -3394,19 +3446,20 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsFloatingPoint">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2707:2750#L73">IsFloatingPoint</a>
+				<h3 id="Tensor.IsFloatingPoint">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3153:3196#L81">IsFloatingPoint</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsFloatingPoint">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) IsFloatingPoint() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor of a floating-point data-type.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.IsIn">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41215:41261#L1350">IsIn</a>
+				<h3 id="Tensor.IsIn">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45316:45362#L1427">IsIn</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsIn">&#xb6;</a>
 					
 					
@@ -3418,7 +3471,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=41792:41827#L1370">IsInf</a>
+				<h3 id="Tensor.IsInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=45893:45928#L1447">IsInf</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsInf">&#xb6;</a>
 					
 					
@@ -3430,7 +3483,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsNaN">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42638:42673#L1400">IsNaN</a>
+				<h3 id="Tensor.IsNaN">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46739:46774#L1477">IsNaN</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsNaN">&#xb6;</a>
 					
 					
@@ -3442,7 +3495,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsNegInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42358:42396#L1390">IsNegInf</a>
+				<h3 id="Tensor.IsNegInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46459:46497#L1467">IsNegInf</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsNegInf">&#xb6;</a>
 					
 					
@@ -3454,19 +3507,20 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsNonzero">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2937:2974#L83">IsNonzero</a>
+				<h3 id="Tensor.IsNonzero">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=3531:3568#L93">IsNonzero</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsNonzero">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) IsNonzero() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the tensor is a single non-zero element (i.e., scalar.)
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.IsPosInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42072:42110#L1380">IsPosInf</a>
+				<h3 id="Tensor.IsPosInf">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46173:46211#L1457">IsPosInf</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsPosInf">&#xb6;</a>
 					
 					
@@ -3478,7 +3532,7 @@ before encoding.
 				
 			
 				
-				<h3 id="Tensor.IsReal">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=42914:42950#L1410">IsReal</a>
+				<h3 id="Tensor.IsReal">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=47015:47051#L1487">IsReal</a>
 					<a class="permalink" href="gotorch.html#Tensor.IsReal">&#xb6;</a>
 					
 					
@@ -3512,7 +3566,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Less">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39787:39833#L1294">Less</a>
+				<h3 id="Tensor.Less">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43888:43934#L1371">Less</a>
 					<a class="permalink" href="gotorch.html#Tensor.Less">&#xb6;</a>
 					
 					
@@ -3524,7 +3578,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.LessEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39430:39481#L1280">LessEqual</a>
+				<h3 id="Tensor.LessEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43531:43582#L1357">LessEqual</a>
 					<a class="permalink" href="gotorch.html#Tensor.LessEqual">&#xb6;</a>
 					
 					
@@ -3536,7 +3590,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.LogSoftmax">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18453:18497#L592">LogSoftmax</a>
+				<h3 id="Tensor.LogSoftmax">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20905:20949#L633">LogSoftmax</a>
 					<a class="permalink" href="gotorch.html#Tensor.LogSoftmax">&#xb6;</a>
 					
 					
@@ -3548,7 +3602,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.MM">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=46594:46638#L1571">MM</a>
+				<h3 id="Tensor.MM">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=50695:50739#L1648">MM</a>
 					<a class="permalink" href="gotorch.html#Tensor.MM">&#xb6;</a>
 					
 					
@@ -3560,7 +3614,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Max">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27455:27488#L890">Max</a>
+				<h3 id="Tensor.Max">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30223:30256#L935">Max</a>
 					<a class="permalink" href="gotorch.html#Tensor.Max">&#xb6;</a>
 					
 					
@@ -3573,7 +3627,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.MaxByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28091:28160#L911">MaxByDim</a>
+				<h3 id="Tensor.MaxByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30859:30928#L956">MaxByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.MaxByDim">&#xb6;</a>
 					
 					
@@ -3586,7 +3640,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Maximum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40140:40189#L1308">Maximum</a>
+				<h3 id="Tensor.Maximum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44241:44290#L1385">Maximum</a>
 					<a class="permalink" href="gotorch.html#Tensor.Maximum">&#xb6;</a>
 					
 					
@@ -3598,7 +3652,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Mean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29533:29567#L956">Mean</a>
+				<h3 id="Tensor.Mean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32301:32335#L1001">Mean</a>
 					<a class="permalink" href="gotorch.html#Tensor.Mean">&#xb6;</a>
 					
 					
@@ -3611,7 +3665,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.MeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30040:30102#L973">MeanByDim</a>
+				<h3 id="Tensor.MeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32808:32870#L1018">MeanByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.MeanByDim">&#xb6;</a>
 					
 					
@@ -3624,7 +3678,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Median">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30461:30497#L987">Median</a>
+				<h3 id="Tensor.Median">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33229:33265#L1032">Median</a>
 					<a class="permalink" href="gotorch.html#Tensor.Median">&#xb6;</a>
 					
 					
@@ -3637,7 +3691,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.MedianByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31107:31179#L1008">MedianByDim</a>
+				<h3 id="Tensor.MedianByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33875:33947#L1053">MedianByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.MedianByDim">&#xb6;</a>
 					
 					
@@ -3650,7 +3704,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Min">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28496:28529#L923">Min</a>
+				<h3 id="Tensor.Min">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31264:31297#L968">Min</a>
 					<a class="permalink" href="gotorch.html#Tensor.Min">&#xb6;</a>
 					
 					
@@ -3663,7 +3717,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.MinByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=29132:29201#L944">MinByDim</a>
+				<h3 id="Tensor.MinByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31900:31969#L989">MinByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.MinByDim">&#xb6;</a>
 					
 					
@@ -3676,7 +3730,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Minimum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40499:40548#L1322">Minimum</a>
+				<h3 id="Tensor.Minimum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44600:44649#L1399">Minimum</a>
 					<a class="permalink" href="gotorch.html#Tensor.Minimum">&#xb6;</a>
 					
 					
@@ -3688,7 +3742,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Mul">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=14816:14861#L457">Mul</a>
+				<h3 id="Tensor.Mul">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17268:17313#L498">Mul</a>
 					<a class="permalink" href="gotorch.html#Tensor.Mul">&#xb6;</a>
 					
 					
@@ -3700,7 +3754,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Mul_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=14897:14943#L461">Mul_</a>
+				<h3 id="Tensor.Mul_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17349:17395#L502">Mul_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Mul_">&#xb6;</a>
 					
 					
@@ -3712,7 +3766,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.NotEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=40860:40910#L1336">NotEqual</a>
+				<h3 id="Tensor.NotEqual">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44961:45011#L1413">NotEqual</a>
 					<a class="permalink" href="gotorch.html#Tensor.NotEqual">&#xb6;</a>
 					
 					
@@ -3724,19 +3778,20 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Numel">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2059:2093#L43">Numel</a>
+				<h3 id="Tensor.Numel">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=2155:2189#L45">Numel</a>
 					<a class="permalink" href="gotorch.html#Tensor.Numel">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) Numel() <a href="http://localhost:42768/pkg/builtin/#int64">int64</a></pre>
-				
+				<p>Return the number of elements in the tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.Permute">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19184:19234#L614">Permute</a>
+				<h3 id="Tensor.Permute">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21794:21844#L657">Permute</a>
 					<a class="permalink" href="gotorch.html#Tensor.Permute">&#xb6;</a>
 					
 					
@@ -3748,7 +3803,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Pow">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17589:17638#L560">Pow</a>
+				<h3 id="Tensor.Pow">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20041:20090#L601">Pow</a>
 					<a class="permalink" href="gotorch.html#Tensor.Pow">&#xb6;</a>
 					
 					
@@ -3851,7 +3906,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sigmoid">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=18170:18202#L582">Sigmoid</a>
+				<h3 id="Tensor.Sigmoid">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20622:20654#L623">Sigmoid</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sigmoid">&#xb6;</a>
 					
 					
@@ -3864,7 +3919,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Slice">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22572:22635#L736">Slice</a>
+				<h3 id="Tensor.Slice">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=25340:25403#L781">Slice</a>
 					<a class="permalink" href="gotorch.html#Tensor.Slice">&#xb6;</a>
 					
 					
@@ -3876,7 +3931,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sort">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=44127:44195#L1459">Sort</a>
+				<h3 id="Tensor.Sort">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=48228:48296#L1536">Sort</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sort">&#xb6;</a>
 					
 					
@@ -3888,7 +3943,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sqrt">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17078:17112#L541">Sqrt</a>
+				<h3 id="Tensor.Sqrt">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19530:19564#L582">Sqrt</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sqrt">&#xb6;</a>
 					
 					
@@ -3900,7 +3955,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sqrt_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17281:17316#L550">Sqrt_</a>
+				<h3 id="Tensor.Sqrt_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19733:19768#L591">Sqrt_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sqrt_">&#xb6;</a>
 					
 					
@@ -3912,7 +3967,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Square">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16591:16627#L522">Square</a>
+				<h3 id="Tensor.Square">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19043:19079#L563">Square</a>
 					<a class="permalink" href="gotorch.html#Tensor.Square">&#xb6;</a>
 					
 					
@@ -3924,7 +3979,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Square_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16802:16839#L531">Square_</a>
+				<h3 id="Tensor.Square_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19254:19291#L572">Square_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Square_">&#xb6;</a>
 					
 					
@@ -3936,7 +3991,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Squeeze">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20728:20777#L669">Squeeze</a>
+				<h3 id="Tensor.Squeeze">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23338:23387#L712">Squeeze</a>
 					<a class="permalink" href="gotorch.html#Tensor.Squeeze">&#xb6;</a>
 					
 					
@@ -3948,7 +4003,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Std">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31645:31678#L1028">Std</a>
+				<h3 id="Tensor.Std">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34413:34446#L1073">Std</a>
 					<a class="permalink" href="gotorch.html#Tensor.Std">&#xb6;</a>
 					
 					
@@ -3961,7 +4016,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.StdByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32205:32281#L1046">StdByDim</a>
+				<h3 id="Tensor.StdByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34973:35049#L1091">StdByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.StdByDim">&#xb6;</a>
 					
 					
@@ -3974,7 +4029,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.StdMean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=32747:32794#L1059">StdMean</a>
+				<h3 id="Tensor.StdMean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35515:35562#L1104">StdMean</a>
 					<a class="permalink" href="gotorch.html#Tensor.StdMean">&#xb6;</a>
 					
 					
@@ -3987,7 +4042,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.StdMeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33427:33517#L1078">StdMeanByDim</a>
+				<h3 id="Tensor.StdMeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36195:36285#L1123">StdMeanByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.StdMeanByDim">&#xb6;</a>
 					
 					
@@ -4013,7 +4068,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sub">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=14075:14135#L431">Sub</a>
+				<h3 id="Tensor.Sub">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16527:16587#L472">Sub</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sub">&#xb6;</a>
 					
 					
@@ -4025,7 +4080,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sub_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=14178:14239#L435">Sub_</a>
+				<h3 id="Tensor.Sub_">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=16630:16691#L476">Sub_</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sub_">&#xb6;</a>
 					
 					
@@ -4037,7 +4092,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Sum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33847:33880#L1090">Sum</a>
+				<h3 id="Tensor.Sum">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36615:36648#L1135">Sum</a>
 					<a class="permalink" href="gotorch.html#Tensor.Sum">&#xb6;</a>
 					
 					
@@ -4050,7 +4105,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.SumByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34336:34397#L1107">SumByDim</a>
+				<h3 id="Tensor.SumByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37104:37165#L1152">SumByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.SumByDim">&#xb6;</a>
 					
 					
@@ -4063,7 +4118,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Tanh">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=17815:17844#L570">Tanh</a>
+				<h3 id="Tensor.Tanh">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=20267:20296#L611">Tanh</a>
 					<a class="permalink" href="gotorch.html#Tensor.Tanh">&#xb6;</a>
 					
 					
@@ -4089,19 +4144,21 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.ToSlice">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=12903:12945#L387">ToSlice</a>
+				<h3 id="Tensor.ToSlice">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=15197:15239#L426">ToSlice</a>
 					<a class="permalink" href="gotorch.html#Tensor.ToSlice">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (tensor <a href="gotorch.html#Tensor">Tensor</a>) ToSlice() interface{}</pre>
-				
+				<p>Convert the Tensor to a Go slice. This function implies a flattening of the
+tensor to return a 1-dimensional vector.
+
 				
 				
 				
 			
 				
-				<h3 id="Tensor.TopK">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43560:43636#L1440">TopK</a>
+				<h3 id="Tensor.TopK">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=47661:47737#L1517">TopK</a>
 					<a class="permalink" href="gotorch.html#Tensor.TopK">&#xb6;</a>
 					
 					
@@ -4113,7 +4170,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Transpose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=19583:19638#L629">Transpose</a>
+				<h3 id="Tensor.Transpose">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=22193:22248#L672">Transpose</a>
 					<a class="permalink" href="gotorch.html#Tensor.Transpose">&#xb6;</a>
 					
 					
@@ -4125,7 +4182,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Unsqueeze">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=21092:21140#L683">Unsqueeze</a>
+				<h3 id="Tensor.Unsqueeze">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=23702:23750#L726">Unsqueeze</a>
 					<a class="permalink" href="gotorch.html#Tensor.Unsqueeze">&#xb6;</a>
 					
 					
@@ -4137,7 +4194,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.Var">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=34768:34801#L1122">Var</a>
+				<h3 id="Tensor.Var">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=37536:37569#L1167">Var</a>
 					<a class="permalink" href="gotorch.html#Tensor.Var">&#xb6;</a>
 					
 					
@@ -4150,7 +4207,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.VarByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35308:35384#L1140">VarByDim</a>
+				<h3 id="Tensor.VarByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38076:38152#L1185">VarByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.VarByDim">&#xb6;</a>
 					
 					
@@ -4163,7 +4220,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.VarMean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=35845:35892#L1153">VarMean</a>
+				<h3 id="Tensor.VarMean">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=38613:38660#L1198">VarMean</a>
 					<a class="permalink" href="gotorch.html#Tensor.VarMean">&#xb6;</a>
 					
 					
@@ -4176,7 +4233,7 @@ tensors with one element.
 				
 			
 				
-				<h3 id="Tensor.VarMeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=36520:36610#L1172">VarMeanByDim</a>
+				<h3 id="Tensor.VarMeanByDim">func (Tensor) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=39288:39378#L1217">VarMeanByDim</a>
 					<a class="permalink" href="gotorch.html#Tensor.VarMeanByDim">&#xb6;</a>
 					
 					
@@ -4331,7 +4388,7 @@ that of a reference tensor.
 
 			
 				
-				<h3 id="MaxByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=27584:27652#L895">MaxByDim</a>
+				<h3 id="MaxByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30352:30420#L940">MaxByDim</a>
 					<a class="permalink" href="gotorch.html#MaxByDim">&#xb6;</a>
 					
 					
@@ -4343,7 +4400,7 @@ that of a reference tensor.
 				
 			
 				
-				<h3 id="MedianByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=30595:30666#L992">MedianByDim</a>
+				<h3 id="MedianByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=33363:33434#L1037">MedianByDim</a>
 					<a class="permalink" href="gotorch.html#MedianByDim">&#xb6;</a>
 					
 					
@@ -4355,7 +4412,7 @@ that of a reference tensor.
 				
 			
 				
-				<h3 id="MinByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=28625:28693#L928">MinByDim</a>
+				<h3 id="MinByDim">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=31393:31461#L973">MinByDim</a>
 					<a class="permalink" href="gotorch.html#MinByDim">&#xb6;</a>
 					
 					
@@ -4367,7 +4424,7 @@ that of a reference tensor.
 				
 			
 				
-				<h3 id="Sort">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43691:43758#L1444">Sort</a>
+				<h3 id="Sort">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=47792:47859#L1521">Sort</a>
 					<a class="permalink" href="gotorch.html#Sort">&#xb6;</a>
 					
 					
@@ -4378,7 +4435,7 @@ that of a reference tensor.
 				
 			
 				
-				<h3 id="TopK">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=43001:43076#L1416">TopK</a>
+				<h3 id="TopK">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/functions.go?s=47102:47177#L1493">TopK</a>
 					<a class="permalink" href="gotorch.html#TopK">&#xb6;</a>
 					
 					
