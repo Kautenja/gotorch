@@ -57,7 +57,7 @@ func NewDevice(deviceName string) Device {
     return Device{device}
 }
 
-/// Return true if the given device is valid, false otherwise.
+// Return true if the given device is valid, false otherwise.
 func IsDevice(deviceName string) bool {
     deviceNameCString := C.CString(deviceName)
     defer C.free(unsafe.Pointer(deviceNameCString))

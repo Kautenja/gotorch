@@ -39,16 +39,16 @@ import (
     "runtime"
 )
 
-/// Set the global gradient generation state.
+// Set the global gradient generation state.
 func SetGradEnabled(value bool) { C.SetGradEnabled(C.bool(value)) }
 
-/// Return the global gradient generation state.
+// Return the global gradient generation state.
 func IsGradEnabled() bool { return bool(C.IsGradEnabled()) }
 
 // Set the random number generator seed.
 func ManualSeed(seed int64) { C.ManualSeed(C.int64_t(seed)) }
 
-/// Set the number of threads used for intraop parallelism on CPU.
+// Set the number of threads used for intraop parallelism on CPU.
 func SetNumThreads(numThreads int32) { C.SetNumThreads(C.int32_t(numThreads)) }
 
 // TODO: set_default_dtype
