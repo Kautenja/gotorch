@@ -1321,7 +1321,7 @@ of the tensor to return 1-dimensional vectors.
 
 			
 				
-				<h3 id="NewIValue">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=1838:1877#L40">NewIValue</a>
+				<h3 id="NewIValue">func <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=2019:2058#L44">NewIValue</a>
 					<a class="permalink" href="gotorch.html#NewIValue">&#xb6;</a>
 					
 					
@@ -1335,541 +1335,587 @@ of the tensor to return 1-dimensional vectors.
 
 			
 				
-				<h3 id="IValue.IsBool">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=6797:6831#L163">IsBool</a>
+				<h3 id="IValue.IsBool">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7277:7311#L172">IsBool</a>
 					<a class="permalink" href="gotorch.html#IValue.IsBool">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsBool() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a boolean.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsBoolList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8331:8369#L211">IsBoolList</a>
+				<h3 id="IValue.IsBoolList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9226:9264#L228">IsBoolList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsBoolList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsBoolList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list of booleans.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsCapsule">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10145:10182#L265">IsCapsule</a>
+				<h3 id="IValue.IsCapsule">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11532:11569#L291">IsCapsule</a>
 					<a class="permalink" href="gotorch.html#IValue.IsCapsule">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsCapsule() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a capsule.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsComplexDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7363:7406#L181">IsComplexDouble</a>
+				<h3 id="IValue.IsComplexDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8041:8084#L193">IsComplexDouble</a>
 					<a class="permalink" href="gotorch.html#IValue.IsComplexDouble">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsComplexDouble() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a complex double-precision floating-point value.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsComplexDoubleList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8921:8968#L229">IsComplexDoubleList</a>
+				<h3 id="IValue.IsComplexDoubleList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10010:10057#L249">IsComplexDoubleList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsComplexDoubleList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsComplexDoubleList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list of complex double-precision floats.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsCustomClass">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10339:10380#L271">IsCustomClass</a>
+				<h3 id="IValue.IsCustomClass">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11783:11824#L298">IsCustomClass</a>
 					<a class="permalink" href="gotorch.html#IValue.IsCustomClass">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsCustomClass() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a custom class instance.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsDevice">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9759:9795#L253">IsDevice</a>
+				<h3 id="IValue.IsDevice">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11053:11089#L277">IsDevice</a>
 					<a class="permalink" href="gotorch.html#IValue.IsDevice">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsDevice() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a torch device.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7171:7207#L175">IsDouble</a>
+				<h3 id="IValue.IsDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7768:7804#L186">IsDouble</a>
 					<a class="permalink" href="gotorch.html#IValue.IsDouble">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsDouble() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a double-precision floating-point value.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsDoubleList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8721:8761#L223">IsDoubleList</a>
+				<h3 id="IValue.IsDoubleList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9735:9775#L242">IsDoubleList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsDoubleList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsDoubleList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list of double-precision floats.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsEnum">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12099:12133#L325">IsEnum</a>
+				<h3 id="IValue.IsEnum">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13960:13994#L361">IsEnum</a>
 					<a class="permalink" href="gotorch.html#IValue.IsEnum">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsEnum() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is an enumeration.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsFuture">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10541:10577#L277">IsFuture</a>
+				<h3 id="IValue.IsFuture">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12027:12063#L305">IsFuture</a>
 					<a class="permalink" href="gotorch.html#IValue.IsFuture">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsFuture() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a future.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsGenerator">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12479:12518#L337">IsGenerator</a>
+				<h3 id="IValue.IsGenerator">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14461:14500#L375">IsGenerator</a>
 					<a class="permalink" href="gotorch.html#IValue.IsGenerator">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsGenerator() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a Python generator.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsGenericDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9557:9598#L247">IsGenericDict</a>
+				<h3 id="IValue.IsGenericDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10803:10844#L270">IsGenericDict</a>
 					<a class="permalink" href="gotorch.html#IValue.IsGenericDict">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsGenericDict() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a dictionary.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsInt">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=6985:7018#L169">IsInt</a>
+				<h3 id="IValue.IsInt">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7509:7542#L179">IsInt</a>
 					<a class="permalink" href="gotorch.html#IValue.IsInt">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsInt() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is an integer.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsIntList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8527:8564#L217">IsIntList</a>
+				<h3 id="IValue.IsIntList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9474:9511#L235">IsIntList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsIntList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsIntList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list of integers.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8143:8177#L205">IsList</a>
+				<h3 id="IValue.IsList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8986:9020#L221">IsList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsModule">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11711:11747#L313">IsModule</a>
+				<h3 id="IValue.IsModule">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13466:13502#L347">IsModule</a>
 					<a class="permalink" href="gotorch.html#IValue.IsModule">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsModule() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a module.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsNil">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=6418:6451#L151">IsNil</a>
+				<h3 id="IValue.IsNil">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=6813:6846#L158">IsNil</a>
 					<a class="permalink" href="gotorch.html#IValue.IsNil">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsNil() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue references a null pointer.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsObject">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11519:11555#L307">IsObject</a>
+				<h3 id="IValue.IsObject">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13232:13268#L340">IsObject</a>
 					<a class="permalink" href="gotorch.html#IValue.IsObject">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsObject() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is an object.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsPtrType">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12677:12714#L343">IsPtrType</a>
+				<h3 id="IValue.IsPtrType">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14700:14737#L382">IsPtrType</a>
 					<a class="permalink" href="gotorch.html#IValue.IsPtrType">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsPtrType() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a void*.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsPyObject">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11903:11941#L319">IsPyObject</a>
+				<h3 id="IValue.IsPyObject">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13716:13754#L354">IsPyObject</a>
 					<a class="permalink" href="gotorch.html#IValue.IsPyObject">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsPyObject() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a Python object instance.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsQuantizer">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10921:10960#L289">IsQuantizer</a>
+				<h3 id="IValue.IsQuantizer">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12493:12532#L319">IsQuantizer</a>
 					<a class="permalink" href="gotorch.html#IValue.IsQuantizer">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsQuantizer() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a quantizer.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsRRef">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10733:10767#L283">IsRRef</a>
+				<h3 id="IValue.IsRRef">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12260:12294#L312">IsRRef</a>
 					<a class="permalink" href="gotorch.html#IValue.IsRRef">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsRRef() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is an RRef.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsScalar">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=6605:6641#L157">IsScalar</a>
+				<h3 id="IValue.IsScalar">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7042:7078#L165">IsScalar</a>
 					<a class="permalink" href="gotorch.html#IValue.IsScalar">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsScalar() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a scalar.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsStorage">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9951:9988#L259">IsStorage</a>
+				<h3 id="IValue.IsStorage">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=11295:11332#L284">IsStorage</a>
 					<a class="permalink" href="gotorch.html#IValue.IsStorage">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsStorage() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a storage medium.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsStream">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12287:12323#L331">IsStream</a>
+				<h3 id="IValue.IsStream">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14217:14253#L368">IsStream</a>
 					<a class="permalink" href="gotorch.html#IValue.IsStream">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsStream() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a data stream (e.g., a CUDA stream.)
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsString">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7569:7605#L187">IsString</a>
+				<h3 id="IValue.IsString">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8289:8325#L200">IsString</a>
 					<a class="permalink" href="gotorch.html#IValue.IsString">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsString() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a string.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsTensor">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7761:7797#L193">IsTensor</a>
+				<h3 id="IValue.IsTensor">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8523:8559#L207">IsTensor</a>
 					<a class="permalink" href="gotorch.html#IValue.IsTensor">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsTensor() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsTensorList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=9135:9175#L235">IsTensorList</a>
+				<h3 id="IValue.IsTensorList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=10275:10315#L256">IsTensorList</a>
 					<a class="permalink" href="gotorch.html#IValue.IsTensorList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsTensorList() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a list of tensors.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.IsTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=7953:7988#L199">IsTuple</a>
+				<h3 id="IValue.IsTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=8756:8791#L214">IsTuple</a>
 					<a class="permalink" href="gotorch.html#IValue.IsTuple">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) IsTuple() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Return true if the IValue is a tuple.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.LengthDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13311:13350#L363">LengthDict</a>
+				<h3 id="IValue.LengthDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=15710:15749#L407">LengthDict</a>
 					<a class="permalink" href="gotorch.html#IValue.LengthDict">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) LengthDict() <a href="http://localhost:42768/pkg/builtin/#int64">int64</a></pre>
-				
+				<p>If the ivalue is a dictionary, return the number of items in the dictionary.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.LengthList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13110:13149#L357">LengthList</a>
+				<h3 id="IValue.LengthList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=15429:15468#L400">LengthList</a>
 					<a class="permalink" href="gotorch.html#IValue.LengthList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) LengthList() <a href="http://localhost:42768/pkg/builtin/#int64">int64</a></pre>
-				
+				<p>If the ivalue is a list, return the number of items in the list.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.LengthTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=12907:12947#L351">LengthTuple</a>
+				<h3 id="IValue.LengthTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=15158:15198#L393">LengthTuple</a>
 					<a class="permalink" href="gotorch.html#IValue.LengthTuple">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) LengthTuple() <a href="http://localhost:42768/pkg/builtin/#int64">int64</a></pre>
-				
+				<p>If the ivalue is a tuple, return the number of items in the tuple.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToBool">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13891:13925#L381">ToBool</a>
+				<h3 id="IValue.ToBool">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=16612:16646#L430">ToBool</a>
 					<a class="permalink" href="gotorch.html#IValue.ToBool">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToBool() <a href="http://localhost:42768/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>Convert the IValue to a boolean.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToComplexDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14466:14515#L399">ToComplexDouble</a>
+				<h3 id="IValue.ToComplexDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=17334:17383#L451">ToComplexDouble</a>
 					<a class="permalink" href="gotorch.html#IValue.ToComplexDouble">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToComplexDouble() <a href="http://localhost:42768/pkg/builtin/#complex128">complex128</a></pre>
-				
+				<p>Convert the IValue to a complex double-precision float.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToDevice">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=20505:20543#L546">ToDevice</a>
+				<h3 id="IValue.ToDevice">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=24042:24080#L614">ToDevice</a>
 					<a class="permalink" href="gotorch.html#IValue.ToDevice">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToDevice() <a href="gotorch.html#Device">Device</a></pre>
-				
+				<p>Convert the IValue to a torch device.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14266:14305#L393">ToDouble</a>
+				<h3 id="IValue.ToDouble">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=17075:17114#L444">ToDouble</a>
 					<a class="permalink" href="gotorch.html#IValue.ToDouble">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToDouble() <a href="http://localhost:42768/pkg/builtin/#float64">float64</a></pre>
-				
+				<p>Convert the IValue to a double-precision float.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToGenericDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=18067:18126#L492">ToGenericDict</a>
+				<h3 id="IValue.ToGenericDict">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=21563:21622#L559">ToGenericDict</a>
 					<a class="permalink" href="gotorch.html#IValue.ToGenericDict">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToGenericDict() map[interface{}]<a href="gotorch.html#IValue">IValue</a></pre>
-				
+				<p>Convert the IValue to a generic dictionary of IValues (as a map of interfaces
+to IValues.)
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToInt">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14079:14111#L387">ToInt</a>
+				<h3 id="IValue.ToInt">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=16837:16869#L437">ToInt</a>
 					<a class="permalink" href="gotorch.html#IValue.ToInt">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToInt() <a href="http://localhost:42768/pkg/builtin/#int">int</a></pre>
-				
+				<p>Convert the IValue to an integer.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=16064:16102#L443">ToList</a>
+				<h3 id="IValue.ToList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=19397:19435#L507">ToList</a>
 					<a class="permalink" href="gotorch.html#IValue.ToList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToList() []<a href="gotorch.html#IValue">IValue</a></pre>
-				
+				<p>Convert the IValue to a generic list of IValues (as a slice.)
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToNone">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=13537:13573#L371">ToNone</a>
+				<h3 id="IValue.ToNone">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=16161:16197#L418">ToNone</a>
 					<a class="permalink" href="gotorch.html#IValue.ToNone">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToNone() <a href="http://localhost:42768/pkg/builtin/#string">string</a></pre>
-				
+				<p>Convert the IValue to a null pointer (i.e., the string &quot;None&quot;.)
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToString">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=14693:14731#L405">ToString</a>
+				<h3 id="IValue.ToString">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=17596:17634#L458">ToString</a>
 					<a class="permalink" href="gotorch.html#IValue.ToString">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToString() <a href="http://localhost:42768/pkg/builtin/#string">string</a></pre>
-				
+				<p>Convert the IValue to a string.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToTensor">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=15015:15053#L413">ToTensor</a>
+				<h3 id="IValue.ToTensor">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=17953:17991#L467">ToTensor</a>
 					<a class="permalink" href="gotorch.html#IValue.ToTensor">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToTensor() <a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Convert the IValue to a tensor.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToTensorList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=15400:15444#L424">ToTensorList</a>
+				<h3 id="IValue.ToTensorList">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=18615:18659#L486">ToTensorList</a>
 					<a class="permalink" href="gotorch.html#IValue.ToTensorList">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToTensorList() []<a href="gotorch.html#Tensor">Tensor</a></pre>
-				
+				<p>Convert the IValue to a list of tensors.
+
 				
 				
 				
 			
 				
-				<h3 id="IValue.ToTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=16972:17011#L466">ToTuple</a>
+				<h3 id="IValue.ToTuple">func (IValue) <a href="http://localhost:42768/src/github.com/Kautenja/gotorch/ivalue.go?s=20371:20410#L531">ToTuple</a>
 					<a class="permalink" href="gotorch.html#IValue.ToTuple">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ivalue <a href="gotorch.html#IValue">IValue</a>) ToTuple() []<a href="gotorch.html#IValue">IValue</a></pre>
-				
+				<p>Convert the IValue to a generic tuple of IValues (as a slice.)
+
 				
 				
 				
