@@ -44,11 +44,9 @@ type JitModule struct {
     T *unsafe.Pointer
 }
 
-// Load the trace from the given path on the filesystem.
-// @param path A path to a model trace on the filesystem.
-// @returns A tuple of:
-// -   The tensor that was loaded (nil if an error occurred,) and
-// -   An error that may have occurred (nil if the operation succeeds.)
+// Load the trace from the given path on the filesystem. Returns a tuple of (1)
+// The JitModule that was loaded (nil if an error occurred,) and (2) an error
+// that may have occurred (nil if the operation succeeds.)
 func Load(path string, device torch.Device) (JitModule, error) {
     path_cstring := C.CString(path)
     defer C.free(unsafe.Pointer(path_cstring))
@@ -70,7 +68,6 @@ func Load(path string, device torch.Device) (JitModule, error) {
 }
 
 // Save the module to the given path.
-// @param path A valid path on the file-system to save the module data to.
 func (module JitModule) Save(path string) error {
     // Wrap the GoString with a C string and defer the release of the memory.
     path_cstring := C.CString(path)
@@ -139,9 +136,7 @@ func (module JitModule) CopyTo(device torch.Device) JitModule {
 // TODO: func (module JitModule) DeepCopy() { }
 // TODO: func (module JitModule) Clone(inplace bool) { }
 
-// Forward pass through the module.
-// @param inputs A list of IValue structures to propagate.
-// @returns An IValue representation of the output from the module.
+// Forward pass IValues through the module and return the resulting IValue.
 func (module JitModule) Forward(inputs []torch.IValue) torch.IValue {
     // Convert the torch IValues to C IValues.
     var ivalues []C.IValue
