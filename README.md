@@ -44,7 +44,8 @@ demonstration of this approach.
 
 ## Documentation
 
-Please refer to [https://kautenja.github.io/gotorch/gotorch.html](https://kautenja.github.io/gotorch/gotorch.html)
+Please refer to
+[https://pkg.go.dev/github.com/Kautenja/gotorch](https://pkg.go.dev/github.com/Kautenja/gotorch)
 for comprehensive documentation of the library.
 
 ## Development
