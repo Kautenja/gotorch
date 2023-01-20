@@ -161,8 +161,7 @@ case "$1" in
 ;;
 
 "document")
-  $HOME/go/bin/godoc -http localhost:42768 & sleep 0.1 && \
-    wget -P docs -nd -r -np -N -E -p -k http://localhost:42768/pkg/github.com/Kautenja/gotorch
+  wget -P docs -nd -r -np -N -E -p -k http://localhost:42768/pkg/github.com/Kautenja/gotorch
   rm docs/index.html
   echo "
 <!DOCTYPE html>
