@@ -8,8 +8,6 @@
 
 [![GoTorch](https://godoc.org/github.com/narqo/go-badge?status.svg)](https://pkg.go.dev/github.com/Kautenja/gotorch)
 
------
-
 GoTorch is a Golang front-end for [pytorch](https://github.com/pytorch/pytorch).
 
 ## Installation
