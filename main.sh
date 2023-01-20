@@ -155,26 +155,6 @@ case "$1" in
   exit 0;
 ;;
 
-"godoc")
-  $HOME/go/bin/godoc -http localhost:42768
-  exit;
-;;
-
-"document")
-  wget -P docs -nd -r -np -N -E -p -k http://localhost:42768/pkg/github.com/Kautenja/gotorch
-  rm docs/index.html
-  echo "
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv='refresh' content='0; URL=gotorch.html'>
-  </head>
-  <body></body>
-</html>
-  " >> docs/index.html
-  exit 0;
-;;
-
 *)
   echo "Unknown command: $1"
   exit 0;
