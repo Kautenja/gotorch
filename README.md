@@ -6,7 +6,7 @@
 />
 </p>
 
------
+[![GoTorch](https://godoc.org/github.com/narqo/go-badge?status.svg)](https://pkg.go.dev/github.com/Kautenja/gotorch)
 
 GoTorch is a Golang front-end for [pytorch](https://github.com/pytorch/pytorch).
 
@@ -41,11 +41,6 @@ replace github.com/Kautenja/gotorch v1.11.0 => ./pkg/gotorch
 You may refer to the 
 [example project](https://github.com/Kautenja/gotorch-example) for a working
 demonstration of this approach.
-
-## Documentation
-
-Please refer to [https://kautenja.github.io/gotorch/gotorch.html](https://kautenja.github.io/gotorch/gotorch.html)
-for comprehensive documentation of the library.
 
 ## Development
 

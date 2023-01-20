@@ -45,7 +45,7 @@ type Tensor struct {
     T *unsafe.Pointer
 }
 
-// Create a new tensor and configure garbage collection.
+// Create a new tensor.
 func NewTorchTensor(tensor *unsafe.Pointer) Tensor {
     runtime.SetFinalizer(tensor, func(ct *unsafe.Pointer) {
         C.Torch_Tensor_Close(C.Tensor(*ct))
@@ -56,7 +56,7 @@ func NewTorchTensor(tensor *unsafe.Pointer) Tensor {
 // Create a tensor view that wraps around existing contiguous memory pointed to
 // by data, of given data-type, and with given size. This function does not
 // copy the data buffer so in-place operations performed on the tensor will
-// mutate the input data.
+// mutate the input buffer.
 func TensorFromBlob(data unsafe.Pointer, dtype Dtype, sizes []int64) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_FromBlob(&tensor, data,
@@ -68,9 +68,9 @@ func TensorFromBlob(data unsafe.Pointer, dtype Dtype, sizes []int64) Tensor {
 }
 
 // Create a new tensor that clones existing contiguous memory pointed to by
-// data, of given data-type, and with given size. This function copies the input
-// data to subsequent in-place operations performed on the tensor will not
-// mutate the input data.
+// data, of given data-type, and with given size. This function copies the
+// input data, so subsequent in-place operations performed on the tensor will
+// not mutate the input data.
 func NewTensorFromBlob(data unsafe.Pointer, dtype Dtype, sizes []int64) Tensor {
     var tensor C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor(&tensor, data,
@@ -81,7 +81,7 @@ func NewTensorFromBlob(data unsafe.Pointer, dtype Dtype, sizes []int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
-// Create a tensor from a Go slice.
+// Create a new tensor from a Go slice.
 func NewTensor(data interface{}) Tensor {
     // Ensure that the input data is a slice.
     if reflect.TypeOf(data).Kind() != reflect.Slice {
@@ -100,13 +100,14 @@ func NewTensor(data interface{}) Tensor {
     return NewTensorFromBlob(unsafe.Pointer(header.Data), dtype, sizes)
 }
 
+// Create a clone of an existing tensor.
 func (tensor Tensor) Clone() Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Clone(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
-// Convert the tensor to a string representation.
+// Convert the tensor to a readable string representation.
 func (tensor Tensor) String() string {
     cstring := C.Torch_Tensor_String(C.Tensor(*tensor.T))
     defer C.free(unsafe.Pointer(cstring))
@@ -192,6 +193,7 @@ func (tensor Tensor) Shape() []int64 {
     return shape
 }
 
+// Create a new tensor with an updated view of the underlying data.
 func (tensor Tensor) View(shape ...int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_View(
@@ -203,6 +205,8 @@ func (tensor Tensor) View(shape ...int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with an updated view of the underlying data that matches
+// that of a reference tensor.
 func (tensor Tensor) ViewAs(other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ViewAs(
@@ -213,6 +217,7 @@ func (tensor Tensor) ViewAs(other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with an updated shape.
 func (tensor Tensor) Reshape(shape ...int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Reshape(
@@ -224,10 +229,12 @@ func (tensor Tensor) Reshape(shape ...int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with an updated shape.
 func Reshape(tensor Tensor, shape ...int64) Tensor {
     return tensor.Reshape(shape...)
 }
 
+// Create a new tensor with an updated shape according to a reference tensor.
 func (tensor Tensor) ReshapeAs(other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ReshapeAs(
@@ -238,6 +245,7 @@ func (tensor Tensor) ReshapeAs(other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Expand the dimensions of the tensor.
 func (tensor Tensor) Expand(shape ...int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Expand(
@@ -249,6 +257,7 @@ func (tensor Tensor) Expand(shape ...int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Expand the dimensions of the tensor to match that of a reference.
 func (tensor Tensor) ExpandAs(other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ExpandAs(
@@ -259,7 +268,7 @@ func (tensor Tensor) ExpandAs(other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
-// SetData sets the tensor data held by b to a
+// Sets the tensor data to that of a separate reference tensor.
 func (tensor Tensor) SetData(b Tensor) {
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_SetData(C.Tensor(*tensor.T), C.Tensor(*b.T))))
 }
@@ -269,6 +278,7 @@ func (tensor Tensor) Copy_(b Tensor) {
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Copy_(C.Tensor(*tensor.T), C.Tensor(*b.T))))
 }
 
+// Create a new tensor with data cast to given type.
 func (tensor Tensor) CastTo(dtype Dtype) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_CastTo(
@@ -279,6 +289,7 @@ func (tensor Tensor) CastTo(dtype Dtype) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with data copied to given device.
 func (tensor Tensor) CopyTo(device Device) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_CopyTo(
@@ -289,6 +300,7 @@ func (tensor Tensor) CopyTo(device Device) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with data copied to given device and cast to given type.
 func (tensor Tensor) To(device Device, dtype Dtype) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_To(
@@ -300,17 +312,7 @@ func (tensor Tensor) To(device Device, dtype Dtype) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
-// func (tensor Tensor) CUDA(device Device, nonBlocking bool) Tensor {
-//  var t C.Tensor
-//  n := Dtype(0)
-//  if nonBlocking {
-//      n = 1
-//  }
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_CUDA(C.Tensor(*tensor.T), device.T, C.int8_t(n), &t)))
-//  return NewTorchTensor((*unsafe.Pointer)(&t))
-// }
-
-// // PinMemory returns a tensor in pinned memory. Pinned memory requires CUDA.
+// // Return a tensor in pinned memory. Pinned memory requires CUDA.
 // func (tensor Tensor) PinMemory() Tensor {
 //     if !cuda.IsAvailable() {
 //         return tensor
@@ -320,48 +322,38 @@ func (tensor Tensor) To(device Device, dtype Dtype) Tensor {
 //     return NewTorchTensor((*unsafe.Pointer)(&t))
 // }
 
+// Return true if the tensor is taping gradients.
 func (tensor Tensor) RequiresGrad() bool {
     var requiresGrad C.bool
     C.Torch_Tensor_RequiresGrad(&requiresGrad, C.Tensor(*tensor.T))
     return bool(requiresGrad)
 }
 
+// Set the gradient taping state of the tensor to a new value.
 func (tensor Tensor) SetRequiresGrad(requiresGrad bool) {
     C.Torch_Tensor_SetRequiresGrad(C.Tensor(*tensor.T), C.bool(requiresGrad))
 }
 
+// Compute gradients based on the results of a forward pass through the tensor.
 func (tensor Tensor) Backward() {
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Backward(C.Tensor(*tensor.T))))
 }
 
+// Access the underlying gradients of the tensor.
 func (tensor Tensor) Grad() Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Grad(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Create a new tensor with any taped gradients detached and grad disabled.
 func (tensor Tensor) Detach() Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Detach(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
-// Index calls Tensor::index to return a single-element tensor of the element at
-// the given index.
-// func (tensor Tensor) Index(index ...int64) Tensor {
-//     if int64(len(index)) != tensor.Dim() {
-//         panic(fmt.Sprintf("Index %v has length that differs from the tensor dim %d", index, tensor.Dim()))
-//     }
-//     var output C.Tensor
-//     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Index(
-//         &output,
-//         C.Tensor(*tensor.T),
-//         (*C.int64_t)(unsafe.Pointer(&index[0])),
-//         C.int64_t(len(index)),
-//     )))
-//     return NewTorchTensor((*unsafe.Pointer)(&output))
-// }
-
+// Access elements in a tensor using an index tensor for reference.
 func (tensor Tensor) Index(index Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Index(
@@ -374,8 +366,8 @@ func (tensor Tensor) Index(index Tensor) Tensor {
 
 // Return the value of this tensor as a standard Go number. This only works for
 // tensors with one element.
-// @details
-// users should do type assertion and get the value like:
+//
+// Users can do type assertion and get the value like:
 //
 // ```
 // if value, ok := a.Item().(float64); ok {

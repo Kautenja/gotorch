@@ -46,6 +46,10 @@ type IValue struct {
     T *unsafe.Pointer
 }
 
+// ---------------------------------------------------------------------------
+// MARK: Constructors
+// ---------------------------------------------------------------------------
+
 // Create a new IValue from arbitrary data.
 func NewIValue(data interface{}) IValue {
     var output C.IValue
@@ -156,228 +160,271 @@ func NewIValue(data interface{}) IValue {
     return ivalue
 }
 
+// ---------------------------------------------------------------------------
 // MARK: Type checkers
+// ---------------------------------------------------------------------------
 
+// Return true if the IValue references a null pointer.
 func (ivalue IValue) IsNil() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsNone(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a scalar.
 func (ivalue IValue) IsScalar() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsScalar(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a boolean.
 func (ivalue IValue) IsBool() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsBool(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is an integer.
 func (ivalue IValue) IsInt() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsInt(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a double-precision floating-point value.
 func (ivalue IValue) IsDouble() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDouble(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a complex double-precision floating-point value.
 func (ivalue IValue) IsComplexDouble() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsComplexDouble(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a string.
 func (ivalue IValue) IsString() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsString(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a tensor.
 func (ivalue IValue) IsTensor() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTensor(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a tuple.
 func (ivalue IValue) IsTuple() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTuple(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list.
 func (ivalue IValue) IsList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list of booleans.
 func (ivalue IValue) IsBoolList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsBoolList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list of integers.
 func (ivalue IValue) IsIntList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsIntList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list of double-precision floats.
 func (ivalue IValue) IsDoubleList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDoubleList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list of complex double-precision floats.
 func (ivalue IValue) IsComplexDoubleList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsComplexDoubleList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a list of tensors.
 func (ivalue IValue) IsTensorList() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTensorList(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// // Return true if the IValue is an optional tensor list.
 // func (ivalue IValue) IsOptionalTensorList() bool {
 //  var output C.bool
 //  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsOptionalTensorList(&output, (C.IValue)(*ivalue.T))))
 //  return bool(output)
 // }
 
+// Return true if the IValue is a dictionary.
 func (ivalue IValue) IsGenericDict() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsGenericDict(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a torch device.
 func (ivalue IValue) IsDevice() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDevice(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a storage medium.
 func (ivalue IValue) IsStorage() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsStorage(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a capsule.
 func (ivalue IValue) IsCapsule() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsCapsule(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a custom class instance.
 func (ivalue IValue) IsCustomClass() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsCustomClass(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a future.
 func (ivalue IValue) IsFuture() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsFuture(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is an RRef.
 func (ivalue IValue) IsRRef() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsRRef(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a quantizer.
 func (ivalue IValue) IsQuantizer() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsQuantizer(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// // Return true if the IValue is a sym integer.
 // func (ivalue IValue) IsSymInt() bool {
 //  var output C.bool
 //  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymInt(&output, (C.IValue)(*ivalue.T))))
 //  return bool(output)
 // }
 
+// // Return true if the IValue is a sym float.
 // func (ivalue IValue) IsSymFloat() bool {
 //  var output C.bool
 //  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymFloat(&output, (C.IValue)(*ivalue.T))))
 //  return bool(output)
 // }
 
+// Return true if the IValue is an object.
 func (ivalue IValue) IsObject() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsObject(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a module.
 func (ivalue IValue) IsModule() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsModule(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a Python object instance.
 func (ivalue IValue) IsPyObject() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsPyObject(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is an enumeration.
 func (ivalue IValue) IsEnum() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsEnum(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a data stream (e.g., a CUDA stream.)
 func (ivalue IValue) IsStream() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsStream(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a Python generator.
 func (ivalue IValue) IsGenerator() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsGenerator(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Return true if the IValue is a void*.
 func (ivalue IValue) IsPtrType() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsPtrType(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// ---------------------------------------------------------------------------
 // MARK: Container length checkers
+// ---------------------------------------------------------------------------
 
+// If the ivalue is a tuple, return the number of items in the tuple.
 func (ivalue IValue) LengthTuple() int64 {
     var output C.int64_t
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthTuple(&output, (C.IValue)(*ivalue.T))))
     return int64(output)
 }
 
+// If the ivalue is a list, return the number of items in the list.
 func (ivalue IValue) LengthList() int64 {
     var output C.int64_t
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthList(&output, (C.IValue)(*ivalue.T))))
     return int64(output)
 }
 
+// If the ivalue is a dictionary, return the number of items in the dictionary.
 func (ivalue IValue) LengthDict() int64 {
     var output C.int64_t
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthDict(&output, (C.IValue)(*ivalue.T))))
     return int64(output)
 }
 
-// MARK: Data accessors
+// ---------------------------------------------------------------------------
+// MARK: Data retrieval
+// ---------------------------------------------------------------------------
 
+// Convert the IValue to a null pointer (i.e., the string "None".)
 func (ivalue IValue) ToNone() string {
     var output *C.char
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToNone(&output, (C.IValue)(*ivalue.T))))
@@ -386,32 +433,38 @@ func (ivalue IValue) ToNone() string {
     return C.GoString(output)
 }
 
+// // Convert the IValue to a generic scalar representation.
 // func (ivalue IValue) ToScalar()
 
+// Convert the IValue to a boolean.
 func (ivalue IValue) ToBool() bool {
     var output C.bool
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToBool(&output, (C.IValue)(*ivalue.T))))
     return bool(output)
 }
 
+// Convert the IValue to an integer.
 func (ivalue IValue) ToInt() int {
     var output C.int32_t
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToInt(&output, (C.IValue)(*ivalue.T))))
     return int(output)
 }
 
+// Convert the IValue to a double-precision float.
 func (ivalue IValue) ToDouble() float64 {
     var output C.double
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToDouble(&output, (C.IValue)(*ivalue.T))))
     return float64(output)
 }
 
+// Convert the IValue to a complex double-precision float.
 func (ivalue IValue) ToComplexDouble() complex128 {
     var output C.complexdouble
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToComplexDouble(&output, (C.IValue)(*ivalue.T))))
     return complex128(output)
 }
 
+// Convert the IValue to a string.
 func (ivalue IValue) ToString() string {
     var output *C.char
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToString(&output, (C.IValue)(*ivalue.T))))
@@ -420,17 +473,26 @@ func (ivalue IValue) ToString() string {
     return C.GoString(output)
 }
 
+// Convert the IValue to a tensor.
 func (ivalue IValue) ToTensor() Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToTensor(&output, (C.IValue)(*ivalue.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// // Convert the IValue to a list of booleans.
 // func (ivalue IValue) ToBoolList()
+
+// // Convert the IValue to a list of integers.
 // func (ivalue IValue) ToIntList()
+
+// // Convert the IValue to a list of double-precision floats.
 // func (ivalue IValue) ToDoubleList()
+
+// // Convert the IValue to a list of complex double-precision floats.
 // func (ivalue IValue) ToComplexDoubleList()
 
+// Convert the IValue to a list of tensors.
 func (ivalue IValue) ToTensorList() []Tensor {
     pointers := make([]C.Tensor, ivalue.LengthList())
     if len(pointers) == 0 { return []Tensor{} }
@@ -448,8 +510,10 @@ func (ivalue IValue) ToTensorList() []Tensor {
     return tensors
 }
 
+// // Convert the IValue to an optional tensor list.
 // func (ivalue IValue) ToOptionalTensorList()
 
+// Convert the IValue to a generic list of IValues (as a slice.)
 func (ivalue IValue) ToList() []IValue {
     pointers := make([]C.IValue, ivalue.LengthList())
     if len(pointers) == 0 { return []IValue{} }
@@ -473,6 +537,7 @@ func (ivalue IValue) ToList() []IValue {
     return ivalues
 }
 
+// Convert the IValue to a generic tuple of IValues (as a slice.)
 func (ivalue IValue) ToTuple() []IValue {
     pointers := make([]C.IValue, ivalue.LengthTuple())
     // Empty tuples are impossible by design, so if LengthTuple returns, it is
@@ -499,6 +564,8 @@ func (ivalue IValue) ToTuple() []IValue {
     return ivalues
 }
 
+// Convert the IValue to a generic dictionary of IValues (as a map of interfaces
+// to IValues.)
 func (ivalue IValue) ToGenericDict() map[interface{}]IValue {
     length := ivalue.LengthDict()
     if length == 0 { return map[interface{}]IValue{} }
@@ -553,6 +620,7 @@ func (ivalue IValue) ToGenericDict() map[interface{}]IValue {
     return output
 }
 
+// Convert the IValue to a torch device.
 func (ivalue IValue) ToDevice() Device {
     var output C.Device
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToDevice(&output, (C.IValue)(*ivalue.T))))
