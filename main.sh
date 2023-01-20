@@ -12,8 +12,6 @@
 #     build        Build the C code for the current platform
 #     test         Execute the Golang unit test suite for the project in
 #     coverage     Generate an HTML coverage report
-#     godoc        Host a documentation server at port 42768
-#     document     Generate an HTML documentation browser in the `docs` directory
 #
 
 # --- Constants --------------------------------------------------------------
