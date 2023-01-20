@@ -119,7 +119,7 @@ case "$1" in
     docker run --rm ${IMAGE} bash -c "./main.sh test"
     exit 0;
   fi
-  go test ./...
+  go test -cover ./...
   exit 0;
 ;;
 
