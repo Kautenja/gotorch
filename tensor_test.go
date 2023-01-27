@@ -164,7 +164,6 @@ func TestTensorToBytesVectorFloat32(t *testing.T) {
     tensor := torch.NewTensor([]float32{0.2, 2.2})
     buffer := tensor.ToBytes()
     assert.Equal(t, 8, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, float32(0.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[0:4])))
     assert.Equal(t, float32(2.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[4:8])))
 }
@@ -173,7 +172,6 @@ func TestTensorToBytesMatrixFloat32(t *testing.T) {
     tensor := torch.NewTensor([][]float32{{0.2, 2.2}, {4.0, 3.0}})
     buffer := tensor.ToBytes()
     assert.Equal(t, 16, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, float32(0.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[0:4])))
     assert.Equal(t, float32(2.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[4:8])))
     assert.Equal(t, float32(4.0), math.Float32frombits(binary.LittleEndian.Uint32(buffer[8:12])))
@@ -192,7 +190,6 @@ func TestTensorToBytesVectorFloat64(t *testing.T) {
     tensor := torch.NewTensor([]float64{0.2, 2.2})
     buffer := tensor.ToBytes()
     assert.Equal(t, 16, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, float64(0.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[0:8])))
     assert.Equal(t, float64(2.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[8:16])))
 }
@@ -201,7 +198,6 @@ func TestTensorToBytesMatrixFloat64(t *testing.T) {
     tensor := torch.NewTensor([][]float64{{0.2, 2.2}, {4.0, 3.0}})
     buffer := tensor.ToBytes()
     assert.Equal(t, 32, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, float64(0.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[0:8])))
     assert.Equal(t, float64(2.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[8:16])))
     assert.Equal(t, float64(4.0), math.Float64frombits(binary.LittleEndian.Uint64(buffer[16:24])))
@@ -220,7 +216,6 @@ func TestTensorToBytesVectorInt32(t *testing.T) {
     tensor := torch.NewTensor([]int32{404, 222})
     buffer := tensor.ToBytes()
     assert.Equal(t, 8, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, int32(404), (int32)(binary.LittleEndian.Uint32(buffer[0:4])))
     assert.Equal(t, int32(222), (int32)(binary.LittleEndian.Uint32(buffer[4:8])))
 }
@@ -229,7 +224,6 @@ func TestTensorToBytesMatrixInt32(t *testing.T) {
     tensor := torch.NewTensor([][]int32{{404, 222}, {101, 909}})
     buffer := tensor.ToBytes()
     assert.Equal(t, 16, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, int32(404), (int32)(binary.LittleEndian.Uint32(buffer[0:4])))
     assert.Equal(t, int32(222), (int32)(binary.LittleEndian.Uint32(buffer[4:8])))
     assert.Equal(t, int32(101), (int32)(binary.LittleEndian.Uint32(buffer[8:12])))
@@ -248,7 +242,6 @@ func TestTensorToBytesVectorInt64(t *testing.T) {
     tensor := torch.NewTensor([]int64{404, 222})
     buffer := tensor.ToBytes()
     assert.Equal(t, 16, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, int64(404), (int64)(binary.LittleEndian.Uint64(buffer[0:8])))
     assert.Equal(t, int64(222), (int64)(binary.LittleEndian.Uint64(buffer[8:16])))
 }
@@ -257,7 +250,6 @@ func TestTensorToBytesMatrixInt64(t *testing.T) {
     tensor := torch.NewTensor([][]int64{{404, 222}, {101, 909}})
     buffer := tensor.ToBytes()
     assert.Equal(t, 32, len(buffer))
-    fmt.Println(buffer)
     assert.Equal(t, int64(404), (int64)(binary.LittleEndian.Uint64(buffer[0:8])))
     assert.Equal(t, int64(222), (int64)(binary.LittleEndian.Uint64(buffer[8:16])))
     assert.Equal(t, int32(101), (int32)(binary.LittleEndian.Uint32(buffer[16:24])))
