@@ -25,7 +25,10 @@
 
 package torch
 
-import "reflect"
+import (
+    "fmt"
+    "reflect"
+)
 
 // An enumeration of the data-types available in torch.
 type Dtype int8
@@ -74,4 +77,27 @@ func GetDtypeOfKind(kind reflect.Kind) Dtype {
         return dtype
     }
     return Invalid
+}
+
+// Return the number of bytes consumed by each element of the given data-type.
+func (dtype Dtype) NumBytes() int64 {
+    switch (dtype) {
+    case Byte:          return 1
+    case Char:          return 1
+    case Short:         return 2
+    case Int:           return 4
+    case Long:          return 8
+    case Half:          return 2
+    case Float:         return 4
+    case Double:        return 8
+    case ComplexHalf:   return 2
+    case ComplexFloat:  return 4
+    case ComplexDouble: return 8
+    case Bool:          return 1
+    case QInt8:         return 1
+    case QUInt8:        return 1
+    case QInt32:        return 4
+    case BFloat16:      return 2
+    }
+    panic(fmt.Sprintf("Received invalid dtype %v", dtype))
 }
