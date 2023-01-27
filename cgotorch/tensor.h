@@ -167,6 +167,16 @@ const char* Torch_Tensor_ItemBool(bool* output, Tensor tensor);
 // const char* Torch_Tensor_ItemQInt32(TODO, Tensor tensor);
 // const char* Torch_Tensor_ItemBFloat16(TODO, Tensor tensor);
 
+/// @brief Access the contents of a tensor as a raw binary buffer.
+/// @param buffer The pointer to the output buffer to update to pointer to
+/// raw tensor data.
+/// @param tensor The tensor to access the raw contents of.
+/// @returns A dynamically allocated message if an error occurs, else a nullptr.
+/// @details
+/// This function does not allocate new space, in-place operation performed on
+/// the buffer **will** mutate the input data.
+const char* Torch_Tensor_ToBytes(uint8_t** buffer, Tensor tensor);
+
 #ifdef __cplusplus
 }
 #endif

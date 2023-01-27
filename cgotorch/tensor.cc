@@ -243,3 +243,9 @@ const char* Torch_Tensor_ItemBool   (bool*    output, Tensor a) { return try_cat
 // TODO: Torch_Tensor_ItemQUInt8
 // TODO: Torch_Tensor_ItemQInt32
 // TODO: Torch_Tensor_ItemBFloat16
+
+const char* Torch_Tensor_ToBytes(uint8_t** buffer, Tensor tensor) {
+    return try_catch_return_error_string([&] () {
+        *buffer = reinterpret_cast<uint8_t*>(tensor->data_ptr());
+    });
+}

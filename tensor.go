@@ -100,6 +100,23 @@ func NewTensor(data interface{}) Tensor {
     return NewTensorFromBlob(unsafe.Pointer(header.Data), dtype, sizes)
 }
 
+// Convert a tensor to a raw binary representation as a byte slice. Note that
+// this is a copy-free operation and simply returns a slice with it's header
+// updated to point to the underlying tensor data. If the tensor is garbage
+// collected, the slice will be invalidated.
+func (tensor Tensor) ToBytes() []byte {
+    // Create a pointer to reference the underlying data.
+    var buffer *C.uint8_t
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ToBytes(&buffer, C.Tensor(*tensor.T))))
+    // Create a blank byte slice and update the header to reference tensor data.
+    var slice []byte
+    header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+    header.Len = int(tensor.Dtype().NumBytes() * tensor.Numel())
+    header.Cap = header.Len
+    header.Data = uintptr(unsafe.Pointer(buffer))
+    return slice
+}
+
 // Create a clone of an existing tensor.
 func (tensor Tensor) Clone() Tensor {
     var output C.Tensor
