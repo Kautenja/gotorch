@@ -27,6 +27,7 @@ package torch_test
 
 import (
     "math"
+    "encoding/binary"
     "errors"
     "crypto/md5"
     "fmt"
@@ -147,6 +148,120 @@ func Test_Torch_NewTensor_PanicsOnUIntPtrDataType(t *testing.T) {
     assert.PanicsWithValue(t, "Unrecognized dtype kind uintptr", func() {
         _ = torch.NewTensor([]uintptr{})
     })
+}
+
+// MARK: ToBytes
+
+func TestTensorToBytesScalarFloat32(t *testing.T) {
+    expected := float32(0.222)
+    tensor := torch.NewTensor([]float32{expected})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 4, len(buffer))
+    assert.Equal(t, expected, math.Float32frombits(binary.LittleEndian.Uint32(buffer)))
+}
+
+func TestTensorToBytesVectorFloat32(t *testing.T) {
+    tensor := torch.NewTensor([]float32{0.2, 2.2})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 8, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, float32(0.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[0:4])))
+    assert.Equal(t, float32(2.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[4:8])))
+}
+
+func TestTensorToBytesMatrixFloat32(t *testing.T) {
+    tensor := torch.NewTensor([][]float32{{0.2, 2.2}, {4.0, 3.0}})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 16, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, float32(0.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[0:4])))
+    assert.Equal(t, float32(2.2), math.Float32frombits(binary.LittleEndian.Uint32(buffer[4:8])))
+    assert.Equal(t, float32(4.0), math.Float32frombits(binary.LittleEndian.Uint32(buffer[8:12])))
+    assert.Equal(t, float32(3.0), math.Float32frombits(binary.LittleEndian.Uint32(buffer[12:16])))
+}
+
+func TestTensorToBytesScalarFloat64(t *testing.T) {
+    expected := float64(0.222)
+    tensor := torch.NewTensor([]float64{expected})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 8, len(buffer))
+    assert.Equal(t, expected, math.Float64frombits(binary.LittleEndian.Uint64(buffer)))
+}
+
+func TestTensorToBytesVectorFloat64(t *testing.T) {
+    tensor := torch.NewTensor([]float64{0.2, 2.2})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 16, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, float64(0.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[0:8])))
+    assert.Equal(t, float64(2.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[8:16])))
+}
+
+func TestTensorToBytesMatrixFloat64(t *testing.T) {
+    tensor := torch.NewTensor([][]float64{{0.2, 2.2}, {4.0, 3.0}})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 32, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, float64(0.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[0:8])))
+    assert.Equal(t, float64(2.2), math.Float64frombits(binary.LittleEndian.Uint64(buffer[8:16])))
+    assert.Equal(t, float64(4.0), math.Float64frombits(binary.LittleEndian.Uint64(buffer[16:24])))
+    assert.Equal(t, float64(3.0), math.Float64frombits(binary.LittleEndian.Uint64(buffer[24:32])))
+}
+
+func TestTensorToBytesScalarInt32(t *testing.T) {
+    expected := int32(222)
+    tensor := torch.NewTensor([]int32{expected})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 4, len(buffer))
+    assert.Equal(t, expected, (int32)(binary.LittleEndian.Uint32(buffer)))
+}
+
+func TestTensorToBytesVectorInt32(t *testing.T) {
+    tensor := torch.NewTensor([]int32{404, 222})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 8, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, int32(404), (int32)(binary.LittleEndian.Uint32(buffer[0:4])))
+    assert.Equal(t, int32(222), (int32)(binary.LittleEndian.Uint32(buffer[4:8])))
+}
+
+func TestTensorToBytesMatrixInt32(t *testing.T) {
+    tensor := torch.NewTensor([][]int32{{404, 222}, {101, 909}})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 16, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, int32(404), (int32)(binary.LittleEndian.Uint32(buffer[0:4])))
+    assert.Equal(t, int32(222), (int32)(binary.LittleEndian.Uint32(buffer[4:8])))
+    assert.Equal(t, int32(101), (int32)(binary.LittleEndian.Uint32(buffer[8:12])))
+    assert.Equal(t, int32(909), (int32)(binary.LittleEndian.Uint32(buffer[12:16])))
+}
+
+func TestTensorToBytesScalarInt64(t *testing.T) {
+    expected := int64(222)
+    tensor := torch.NewTensor([]int64{expected})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 8, len(buffer))
+    assert.Equal(t, expected, (int64)(binary.LittleEndian.Uint64(buffer)))
+}
+
+func TestTensorToBytesVectorInt64(t *testing.T) {
+    tensor := torch.NewTensor([]int64{404, 222})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 16, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, int64(404), (int64)(binary.LittleEndian.Uint64(buffer[0:8])))
+    assert.Equal(t, int64(222), (int64)(binary.LittleEndian.Uint64(buffer[8:16])))
+}
+
+func TestTensorToBytesMatrixInt64(t *testing.T) {
+    tensor := torch.NewTensor([][]int64{{404, 222}, {101, 909}})
+    buffer := tensor.ToBytes()
+    assert.Equal(t, 32, len(buffer))
+    fmt.Println(buffer)
+    assert.Equal(t, int64(404), (int64)(binary.LittleEndian.Uint64(buffer[0:8])))
+    assert.Equal(t, int64(222), (int64)(binary.LittleEndian.Uint64(buffer[8:16])))
+    assert.Equal(t, int32(101), (int32)(binary.LittleEndian.Uint32(buffer[16:24])))
+    assert.Equal(t, int32(909), (int32)(binary.LittleEndian.Uint32(buffer[24:32])))
 }
 
 // MARK: Clone
