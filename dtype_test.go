@@ -55,3 +55,25 @@ func TestGetDtypeOfKind(t *testing.T) {
     assert.Equal(t, torch.Invalid, torch.GetDtypeOfKind(reflect.Struct))
     assert.Equal(t, torch.Invalid, torch.GetDtypeOfKind(reflect.Slice))
 }
+
+func TestDtypeNumBytes(t *testing.T) {
+    assert.Equal(t, int64(1), torch.Bool.NumBytes())
+    assert.Equal(t, int64(1), torch.Byte.NumBytes())
+    assert.Equal(t, int64(1), torch.Char.NumBytes())
+    assert.Equal(t, int64(2), torch.Short.NumBytes())
+    assert.Equal(t, int64(4), torch.Int.NumBytes())
+    assert.Equal(t, int64(8), torch.Long.NumBytes())
+    assert.Equal(t, int64(2), torch.Half.NumBytes())
+    assert.Equal(t, int64(4), torch.Float.NumBytes())
+    assert.Equal(t, int64(8), torch.Double.NumBytes())
+    assert.Equal(t, int64(2), torch.ComplexHalf.NumBytes())
+    assert.Equal(t, int64(4), torch.ComplexFloat.NumBytes())
+    assert.Equal(t, int64(8), torch.ComplexDouble.NumBytes())
+    assert.Equal(t, int64(1), torch.QInt8.NumBytes())
+    assert.Equal(t, int64(1), torch.QUInt8.NumBytes())
+    assert.Equal(t, int64(4), torch.QInt32.NumBytes())
+    assert.Equal(t, int64(2), torch.BFloat16.NumBytes())
+    assert.PanicsWithValue(t, "Received invalid dtype -1", func() {
+        torch.Invalid.NumBytes()
+    })
+}
