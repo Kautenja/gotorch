@@ -1,6 +1,6 @@
 // C bindings for torch::nn::init.
 //
-// Copyright (c) 2022 Christian Kauten
+// Copyright (c) 2023 Christian Kauten
 // Copyright (c) 2022 Sensory, Inc.
 // Copyright (c) 2020 GoTorch Authors
 //

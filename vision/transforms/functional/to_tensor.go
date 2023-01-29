@@ -1,6 +1,6 @@
 // GoTorch port of torchvision.transforms.functional.to_tensor.
 //
-// Copyright (c) 2022 Christian Kauten
+// Copyright (c) 2023 Christian Kauten
 // Copyright (c) 2022 Sensory, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
