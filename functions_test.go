@@ -947,6 +947,52 @@ func TestLogSoftmax(t *testing.T) {
     assert.True(t, torch.AllClose(expected, outputs, 1e-5, 1e-3), "Got %v expected %v", outputs, expected)
 }
 
+// >>> a = torch.tensor([False, False, True, True])
+// >>> b = torch.tensor([False, True, False, True])
+// >>> torch.logical_and(a, b)
+// tensor([False, False, False,  True])
+func TestLogicalAnd(t *testing.T) {
+    a := torch.NewTensor([]bool{false, false, true, true})
+    b := torch.NewTensor([]bool{false, true, false, true})
+    outputs := a.LogicalAnd(b)
+    expected := torch.NewTensor([]bool{false, false, false, true})
+    assert.True(t, torch.Equal(expected, outputs), "Got %v expected %v", outputs, expected)
+}
+
+// >>> a = torch.tensor([False, True])
+// >>> torch.logical_not(a)
+// tensor([ True, False])
+func TestLogicalNot(t *testing.T) {
+    a := torch.NewTensor([]bool{false, true})
+    outputs := a.LogicalNot()
+    expected := torch.NewTensor([]bool{true, false})
+    assert.True(t, torch.Equal(expected, outputs), "Got %v expected %v", outputs, expected)
+}
+
+// >>> a = torch.tensor([False, False, True, True])
+// >>> b = torch.tensor([False, True, False, True])
+// >>> torch.logical_or(a, b)
+// tensor([False,  True,  True,  True])
+func TestLogicalOr(t *testing.T) {
+    a := torch.NewTensor([]bool{false, false, true, true})
+    b := torch.NewTensor([]bool{false, true, false, true})
+    outputs := a.LogicalOr(b)
+    expected := torch.NewTensor([]bool{false, true, true, true})
+    assert.True(t, torch.Equal(expected, outputs), "Got %v expected %v", outputs, expected)
+}
+
+// >>> a = torch.tensor([False, False, True, True])
+// >>> b = torch.tensor([False, True, False, True])
+// >>> torch.logical_xor(a, b)
+// tensor([False,  True,  True, False])
+func TestLogicalXor(t *testing.T) {
+    a := torch.NewTensor([]bool{false, false, true, true})
+    b := torch.NewTensor([]bool{false, true, false, true})
+    outputs := a.LogicalXor(b)
+    expected := torch.NewTensor([]bool{false, true, true, false})
+    assert.True(t, torch.Equal(expected, outputs), "Got %v expected %v", outputs, expected)
+}
+
 func TestClamp(t *testing.T) {
     tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
     minimum := torch.NewTensor([]int32{-1})

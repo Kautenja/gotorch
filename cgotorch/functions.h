@@ -197,10 +197,10 @@ const char* Torch_LogSoftmax(Tensor a, int64_t dim, Tensor* result);
 // TODO: log2
 // TODO: logaddexp
 // TODO: logaddexp2
-// TODO: logical_and
-// TODO: logical_not
-// TODO: logical_or
-// TODO: logical_xor
+const char* Torch_LogicalAnd(Tensor* result, Tensor input, Tensor other);
+const char* Torch_LogicalNot(Tensor* result, Tensor input);
+const char* Torch_LogicalOr(Tensor* result, Tensor input, Tensor other);
+const char* Torch_LogicalXor(Tensor* result, Tensor input, Tensor other);
 // TODO: logit
 // TODO: hypot
 // TODO: i0

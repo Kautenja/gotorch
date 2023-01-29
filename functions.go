@@ -684,6 +684,79 @@ func (tensor Tensor) LogSoftmax(dim int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute the element-wise logical AND of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func LogicalAnd(tensor Tensor, other Tensor) Tensor {
+    var output C.Tensor
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalAnd(
+        &output,
+        C.Tensor(*tensor.T),
+        C.Tensor(*other.T),
+    )))
+    return NewTorchTensor((*unsafe.Pointer)(&output))
+}
+
+// Compute the element-wise logical AND of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func (tensor Tensor) LogicalAnd(other Tensor) Tensor {
+    return LogicalAnd(tensor, other)
+}
+
+// Computes the element-wise logical NOT of the given input tensor. If the
+// input tensor is not a bool tensor, zeros are treated as False and non-zeros
+// are treated as True.
+func LogicalNot(tensor Tensor) Tensor {
+    var output C.Tensor
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalNot(
+        &output,
+        C.Tensor(*tensor.T),
+    )))
+    return NewTorchTensor((*unsafe.Pointer)(&output))
+}
+
+// Computes the element-wise logical NOT of the given input tensor. If the
+// input tensor is not a bool tensor, zeros are treated as False and non-zeros
+// are treated as True.
+func (tensor Tensor) LogicalNot() Tensor {
+    return LogicalNot(tensor)
+}
+
+// Compute the element-wise logical OR of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func LogicalOr(tensor Tensor, other Tensor) Tensor {
+    var output C.Tensor
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalOr(
+        &output,
+        C.Tensor(*tensor.T),
+        C.Tensor(*other.T),
+    )))
+    return NewTorchTensor((*unsafe.Pointer)(&output))
+}
+
+// Compute the element-wise logical OR of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func (tensor Tensor) LogicalOr(other Tensor) Tensor {
+    return LogicalOr(tensor, other)
+}
+
+// Compute the element-wise logical XOR of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func LogicalXor(tensor Tensor, other Tensor) Tensor {
+    var output C.Tensor
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalXor(
+        &output,
+        C.Tensor(*tensor.T),
+        C.Tensor(*other.T),
+    )))
+    return NewTorchTensor((*unsafe.Pointer)(&output))
+}
+
+// Compute the element-wise logical XOR of the given input tensors. Zeros are
+// treated as False and non-zeros are treated as True.
+func (tensor Tensor) LogicalXor(other Tensor) Tensor {
+    return LogicalXor(tensor, other)
+}
+
 // Clamps all elements in input into the range [min, max].
 func Clamp(tensor, minimum, maximum Tensor) Tensor {
     var output C.Tensor

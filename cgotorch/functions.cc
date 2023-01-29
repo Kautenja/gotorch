@@ -267,6 +267,30 @@ const char* Torch_LogSoftmax(Tensor a, int64_t dim, Tensor* result) {
     });
 }
 
+const char* Torch_LogicalAnd(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_and(*input, *other));
+    });
+}
+
+const char* Torch_LogicalNot(Tensor* result, Tensor input) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_not(*input));
+    });
+}
+
+const char* Torch_LogicalOr(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_or(*input, *other));
+    });
+}
+
+const char* Torch_LogicalXor(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_xor(*input, *other));
+    });
+}
+
 const char* Torch_Clamp(Tensor* output, Tensor input, Tensor minimum, Tensor maximum) {
     return try_catch_return_error_string([&] () {
         *output = new at::Tensor(at::clamp(*input, *minimum, *maximum));
