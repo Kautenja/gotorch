@@ -29,7 +29,8 @@ import (
 )
 
 // Clip boxes so that they lie inside an image of size size. Boxes are
-// specified by their (xmin, ymin, xmax, ymax) coordinates.
+// expected to have shape (N, 4, ...) and be in (xmin, ymin, xmax, ymax)
+// format.
 func ClipBoxesToImage(boxes torch.Tensor, height, width int64) torch.Tensor {
     shape := boxes.Shape()
     if len(shape) < 2 || shape[1] != 4 {
