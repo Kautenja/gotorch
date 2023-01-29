@@ -1358,11 +1358,12 @@ func Equal(tensor, other Tensor) bool {
     return output
 }
 
-// Return true if the tensor is precisely equal to another element-wise.
+// Return true if the tensor is precisely equal to other element-wise.
 func (tensor Tensor) Equal(other Tensor) bool {
     return Equal(tensor, other)
 }
 
+// Compute tensor >= other element-wise.
 func GreaterEqual(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_GreaterEqual(
@@ -1373,10 +1374,12 @@ func GreaterEqual(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute tensor >= other element-wise.
 func (tensor Tensor) GreaterEqual(other Tensor) Tensor {
     return GreaterEqual(tensor, other)
 }
 
+// Compute tensor > other element-wise.
 func Greater(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Greater(
@@ -1387,10 +1390,12 @@ func Greater(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute tensor > other element-wise.
 func (tensor Tensor) Greater(other Tensor) Tensor {
     return Greater(tensor, other)
 }
 
+// Compute tensor <= other element-wise.
 func LessEqual(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_LessEqual(
@@ -1401,10 +1406,12 @@ func LessEqual(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute tensor <= other element-wise.
 func (tensor Tensor) LessEqual(other Tensor) Tensor {
     return LessEqual(tensor, other)
 }
 
+// Compute tensor < other element-wise.
 func Less(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Less(
@@ -1415,10 +1422,12 @@ func Less(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute tensor < other element-wise.
 func (tensor Tensor) Less(other Tensor) Tensor {
     return Less(tensor, other)
 }
 
+// Computes the element-wise maximum of input and other.
 func Maximum(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Maximum(
@@ -1429,10 +1438,12 @@ func Maximum(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Computes the element-wise maximum of input and other.
 func (tensor Tensor) Maximum(other Tensor) Tensor {
     return Maximum(tensor, other)
 }
 
+// Computes the element-wise minimum of input and other.
 func Minimum(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Minimum(
@@ -1443,10 +1454,12 @@ func Minimum(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Computes the element-wise minimum of input and other.
 func (tensor Tensor) Minimum(other Tensor) Tensor {
     return Minimum(tensor, other)
 }
 
+// Compute tensor != other element-wise.
 func NotEqual(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_NotEqual(
@@ -1457,10 +1470,13 @@ func NotEqual(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Compute tensor != other element-wise.
 func (tensor Tensor) NotEqual(other Tensor) Tensor {
     return NotEqual(tensor, other)
 }
 
+// Test if each element of tensor is in other. Returns a boolean tensor of the
+// same shape as tensor that is True for elements in other and False otherwise.
 func IsIn(tensor, other Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsIn(
@@ -1471,72 +1487,100 @@ func IsIn(tensor, other Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Test if each element of tensor is in other. Returns a boolean tensor of the
+// same shape as tensor that is True for elements in other and False otherwise.
 func (tensor Tensor) IsIn(other Tensor) Tensor {
     return IsIn(tensor, other)
 }
 
+// Test if each element of the tensor is finite or not.
 func IsFinite(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsFinite(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Test if each element of the tensor is finite or not.
 func (tensor Tensor) IsFinite() Tensor {
     return IsFinite(tensor)
 }
 
+// Test if each element of the tensor is infinite (positive or negative) or not.
 func IsInf(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsInf(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Test if each element of the tensor is infinite (positive or negative) or not.
 func (tensor Tensor) IsInf() Tensor {
     return IsInf(tensor)
 }
 
+// Test if each element of the tensor is positive infinity or not.
 func IsPosInf(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsPosInf(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Test if each element of the tensor is positive infinity or not.
 func (tensor Tensor) IsPosInf() Tensor {
     return IsPosInf(tensor)
 }
 
+// Test if each element of the tensor is negative infinity or not.
 func IsNegInf(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNegInf(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Test if each element of the tensor is negative infinity or not.
 func (tensor Tensor) IsNegInf() Tensor {
     return IsNegInf(tensor)
 }
 
+// Returns a new tensor with boolean elements representing if each element of
+// input is NaN or not. Complex values are considered NaN when either their
+// real and/or imaginary part is NaN.
 func IsNaN(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNan(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Returns a new tensor with boolean elements representing if each element of
+// input is NaN or not. Complex values are considered NaN when either their
+// real and/or imaginary part is NaN.
 func (tensor Tensor) IsNaN() Tensor {
     return IsNaN(tensor)
 }
 
+// Return a new tensor with boolean elements representing if each element of
+// input is real-valued or not. All real-valued types are considered real.
+// Complex values are considered real when their imaginary part is 0.
 func IsReal(tensor Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IsReal(&output, C.Tensor(*tensor.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Return a new tensor with boolean elements representing if each element of
+// input is real-valued or not. All real-valued types are considered real.
+// Complex values are considered real when their imaginary part is 0.
 func (tensor Tensor) IsReal() Tensor {
     return IsReal(tensor)
 }
 
 // TODO: KthValue
 
+// Return the k largest elements of the given input tensor along a given
+// dimension. If largest is False then the k smallest elements are returned.
+// A struct of (Values, Indices) is returned with the values and indices
+// of the largest k elements of each row of the input tensor in the given
+// dimension dim. The boolean option sorted if True, will make sure that the
+// returned k elements are themselves sorted.
 func TopK(tensor Tensor, k, dim int64, largest, sorted bool) ValueIndexPair {
     var values, indices C.Tensor
     l := 0
@@ -1561,10 +1605,21 @@ func TopK(tensor Tensor, k, dim int64, largest, sorted bool) ValueIndexPair {
     }
 }
 
+// Return the k largest elements of the given input tensor along a given
+// dimension. If largest is False then the k smallest elements are returned.
+// A struct of (Values, Indices) is returned with the values and indices
+// of the largest k elements of each row of the input tensor in the given
+// dimension dim. The boolean option sorted if True, will make sure that the
+// returned k elements are themselves sorted.
 func (tensor Tensor) TopK(k, dim int64, largest, sorted bool) ValueIndexPair {
     return TopK(tensor, k, dim, largest, sorted)
 }
 
+// Sort the elements of the input tensor along a given dimension by value. If
+// descending is True then the elements are sorted in descending order by
+// value. A struct of (Values, Indices) is returned, where the values are the
+// sorted values and indices are the indices of the elements in the original
+// input tensor.
 func Sort(tensor Tensor, dim int64, descending bool) ValueIndexPair {
     var values C.Tensor
     var indices C.Tensor
@@ -1580,6 +1635,11 @@ func Sort(tensor Tensor, dim int64, descending bool) ValueIndexPair {
     }
 }
 
+// Sort the elements of the input tensor along a given dimension by value. If
+// descending is True then the elements are sorted in descending order by
+// value. A struct of (Values, Indices) is returned, where the values are the
+// sorted values and indices are the indices of the elements in the original
+// input tensor.
 func (tensor Tensor) Sort(dim int64, descending bool) ValueIndexPair {
     return Sort(tensor, dim, descending)
 }
@@ -1686,12 +1746,16 @@ func (tensor Tensor) Sort(dim int64, descending bool) ValueIndexPair {
 // TODO: matrix_power
 // TODO: matrix_exp
 
+// Perform a matrix multiplication of the matrices A and B. If A is an (n×m)
+// tensor, B is an (m×p) tensor, the output will be an (n×p) tensor.
 func MM(a, b Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_MM(&output, C.Tensor(*a.T), C.Tensor(*b.T))))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Perform a matrix multiplication of the matrices A and B. If A is an (n×m)
+// tensor, B is an (m×p) tensor, the output will be an (n×p) tensor.
 func (tensor Tensor) MM(other Tensor) Tensor {
     return MM(tensor, other)
 }
