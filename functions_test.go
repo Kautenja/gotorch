@@ -947,6 +947,68 @@ func TestLogSoftmax(t *testing.T) {
     assert.True(t, torch.AllClose(expected, outputs, 1e-5, 1e-3), "Got %v expected %v", outputs, expected)
 }
 
+func TestClamp(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    minimum := torch.NewTensor([]int32{-1})
+    maximum := torch.NewTensor([]int32{1})
+    output := tensor.Clamp(minimum, maximum)
+    expected := torch.NewTensor([]int32{-1, -1, 0, 1, 1})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should not have been modified
+    assert.True(t, tensor.Equal(torch.NewTensor([]int32{-2, -1, 0, 1, 2})))
+}
+
+func TestClamp_(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    minimum := torch.NewTensor([]int32{-1})
+    maximum := torch.NewTensor([]int32{1})
+    output := tensor.Clamp_(minimum, maximum)
+    expected := torch.NewTensor([]int32{-1, -1, 0, 1, 1})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should have been updated in-place
+    assert.True(t, tensor.Equal(output))
+}
+
+func TestClampMax(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    maximum := torch.NewTensor([]int32{1})
+    output := tensor.ClampMax(maximum)
+    expected := torch.NewTensor([]int32{-2, -1, 0, 1, 1})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should not have been modified
+    assert.True(t, tensor.Equal(torch.NewTensor([]int32{-2, -1, 0, 1, 2})))
+}
+
+func TestClampMax_(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    maximum := torch.NewTensor([]int32{1})
+    output := tensor.ClampMax_(maximum)
+    expected := torch.NewTensor([]int32{-2, -1, 0, 1, 1})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should have been updated in-place
+    assert.True(t, tensor.Equal(output))
+}
+
+func TestClampMin(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    minimum := torch.NewTensor([]int32{-1})
+    output := tensor.ClampMin(minimum)
+    expected := torch.NewTensor([]int32{-1, -1, 0, 1, 2})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should not have been modified
+    assert.True(t, tensor.Equal(torch.NewTensor([]int32{-2, -1, 0, 1, 2})))
+}
+
+func TestClampMin_(t *testing.T) {
+    tensor := torch.NewTensor([]int32{-2, -1, 0, 1, 2})
+    minimum := torch.NewTensor([]int32{-1})
+    output := tensor.ClampMin_(minimum)
+    expected := torch.NewTensor([]int32{-1, -1, 0, 1, 2})
+    assert.True(t, expected.Equal(output))
+    // The input tensor should have been updated in-place
+    assert.True(t, tensor.Equal(output))
+}
+
 // >>> torch.sigmoid(torch.tensor([[-0.5, -1.], [1., 0.5]]))
 // tensor([[0.3775, 0.2689],
 //         [0.7311, 0.6225]])

@@ -155,8 +155,12 @@ const char* Torch_Add_(Tensor a, Tensor other, float alpha);
 // TODO: bitwise_left_shift
 // TODO: bitwise_right_shift
 // TODO: ceil
-// TODO: clamp
-// TODO: clip
+const char* Torch_Clamp(Tensor* output, Tensor input, Tensor minimum, Tensor maximum);
+const char* Torch_Clamp_(Tensor input, Tensor minimum, Tensor maximum);
+const char* Torch_ClampMax(Tensor* output, Tensor input, Tensor maximum);
+const char* Torch_ClampMax_(Tensor input, Tensor maximum);
+const char* Torch_ClampMin(Tensor* output, Tensor input, Tensor minimum);
+const char* Torch_ClampMin_(Tensor input, Tensor minimum);
 // TODO: conj_physical
 // TODO: copysign
 // TODO: cos
