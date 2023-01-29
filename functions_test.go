@@ -1016,6 +1016,20 @@ func TestCat(t *testing.T) {
     assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
+func TestConcat(t *testing.T) {
+    t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
+    t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
+    out := torch.Concat([]torch.Tensor{t1, t2}, 0)
+    assert.Equal(t, []int64{4, 3}, out.Shape())
+}
+
+func TestConcatenate(t *testing.T) {
+    t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
+    t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
+    out := torch.Concatenate([]torch.Tensor{t1, t2}, 0)
+    assert.Equal(t, []int64{4, 3}, out.Shape())
+}
+
 // -----------------------------------------------------------------------------
 // MARK: Selection
 // -----------------------------------------------------------------------------
