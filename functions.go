@@ -639,47 +639,48 @@ func (tensor Tensor) Pow(exponent float64) Tensor {
 }
 
 // Return a new tensor with the hyperbolic tangent of the elements of input.
-func Tanh(t Tensor) Tensor {
-    return t.Tanh()
+func Tanh(tensor Tensor) Tensor {
+    return tensor.Tanh()
 }
 
 // Return a new tensor with the hyperbolic tangent of the elements of input.
-func (a Tensor) Tanh() Tensor {
+func (tensor Tensor) Tanh() Tensor {
     var output C.Tensor
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(C.Tensor(*a.T), &output)))
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(C.Tensor(*tensor.T), &output)))
     return NewTorchTensor((*unsafe.Pointer)(&output))
-}
-
-// Sigmoid returns sigmoid of the current tensor
-func Sigmoid(t Tensor) Tensor {
-    return t.Sigmoid()
 }
 
 // Computes the expit (also known as the logistic sigmoid function) of the
 // elements of input.
-func (a Tensor) Sigmoid() Tensor {
+func Sigmoid(tensor Tensor) Tensor {
+    return tensor.Sigmoid()
+}
+
+// Computes the expit (also known as the logistic sigmoid function) of the
+// elements of input.
+func (tensor Tensor) Sigmoid() Tensor {
     var output C.Tensor
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(C.Tensor(*a.T), &output)))
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(C.Tensor(*tensor.T), &output)))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
-// Applies a softmax followed by a logarithm.
+// Apply a softmax followed by a logarithm.
 //
 // While mathematically equivalent to log(softmax(x)), doing these two
 // operations separately is slower and numerically unstable. This function uses
 // an alternative formulation to compute the output and gradient correctly.
-func LogSoftmax(t Tensor, dim int64) Tensor {
-    return t.LogSoftmax(dim)
+func LogSoftmax(tensor Tensor, dim int64) Tensor {
+    return tensor.LogSoftmax(dim)
 }
 
-// Applies a softmax followed by a logarithm.
+// Apply a softmax followed by a logarithm.
 //
 // While mathematically equivalent to log(softmax(x)), doing these two
 // operations separately is slower and numerically unstable. This function uses
 // an alternative formulation to compute the output and gradient correctly.
-func (a Tensor) LogSoftmax(dim int64) Tensor {
+func (tensor Tensor) LogSoftmax(dim int64) Tensor {
     var output C.Tensor
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(C.Tensor(*a.T), C.int64_t(dim), &output)))
+    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(C.Tensor(*tensor.T), C.int64_t(dim), &output)))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -690,6 +691,7 @@ func (a Tensor) LogSoftmax(dim int64) Tensor {
 // MARK: Data layout
 // ---------------------------------------------------------------------------
 
+// Return a view of the original tensor input with its dimensions permuted.
 func Permute(tensor Tensor, dims ...int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Permute(
@@ -701,10 +703,25 @@ func Permute(tensor Tensor, dims ...int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Return a view of the original tensor input with its dimensions permuted.
 func (tensor Tensor) Permute(dims ...int64) Tensor {
     return Permute(tensor, dims...)
 }
 
+// Return a tensor that is a transposed version of input. The given dimensions
+// dim0 and dim1 are swapped.
+//
+// If input is a strided tensor then the resulting out tensor shares its
+// underlying storage with the input tensor, so changing the content of one
+// would change the content of the other.
+//
+// If input is a sparse tensor then the resulting out tensor does not share the
+// underlying storage with the input tensor.
+//
+// If input is a sparse tensor with compressed layout (SparseCSR, SparseBSR,
+// SparseCSC or SparseBSC) the arguments dim0 and dim1 must be both batch
+// dimensions, or must both be sparse dimensions. The batch dimensions of a
+// sparse tensor are the dimensions preceding the sparse dimensions.
 func Transpose(tensor Tensor, dim0, dim1 int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Transpose(
@@ -716,10 +733,34 @@ func Transpose(tensor Tensor, dim0, dim1 int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Return a tensor that is a transposed version of input. The given dimensions
+// dim0 and dim1 are swapped.
+//
+// If input is a strided tensor then the resulting out tensor shares its
+// underlying storage with the input tensor, so changing the content of one
+// would change the content of the other.
+//
+// If input is a sparse tensor then the resulting out tensor does not share the
+// underlying storage with the input tensor.
+//
+// If input is a sparse tensor with compressed layout (SparseCSR, SparseBSR,
+// SparseCSC or SparseBSC) the arguments dim0 and dim1 must be both batch
+// dimensions, or must both be sparse dimensions. The batch dimensions of a
+// sparse tensor are the dimensions preceding the sparse dimensions.
 func (tensor Tensor) Transpose(dim0, dim1 int64) Tensor {
     return Transpose(tensor, dim0, dim1)
 }
 
+// Flattens input dimensions by reshaping them into a one-dimensional tensor.
+// Only dimensions starting with start_dim and ending with end_dim are
+// flattened. The order of elements in input is unchanged.
+//
+// Unlike NumPy’s flatten, which always copies input’s data, this function may
+// return the original object, a view, or copy. If no dimensions are flattened,
+// then the original object input is returned. Otherwise, if input can be
+// viewed as the flattened shape, then that view is returned. Finally, only if
+// the input cannot be viewed as the flattened shape is input’s data copied.
+// See (torch.Tensor).View() for details on when a view will be returned.
 func Flatten(tensor Tensor, startDim, endDim int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Flatten(
@@ -731,10 +772,26 @@ func Flatten(tensor Tensor, startDim, endDim int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Flattens input dimensions by reshaping them into a one-dimensional tensor.
+// Only dimensions starting with start_dim and ending with end_dim are
+// flattened. The order of elements in input is unchanged.
+//
+// Unlike NumPy’s flatten, which always copies input’s data, this function may
+// return the original object, a view, or copy. If no dimensions are flattened,
+// then the original object input is returned. Otherwise, if input can be
+// viewed as the flattened shape, then that view is returned. Finally, only if
+// the input cannot be viewed as the flattened shape is input’s data copied.
+// See (torch.Tensor).View() for details on when a view will be returned.
 func (tensor Tensor) Flatten(startDim, endDim int64) Tensor {
     return Flatten(tensor, startDim, endDim)
 }
 
+// Return a tensor with all the dimensions of input of size 1 removed. For
+// example, if input is of shape: (A×1×B×C×1×D) then the out tensor will be of
+// shape: (A×B×C×D). When dim is given, a squeeze operation is done only in
+// the given dimension. If input is of shape: (A×1×B), squeeze(input, 0) leaves
+// the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the
+// shape (A×B).
 func Squeeze(tensor Tensor, dim ...int64) Tensor {
     var output C.Tensor
     switch len(dim) {
@@ -756,10 +813,21 @@ func Squeeze(tensor Tensor, dim ...int64) Tensor {
     }
 }
 
+// Return a tensor with all the dimensions of input of size 1 removed. For
+// example, if input is of shape: (A×1×B×C×1×D) then the out tensor will be of
+// shape: (A×B×C×D). When dim is given, a squeeze operation is done only in
+// the given dimension. If input is of shape: (A×1×B), squeeze(input, 0) leaves
+// the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the
+// shape (A×B).
 func (tensor Tensor) Squeeze(dim ...int64) Tensor {
     return Squeeze(tensor, dim...)
 }
 
+// Return a new tensor with a dimension of size one inserted at the specified
+// position. The returned tensor shares the same underlying data with this
+// tensor. A dim value within the range [-input.dim() - 1, input.dim() + 1) can
+// be used. Negative dim will correspond to unsqueeze() applied at
+// dim = dim + input.dim() + 1.
 func Unsqueeze(tensor Tensor, dim int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Unsqueeze(
@@ -770,10 +838,17 @@ func Unsqueeze(tensor Tensor, dim int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Return a new tensor with a dimension of size one inserted at the specified
+// position. The returned tensor shares the same underlying data with this
+// tensor. A dim value within the range [-input.dim() - 1, input.dim() + 1) can
+// be used. Negative dim will correspond to unsqueeze() applied at
+// dim = dim + input.dim() + 1.
 func (tensor Tensor) Unsqueeze(dim int64) Tensor {
     return Unsqueeze(tensor, dim)
 }
 
+// Concatenate a sequence of tensors along a new dimension. All tensors need to
+// be of the same size.
 func Stack(tensors []Tensor, dim int64) Tensor {
     CT := []C.Tensor{}
     for _, t := range tensors {
@@ -790,6 +865,9 @@ func Stack(tensors []Tensor, dim int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Concatenate the given sequence of tensors in the given dimension. All
+// tensors must either have the same shape (except in the concatenating
+// dimension) or be empty.
 func Cat(tensors []Tensor, dim int64) Tensor {
     CT := []C.Tensor{}
     for _, t := range tensors {
@@ -805,13 +883,24 @@ func Cat(tensors []Tensor, dim int64) Tensor {
     )))
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
-// func Concat(tensors []Tensor, dim int64) Tensor { return Cat(tensors, dim) }
-// func Concatenate(tensors []Tensor, dim int64) Tensor { return Cat(tensors, dim) }
+
+// Alias of torch.Cat.
+func Concat(tensors []Tensor, dim int64) Tensor {
+    return Cat(tensors, dim)
+}
+
+// Alias of torch.Cat.
+func Concatenate(tensors []Tensor, dim int64) Tensor {
+    return Cat(tensors, dim)
+}
 
 // ---------------------------------------------------------------------------
 // MARK: Selection
 // ---------------------------------------------------------------------------
 
+// Perform NumPy-like tensor slicing where dim is the dimension to slice along,
+// start and stop determine the [start, stop) bounds of the index, and step
+// describes the spacing between elements in the slice.
 func Slice(tensor Tensor, dim, start, stop, step int64) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_Slice(
@@ -825,10 +914,18 @@ func Slice(tensor Tensor, dim, start, stop, step int64) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Perform NumPy-like tensor slicing where dim is the dimension to slice along,
+// start and stop determine the [start, stop) bounds of the index, and step
+// describes the spacing between elements in the slice.
 func (tensor Tensor) Slice(dim, start, stop, step int64) Tensor {
     return Slice(tensor, dim, start, stop, step)
 }
 
+// Return a new tensor which indexes the input tensor along dimension dim using
+// the entries in index which is a LongTensor. The returned tensor has the same
+// number of dimensions as the original tensor (input). The dimth dimension has
+// the same size as the length of index; other dimensions have the same size as
+// in the original tensor.
 func IndexSelect(tensor Tensor, dim int64, index Tensor) Tensor {
     var output C.Tensor
     internal.PanicOnCException(unsafe.Pointer(C.Torch_IndexSelect(
@@ -840,6 +937,11 @@ func IndexSelect(tensor Tensor, dim int64, index Tensor) Tensor {
     return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
+// Return a new tensor which indexes the input tensor along dimension dim using
+// the entries in index which is a LongTensor. The returned tensor has the same
+// number of dimensions as the original tensor (input). The dimth dimension has
+// the same size as the length of index; other dimensions have the same size as
+// in the original tensor.
 func (tensor Tensor) IndexSelect(dim int64, index Tensor) Tensor {
     return IndexSelect(tensor, dim, index)
 }
