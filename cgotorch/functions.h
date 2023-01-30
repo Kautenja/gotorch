@@ -155,8 +155,12 @@ const char* Torch_Add_(Tensor a, Tensor other, float alpha);
 // TODO: bitwise_left_shift
 // TODO: bitwise_right_shift
 // TODO: ceil
-// TODO: clamp
-// TODO: clip
+const char* Torch_Clamp(Tensor* output, Tensor input, Tensor minimum, Tensor maximum);
+const char* Torch_Clamp_(Tensor input, Tensor minimum, Tensor maximum);
+const char* Torch_ClampMax(Tensor* output, Tensor input, Tensor maximum);
+const char* Torch_ClampMax_(Tensor input, Tensor maximum);
+const char* Torch_ClampMin(Tensor* output, Tensor input, Tensor minimum);
+const char* Torch_ClampMin_(Tensor input, Tensor minimum);
 // TODO: conj_physical
 // TODO: copysign
 // TODO: cos
@@ -193,10 +197,10 @@ const char* Torch_LogSoftmax(Tensor a, int64_t dim, Tensor* result);
 // TODO: log2
 // TODO: logaddexp
 // TODO: logaddexp2
-// TODO: logical_and
-// TODO: logical_not
-// TODO: logical_or
-// TODO: logical_xor
+const char* Torch_LogicalAnd(Tensor* result, Tensor input, Tensor other);
+const char* Torch_LogicalNot(Tensor* result, Tensor input);
+const char* Torch_LogicalOr(Tensor* result, Tensor input, Tensor other);
+const char* Torch_LogicalXor(Tensor* result, Tensor input, Tensor other);
 // TODO: logit
 // TODO: hypot
 // TODO: i0

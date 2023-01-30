@@ -28,9 +28,9 @@ import (
     "github.com/Kautenja/gotorch"
 )
 
-// Compute the area of a set of bounding boxes, which are specified by their
-// (xmin, ymin, xmax, ymax) coordinates. boxes are expected to be in
-// (xmin, ymin, xmax, ymax) format with 0 <= xmin < xmax and 0 <= ymin < ymax.
+// Compute the area of a set of bounding boxes. boxes are expected to be in
+// (N, 4, ...) (xmin, ymin, xmax, ymax) format with 0 <= xmin < xmax and
+// 0 <= ymin < ymax.
 func BoxArea(boxes torch.Tensor) torch.Tensor {
     shape := boxes.Shape()
     if len(shape) < 2 || shape[1] != 4 {

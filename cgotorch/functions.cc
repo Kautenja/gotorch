@@ -267,6 +267,66 @@ const char* Torch_LogSoftmax(Tensor a, int64_t dim, Tensor* result) {
     });
 }
 
+const char* Torch_LogicalAnd(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_and(*input, *other));
+    });
+}
+
+const char* Torch_LogicalNot(Tensor* result, Tensor input) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_not(*input));
+    });
+}
+
+const char* Torch_LogicalOr(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_or(*input, *other));
+    });
+}
+
+const char* Torch_LogicalXor(Tensor* result, Tensor input, Tensor other) {
+    return try_catch_return_error_string([&] () {
+        *result = new at::Tensor(at::logical_xor(*input, *other));
+    });
+}
+
+const char* Torch_Clamp(Tensor* output, Tensor input, Tensor minimum, Tensor maximum) {
+    return try_catch_return_error_string([&] () {
+        *output = new at::Tensor(at::clamp(*input, *minimum, *maximum));
+    });
+}
+
+const char* Torch_Clamp_(Tensor input, Tensor minimum, Tensor maximum) {
+    return try_catch_return_error_string([&] () {
+        at::clamp_(*input, *minimum, *maximum);
+    });
+}
+
+const char* Torch_ClampMax(Tensor* output, Tensor input, Tensor maximum) {
+    return try_catch_return_error_string([&] () {
+        *output = new at::Tensor(at::clamp_max(*input, *maximum));
+    });
+}
+
+const char* Torch_ClampMax_(Tensor input, Tensor maximum) {
+    return try_catch_return_error_string([&] () {
+        at::clamp_max_(*input, *maximum);
+    });
+}
+
+const char* Torch_ClampMin(Tensor* output, Tensor input, Tensor minimum) {
+    return try_catch_return_error_string([&] () {
+        *output = new at::Tensor(at::clamp_min(*input, *minimum));
+    });
+}
+
+const char* Torch_ClampMin_(Tensor input, Tensor minimum) {
+    return try_catch_return_error_string([&] () {
+        at::clamp_min_(*input, *minimum);
+    });
+}
+
 // MARK: Data layout
 
 const char* Torch_Permute(Tensor a, int64_t* dims, int64_t dims_size, Tensor* result) {
