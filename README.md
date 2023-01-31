@@ -12,8 +12,8 @@ GoTorch is a Golang front-end for [pytorch](https://github.com/pytorch/pytorch).
 
 ## Installation
 
-GoTorch requires the installation of libtorch and libcgotorch (a C-binding)
-written for CGo. To install these libraries (to `/usr/local`,) use:
+GoTorch requires the installation of libtorch and libcgotorch (a C-binding
+written for CGo.) To install these libraries to `/usr/local`, use:
 
 ```shell
 git clone --depth 1 --branch v1.11.0-0.0.0 https://github.com/Kautenja/gotorch
