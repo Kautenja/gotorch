@@ -12,35 +12,17 @@ GoTorch is a Golang front-end for [pytorch](https://github.com/pytorch/pytorch).
 
 ## Installation
 
-Because GoTorch requires C libraries and some compilation, it cannot be
-simply installed using `go get`. Instead, the recomended installation
-pathway is to add gotorch as a git submodule in the `pkg` package of your
-Go project, or otherwise check the files in directly. To add gotorch as
-a submodule, from the top-level of your project, run:
+GoTorch requires the installation of libtorch and libcgotorch (a C-binding)
+written for CGo. To install these libraries (to `/usr/local`,) use:
 
 ```shell
-git submodule add https://github.com/Kautenja/gotorch pkg/gotorch
-```
-
-Once gotorch has been cloned, it must be compiled using:
-
-```shell
-./pkg/gotorch/build.sh
-```
-
-This will download the libtorch binary for your system and compile the CGoTorch
-wrapper for interfacing with CGO.
-
-Golang must be told to use this local directory in-place of the remote code
-by adding the following to your `go.mod`
-
-```go.mod
-replace github.com/Kautenja/gotorch v1.11.0 => ./pkg/gotorch
+git clone --depth 1 --branch v1.11.0-0.0.0 https://github.com/Kautenja/gotorch
+./gotorch/install.sh
 ```
 
 You may refer to the 
 [example project](https://github.com/Kautenja/gotorch-example) for a working
-demonstration of this approach.
+demonstration of this library.
 
 ## Development
 
