@@ -65,9 +65,11 @@ COPY ./cgotorch/*.hpp /gotorch/cgotorch/
 COPY ./cgotorch/*.cc /gotorch/cgotorch/
 COPY ./cgotorch/*.cpp /gotorch/cgotorch/
 COPY ./CMakeLists.txt /gotorch/CMakeLists.txt
-COPY ./build.sh /gotorch/build.sh
+COPY ./install_libtorch.sh /gotorch/install_libtorch.sh
 COPY ./download_libtorch.sh /gotorch/download_libtorch.sh
-COPY ./Makefile /gotorch/Makefile
+COPY ./build_libcgotorch.sh /gotorch/build_libcgotorch.sh
+COPY ./install_libcgotorch.sh /gotorch/install_libcgotorch.sh
+COPY ./install.sh /gotorch/install.sh
 # GoLang files
 COPY ./*.go /gotorch/
 COPY ./go.* /gotorch/

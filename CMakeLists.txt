@@ -82,11 +82,7 @@ set_property(TARGET cgotorch PROPERTY CXX_STANDARD 14)
 target_include_directories(cgotorch PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/cgotorch>
     $<INSTALL_INTERFACE:cgotorch>
-    # cgotorch
 )
-# set_target_properties(cgotorch PROPERTIES
-#     PUBLIC_HEADER cgotorch/cgotorch.h
-# )
 target_link_libraries(cgotorch PUBLIC "${TORCH_LIBRARIES}")
 
 # --- Install ----------------------------------------------------------------
@@ -96,7 +92,6 @@ install(TARGETS cgotorch
   LIBRARY DESTINATION lib COMPONENT Runtime
   ARCHIVE DESTINATION lib COMPONENT Development
   RUNTIME DESTINATION bin COMPONENT Runtime
-  # PUBLIC_HEADER DESTINATION cgotorch/cgotorch.h COMPONENT Development
   BUNDLE DESTINATION bin COMPONENT Runtime
 )
 install(EXPORT cgotorchTargets DESTINATION lib/cmake/cgotorch)
