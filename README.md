@@ -18,6 +18,7 @@ written for CGo. To install these libraries (to `/usr/local`,) use:
 ```shell
 git clone --depth 1 --branch v1.11.0-0.0.0 https://github.com/Kautenja/gotorch
 ./gotorch/install.sh
+rm -rf ./gotorch
 ```
 
 You may refer to the 
