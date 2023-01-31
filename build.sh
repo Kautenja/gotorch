@@ -82,7 +82,6 @@ fi
 
 echo "Building libcgotorch for $ARCH $OS with $LOGICAL_CORES threads"
 (cd ${DIR}/build; cmake -DCMAKE_PREFIX_PATH=$(pwd)/libtorch -DCMAKE_INSTALL_PREFIX:PATH=libcgotorch ..)
-(cd ${DIR}/build; make -j${LOGICAL_CORES})
 (cd ${DIR}/build; make -j${LOGICAL_CORES} install)
 
 popd > /dev/null
