@@ -153,6 +153,11 @@ case "$1" in
   exit 0;
 ;;
 
+"bash")
+  docker run --rm -it ${IMAGE} bash
+  exit 0;
+;;
+
 *)
   echo "Unknown command: $1"
   exit 0;

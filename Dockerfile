@@ -66,6 +66,8 @@ COPY ./cgotorch/*.cc /gotorch/cgotorch/
 COPY ./cgotorch/*.cpp /gotorch/cgotorch/
 COPY ./CMakeLists.txt /gotorch/CMakeLists.txt
 COPY ./build.sh /gotorch/build.sh
+COPY ./download_libtorch.sh /gotorch/download_libtorch.sh
+COPY ./Makefile /gotorch/Makefile
 # GoLang files
 COPY ./*.go /gotorch/
 COPY ./go.* /gotorch/

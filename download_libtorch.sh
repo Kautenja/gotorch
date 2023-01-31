@@ -53,41 +53,29 @@ function download_libtorch_cuda() {
 
 mkdir -p ${DIR}/build
 
-if [[ ! -d "/usr/local/include/torch" ]]; then
-    echo "Downloading libtorch for $ARCH $OS to $DIR/build/libtorch"
-    if [[ "$OS" == "darwin" ]]; then
-        if [[ "$ARCH" == "arm64" ]]; then
-            download_libtorch_arm64_darwin
-        else
-            download_libtorch_x86_darwin
-        fi
-    elif [[ "$OS" == "linux" ]]; then
-        if [[ "$ARCH" == "aarch64" ]]; then
-            download_libtorch_aarch64_linux
-        elif [[ "$ARCH" =~ arm* ]]; then
-            download_libtorch_armv7l_linux
-        elif "$NVCC" --version > /dev/null; then
-            if ! download_libtorch_cuda; then
-                download_libtorch_x86_linux
-            fi
-        else
+echo "Downloading libtorch for $ARCH $OS to $DIR/build/libtorch"
+if [[ "$OS" == "darwin" ]]; then
+    if [[ "$ARCH" == "arm64" ]]; then
+        download_libtorch_arm64_darwin
+    else
+        download_libtorch_x86_darwin
+    fi
+elif [[ "$OS" == "linux" ]]; then
+    if [[ "$ARCH" == "aarch64" ]]; then
+        download_libtorch_aarch64_linux
+    elif [[ "$ARCH" =~ arm* ]]; then
+        download_libtorch_armv7l_linux
+    elif "$NVCC" --version > /dev/null; then
+        if ! download_libtorch_cuda; then
             download_libtorch_x86_linux
         fi
     else
-        echo "Unsupported OS ($OS) and architecture ($ARCH) combination for libtorch"
-        exit 1
+        download_libtorch_x86_linux
     fi
-    (cd ${DIR}/build; unzip -o libtorch.zip)
-    # sudo mkdir -p /usr/local/bin
-    # sudo mkdir -p /usr/local/include
-    # sudo mkdir -p /usr/local/lib
-    # sudo mkdir -p /usr/local/share
-    # (cd ${DIR}/build; sudo cp -r libtorch/* /usr/local/)
-    # ldconfig
+else
+    echo "Unsupported OS ($OS) and architecture ($ARCH) combination for libtorch"
+    exit 1
 fi
-
-echo "Building libcgotorch for $ARCH $OS with $LOGICAL_CORES threads"
-(cd ${DIR}/build; cmake -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=libcgotorch ..)
-(cd ${DIR}/build; make -j${LOGICAL_CORES} install)
+(cd ${DIR}/build; unzip -o libtorch.zip)
 
 popd > /dev/null
