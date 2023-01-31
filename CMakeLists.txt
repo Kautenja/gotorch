@@ -80,11 +80,44 @@ add_library(cgotorch SHARED
   cgotorch/vision_ops_roi_align_kernel_cpu.cpp)
 set_property(TARGET cgotorch PROPERTY CXX_STANDARD 14)
 target_include_directories(cgotorch PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/cgotorch>
     $<INSTALL_INTERFACE:include>
-    ./cgotorch
+    # cgotorch
 )
 set_target_properties(cgotorch PROPERTIES
-    PUBLIC_HEADER ./cgotorch/cgotorch.hpp
+    PUBLIC_HEADER cgotorch/cgotorch.hpp
 )
 target_link_libraries(cgotorch PUBLIC "${TORCH_LIBRARIES}")
+
+# --- Install ----------------------------------------------------------------
+
+install(TARGETS cgotorch
+  EXPORT cgotorchTargets
+  LIBRARY DESTINATION lib COMPONENT Runtime
+  ARCHIVE DESTINATION lib COMPONENT Development
+  RUNTIME DESTINATION bin COMPONENT Runtime
+  PUBLIC_HEADER DESTINATION cgotorch/cgotorch.hpp COMPONENT Development
+  BUNDLE DESTINATION bin COMPONENT Runtime
+)
+install(EXPORT cgotorchTargets DESTINATION lib/cmake/cgotorch)
+install(FILES
+    cgotorch/byte_buffer.h
+    cgotorch/cgotorch.h
+    cgotorch/cuda.h
+    cgotorch/device.h
+    cgotorch/functional.h
+    cgotorch/functions.h
+    cgotorch/init.h
+    cgotorch/ivalue.h
+    cgotorch/jit.h
+    cgotorch/memory.h
+    cgotorch/optim.h
+    cgotorch/tensor.h
+    cgotorch/tensor_options.h
+    cgotorch/torchdef.h
+    cgotorch/try_catch_return_error_string.hpp
+    cgotorch/vision_ops_nms.hpp
+    cgotorch/vision_ops_roi_align.hpp
+    cgotorch/vision_ops_roi_align_common.h
+  DESTINATION include
+)
