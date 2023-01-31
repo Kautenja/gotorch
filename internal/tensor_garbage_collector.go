@@ -64,7 +64,6 @@ package torch_internal
 
 // #cgo CFLAGS: -I ${SRCDIR}/..
 // #cgo LDFLAGS: -L ${SRCDIR}/../build -Wl,-rpath ${SRCDIR}/../build -lcgotorch
-// #cgo LDFLAGS: -L ${SRCDIR}/../build/libtorch/lib -Wl,-rpath ${SRCDIR}/../build/libtorch/lib -lc10 -ltorch -ltorch_cpu
 // #include "cgotorch/cgotorch.h"
 // import "C"
 // import (

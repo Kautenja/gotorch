@@ -27,7 +27,6 @@ package torch
 
 // #cgo CFLAGS: -I ${SRCDIR}
 // #cgo LDFLAGS: -L ${SRCDIR}/build -Wl,-rpath ${SRCDIR}/build -lcgotorch
-// #cgo LDFLAGS: -L ${SRCDIR}/build/libtorch/lib -Wl,-rpath ${SRCDIR}/build/libtorch/lib -lc10 -ltorch -ltorch_cpu
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include "cgotorch/cgotorch.h"
