@@ -30,7 +30,9 @@ import (
 	"reflect"
 )
 
-// An enumeration of the data-types available in torch.
+// An enumeration of the data-types available in torch. Typically it would be
+// standard for "Invalid" to correspond to value 0; however, these codes
+// are one-to-one with C++ codes in torch.
 type Dtype int8
 const (
 	Byte Dtype = iota
@@ -52,29 +54,21 @@ const (
 	Invalid Dtype = -1
 )
 
-var (
-	// A mapping of Golang element types to their associated Torch data-type.
-	// https://pytorch.org/docs/stable/tensors.html#torch-tensor
-	reflectKindToDtype = map[reflect.Kind]Dtype{
-		reflect.Bool:       Bool,
-		reflect.Uint8:      Byte,
-		reflect.Int8:       Char,
-		reflect.Int16:      Short,
-		reflect.Int32:      Int,
-		reflect.Int64:      Long,
-		reflect.Uint16:     Half, // TODO: add Bfloat16.
-		reflect.Float32:    Float,
-		reflect.Float64:    Double,
-		// reflect.Uint32:     ComplexHalf,
-		reflect.Complex64:  ComplexFloat,
-		reflect.Complex128: ComplexDouble,
-	}
-)
-
 // Map an element type kind to its associated Dtype.
 func GetDtypeOfKind(kind reflect.Kind) Dtype {
-	if dtype, ok := reflectKindToDtype[kind]; ok {
-		return dtype
+	switch (kind) {
+	case reflect.Bool:       return Bool
+	case reflect.Uint8:      return Byte
+	case reflect.Int8:       return Char
+	case reflect.Int16:      return Short
+	case reflect.Int32:      return Int
+	case reflect.Int64:      return Long
+	case reflect.Uint16:     return Half // TODO: add Bfloat16.
+	case reflect.Float32:    return Float
+	case reflect.Float64:    return Double
+	// case reflect.Uint32:     return ComplexHalf
+	case reflect.Complex64:  return ComplexFloat
+	case reflect.Complex128: return ComplexDouble
 	}
 	return Invalid
 }
