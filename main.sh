@@ -131,6 +131,15 @@ case "$1" in
   exit 0;
 ;;
 
+"fmt")
+  if [ $CONTAINER -eq 1 ]; then
+    docker run --rm ${IMAGE} bash -c "./main.sh fmt"
+    exit 0;
+  fi
+  go fmt ./...
+  exit 0;
+;;
+
 "build")
   if [ $CONTAINER -eq 1 ]; then
     docker run --rm ${IMAGE} bash -c "./main.sh install"
