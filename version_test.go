@@ -1,8 +1,6 @@
-// C bindings of libtorch structures.
+// test cases for torch.go
 //
 // Copyright (c) 2023 Christian Kauten
-// Copyright (c) 2022 Sensory, Inc.
-// Copyright (c) 2020 GoTorch Authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +21,18 @@
 // SOFTWARE.
 //
 
-#include "cgotorch/torchdef.h"
+package torch_test
 
-int64_t TorchMajorVersion() {
-    return TORCH_VERSION_MAJOR;
+import (
+    "testing"
+    "github.com/stretchr/testify/assert"
+    "github.com/Kautenja/gotorch"
+)
+
+func TestLibtorchVersion(t *testing.T) {
+    assert.Equal(t, "1.11.0", torch.TorchVersion())
 }
 
-int64_t TorchMinorVersion() {
-    return TORCH_VERSION_MINOR;
-}
-
-int64_t TorchPatchVersion() {
-    return TORCH_VERSION_PATCH;
-}
-
-void ManualSeed(int64_t seed) {
-    torch::manual_seed(seed);
-}
-
-void SetGradEnabled(bool value) {
-    at::GradMode::set_enabled(value);
-}
-
-bool IsGradEnabled() {
-    return at::GradMode::is_enabled();
-}
-
-void SetNumThreads(int32_t num_threads) {
-    torch::set_num_threads(num_threads);
+func TestGoTorchVersion(t *testing.T) {
+    assert.Equal(t, "0.1.0", torch.Version())
 }
