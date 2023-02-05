@@ -30,7 +30,9 @@ import (
 	"reflect"
 )
 
-// An enumeration of the data-types available in torch.
+// An enumeration of the data-types available in torch. Typically it would be
+// standard for "Invalid" to correspond to value 0; however, these codes
+// are one-to-one with C++ codes in torch.
 type Dtype int8
 const (
 	Byte Dtype = iota
@@ -69,17 +71,7 @@ var (
 		reflect.Complex64:  ComplexFloat,
 		reflect.Complex128: ComplexDouble,
 	}
-)
 
-// Map an element type kind to its associated Dtype.
-func GetDtypeOfKind(kind reflect.Kind) Dtype {
-	if dtype, ok := reflectKindToDtype[kind]; ok {
-		return dtype
-	}
-	return Invalid
-}
-
-var (
 	// A mapping of Torch data-type to the number of bytes they require.
 	dtypeToNumBytes = map[Dtype]int64{
 		Byte:          1,
@@ -100,6 +92,14 @@ var (
 		BFloat16:      2,
 	}
 )
+
+// Map an element type kind to its associated Dtype.
+func GetDtypeOfKind(kind reflect.Kind) Dtype {
+	if dtype, ok := reflectKindToDtype[kind]; ok {
+		return dtype
+	}
+	return Invalid
+}
 
 // Return the number of bytes consumed by each element of the given data-type.
 func (dtype Dtype) NumBytes() int64 {
