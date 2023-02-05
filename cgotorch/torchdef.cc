@@ -25,10 +25,30 @@
 
 #include "cgotorch/torchdef.h"
 
-void ManualSeed(int64_t seed) { torch::manual_seed(seed); }
+int64_t TorchMajorVersion() {
+    return TORCH_VERSION_MAJOR;
+}
 
-void SetGradEnabled(bool value) { at::GradMode::set_enabled(value); }
+int64_t TorchMinorVersion() {
+    return TORCH_VERSION_MINOR;
+}
 
-bool IsGradEnabled() { return at::GradMode::is_enabled(); }
+int64_t TorchPatchVersion() {
+    return TORCH_VERSION_PATCH;
+}
 
-void SetNumThreads(int32_t num_threads) { torch::set_num_threads(num_threads); }
+void ManualSeed(int64_t seed) {
+    torch::manual_seed(seed);
+}
+
+void SetGradEnabled(bool value) {
+    at::GradMode::set_enabled(value);
+}
+
+bool IsGradEnabled() {
+    return at::GradMode::is_enabled();
+}
+
+void SetNumThreads(int32_t num_threads) {
+    torch::set_num_threads(num_threads);
+}

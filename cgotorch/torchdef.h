@@ -53,6 +53,18 @@ typedef void* IValue;
 
 typedef void* CUDAStream;
 
+/// @brief Return the libtorch major version.
+/// @returns the major version of libtorch (following semantic versioning.)
+int64_t TorchMajorVersion();
+
+/// @brief Return the libtorch minor version.
+/// @returns the minor version of libtorch (following semantic versioning.)
+int64_t TorchMinorVersion();
+
+/// @brief Return the libtorch patch version.
+/// @returns the patch version of libtorch (following semantic versioning.)
+int64_t TorchPatchVersion();
+
 /// @brief Set the random number generator seed.
 /// @param seed The new seed to set the RNG to.
 void ManualSeed(int64_t seed);
