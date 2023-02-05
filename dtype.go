@@ -54,57 +54,44 @@ const (
 	Invalid Dtype = -1
 )
 
-var (
-	// A mapping of Golang element types to their associated Torch data-type.
-	// https://pytorch.org/docs/stable/tensors.html#torch-tensor
-	reflectKindToDtype = map[reflect.Kind]Dtype{
-		reflect.Bool:       Bool,
-		reflect.Uint8:      Byte,
-		reflect.Int8:       Char,
-		reflect.Int16:      Short,
-		reflect.Int32:      Int,
-		reflect.Int64:      Long,
-		reflect.Uint16:     Half, // TODO: add Bfloat16.
-		reflect.Float32:    Float,
-		reflect.Float64:    Double,
-		// reflect.Uint32:     ComplexHalf,
-		reflect.Complex64:  ComplexFloat,
-		reflect.Complex128: ComplexDouble,
-	}
-
-	// A mapping of Torch data-type to the number of bytes they require.
-	dtypeToNumBytes = map[Dtype]int64{
-		Byte:          1,
-		Char:          1,
-		Short:         2,
-		Int:           4,
-		Long:          8,
-		Half:          2,
-		Float:         4,
-		Double:        8,
-		ComplexHalf:   2,
-		ComplexFloat:  4,
-		ComplexDouble: 8,
-		Bool:          1,
-		QInt8:         1,
-		QUInt8:        1,
-		QInt32:        4,
-		BFloat16:      2,
-	}
-)
-
 // Map an element type kind to its associated Dtype.
 func GetDtypeOfKind(kind reflect.Kind) Dtype {
-	if dtype, ok := reflectKindToDtype[kind]; ok {
-		return dtype
+	switch (kind) {
+	case reflect.Bool:       return Bool
+	case reflect.Uint8:      return Byte
+	case reflect.Int8:       return Char
+	case reflect.Int16:      return Short
+	case reflect.Int32:      return Int
+	case reflect.Int64:      return Long
+	case reflect.Uint16:     return Half // TODO: add Bfloat16.
+	case reflect.Float32:    return Float
+	case reflect.Float64:    return Double
+	// case reflect.Uint32:     return ComplexHalf
+	case reflect.Complex64:  return ComplexFloat
+	case reflect.Complex128: return ComplexDouble
 	}
 	return Invalid
 }
 
 // Return the number of bytes consumed by each element of the given data-type.
 func (dtype Dtype) NumBytes() int64 {
-	if numBytes, ok := dtypeToNumBytes[dtype]; ok {
-		return numBytes
+	switch (dtype) {
+	case Byte:          return 1
+	case Char:          return 1
+	case Short:         return 2
+	case Int:           return 4
+	case Long:          return 8
+	case Half:          return 2
+	case Float:         return 4
+	case Double:        return 8
+	case ComplexHalf:   return 2
+	case ComplexFloat:  return 4
+	case ComplexDouble: return 8
+	case Bool:          return 1
+	case QInt8:         return 1
+	case QUInt8:        return 1
+	case QInt32:        return 4
+	case BFloat16:      return 2
 	}
 	panic(fmt.Sprintf("Received invalid dtype %v", dtype))
 }
