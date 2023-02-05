@@ -32,9 +32,9 @@ package nn_initialize
 // #include "cgotorch/cgotorch.h"
 import "C"
 import (
-    // "unsafe"
-    // "github.com/Kautenja/gotorch"
-    // internal "github.com/Kautenja/gotorch/internal"
+	// "unsafe"
+	// "github.com/Kautenja/gotorch"
+	// internal "github.com/Kautenja/gotorch/internal"
 )
 
 // func Zeros(a *torch.Tensor) {

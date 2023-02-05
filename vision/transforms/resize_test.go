@@ -25,11 +25,11 @@
 package vision_transforms_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    F "github.com/Kautenja/gotorch/nn/functional"
-    "github.com/Kautenja/gotorch/vision/transforms"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	F "github.com/Kautenja/gotorch/nn/functional"
+	"github.com/Kautenja/gotorch/vision/transforms"
 )
 
 // >>> a = torch.tensor([[0, 1, 2, 3],[4, 5, 6, 7],[8, 9, 8, 7],[6, 5, 4, 3]]).float()
@@ -37,18 +37,18 @@ import (
 // tensor([[[[2.5000, 4.5000],
 //           [7.0000, 5.5000]]]])
 func TestResizeWithoutAlignCorners(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {2.5000, 4.5000},
-        {7.0000, 5.5000},
-    })
-    output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, false, false).Forward(tensor.View(1, 1, 4, 4))
-    assert.True(t, output.Equal(expected.View(1, 1, 2, 2)), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{2.5000, 4.5000},
+		{7.0000, 5.5000},
+	})
+	output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, false, false).Forward(tensor.View(1, 1, 4, 4))
+	assert.True(t, output.Equal(expected.View(1, 1, 2, 2)), "Got %v, expected %v", output, expected)
 }
 
 // >>> a = torch.tensor([[0, 1, 2, 3],[4, 5, 6, 7],[8, 9, 8, 7],[6, 5, 4, 3]]).float()
@@ -56,18 +56,18 @@ func TestResizeWithoutAlignCorners(t *testing.T) {
 // tensor([[[[0., 3.],
 //           [6., 3.]]]])
 func TestResizeWithAlignedCorners(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {0, 3},
-        {6, 3},
-    })
-    output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, true, false).Forward(tensor.View(1, 1, 4, 4))
-    assert.True(t, output.Equal(expected.View(1, 1, 2, 2)), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{0, 3},
+		{6, 3},
+	})
+	output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, true, false).Forward(tensor.View(1, 1, 4, 4))
+	assert.True(t, output.Equal(expected.View(1, 1, 2, 2)), "Got %v, expected %v", output, expected)
 }
 
 // >>> a = torch.tensor([[0, 1, 2, 3],[4, 5, 6, 7],[8, 9, 8, 7],[6, 5, 4, 3]]).float()
@@ -75,45 +75,45 @@ func TestResizeWithAlignedCorners(t *testing.T) {
 // tensor([[[[3.5306, 4.7755],
 //           [6.5510, 5.7959]]]])
 func TestResizeWithAntialiasing(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {3.5306, 4.7755},
-        {6.5510, 5.7959},
-    })
-    output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, false, true).Forward(tensor.View(1, 1, 4, 4))
-    assert.True(t, output.AllClose(expected.View(1, 1, 2, 2), 1e-5, 1e-8), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{3.5306, 4.7755},
+		{6.5510, 5.7959},
+	})
+	output := vision_transforms.Resize(2, 2, F.InterpolateBilinear, false, true).Forward(tensor.View(1, 1, 4, 4))
+	assert.True(t, output.AllClose(expected.View(1, 1, 2, 2), 1e-5, 1e-8), "Got %v, expected %v", output, expected)
 }
 
 func TestResizeTransformPanicsOnZeroHeight(t *testing.T) {
-    assert.PanicsWithValue(t, "height should be greater than 0", func() {
-        vision_transforms.Resize(0, 224, F.InterpolateNearest, false, false)
-    })
+	assert.PanicsWithValue(t, "height should be greater than 0", func() {
+		vision_transforms.Resize(0, 224, F.InterpolateNearest, false, false)
+	})
 }
 
 func TestResizeTransformPanicsOnNegativeHeight(t *testing.T) {
-    assert.PanicsWithValue(t, "height should be greater than 0", func() {
-        vision_transforms.Resize(-1, 224, F.InterpolateNearest, false, false)
-    })
+	assert.PanicsWithValue(t, "height should be greater than 0", func() {
+		vision_transforms.Resize(-1, 224, F.InterpolateNearest, false, false)
+	})
 }
 
 func TestResizeTransformPanicsOnZeroWidth(t *testing.T) {
-    assert.PanicsWithValue(t, "width should be greater than 0", func() {
-        vision_transforms.Resize(224, 0, F.InterpolateNearest, false, false)
-    })
+	assert.PanicsWithValue(t, "width should be greater than 0", func() {
+		vision_transforms.Resize(224, 0, F.InterpolateNearest, false, false)
+	})
 }
 
 func TestResizeTransformPanicsOnNegativeWidth(t *testing.T) {
-    assert.PanicsWithValue(t, "width should be greater than 0", func() {
-        vision_transforms.Resize(224, -1, F.InterpolateNearest, false, false)
-    })
+	assert.PanicsWithValue(t, "width should be greater than 0", func() {
+		vision_transforms.Resize(224, -1, F.InterpolateNearest, false, false)
+	})
 }
 
 func TestResizeTransformPanicsOnOneDimensionalInputs(t *testing.T) {
-    transform := vision_transforms.Resize(224, 224, F.InterpolateNearest, false, false)
-    assert.Panics(t, func() { _  = transform.Forward(torch.Zeros([]int64{5}, torch.NewTensorOptions())) })
+	transform := vision_transforms.Resize(224, 224, F.InterpolateNearest, false, false)
+	assert.Panics(t, func() { _  = transform.Forward(torch.Zeros([]int64{5}, torch.NewTensorOptions())) })
 }

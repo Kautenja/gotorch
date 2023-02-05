@@ -24,29 +24,29 @@
 package vision_ops
 
 import (
-    "fmt"
-    "github.com/Kautenja/gotorch"
+	"fmt"
+	"github.com/Kautenja/gotorch"
 )
 
 // Compute the area of a set of bounding boxes. boxes are expected to be in
 // (N, 4, ...) (xmin, ymin, xmax, ymax) format with 0 <= xmin < xmax and
 // 0 <= ymin < ymax.
 func BoxArea(boxes torch.Tensor) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    // Before selecting hyper-columns, cast the boxes to a floating point type.
-    boxes = boxes.CastTo(torch.Float)
-    // Select the individual component hyper-columns.
-    xmin := boxes.Slice(1, 0, 1, 1)
-    ymin := boxes.Slice(1, 1, 2, 1)
-    xmax := boxes.Slice(1, 2, 3, 1)
-    ymax := boxes.Slice(1, 3, 4, 1)
-    // Calculate the height and width (in-place since we copied boxes already.)
-    height := ymax.Sub_(ymin, 1.0)
-    width := xmax.Sub_(xmin, 1.0)
-    // Calculate the area (in-place since we copied stuff already.)
-    area := height.Mul_(width)
-    return area
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	// Before selecting hyper-columns, cast the boxes to a floating point type.
+	boxes = boxes.CastTo(torch.Float)
+	// Select the individual component hyper-columns.
+	xmin := boxes.Slice(1, 0, 1, 1)
+	ymin := boxes.Slice(1, 1, 2, 1)
+	xmax := boxes.Slice(1, 2, 3, 1)
+	ymax := boxes.Slice(1, 3, 4, 1)
+	// Calculate the height and width (in-place since we copied boxes already.)
+	height := ymax.Sub_(ymin, 1.0)
+	width := xmax.Sub_(xmin, 1.0)
+	// Calculate the area (in-place since we copied stuff already.)
+	area := height.Mul_(width)
+	return area
 }

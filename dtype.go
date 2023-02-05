@@ -26,78 +26,78 @@
 package torch
 
 import (
-    "fmt"
-    "reflect"
+	"fmt"
+	"reflect"
 )
 
 // An enumeration of the data-types available in torch.
 type Dtype int8
 const (
-    Byte Dtype = iota
-    Char
-    Short
-    Int
-    Long
-    Half
-    Float
-    Double
-    ComplexHalf
-    ComplexFloat
-    ComplexDouble
-    Bool
-    QInt8
-    QUInt8
-    QInt32
-    BFloat16
-    Invalid Dtype = -1
+	Byte Dtype = iota
+	Char
+	Short
+	Int
+	Long
+	Half
+	Float
+	Double
+	ComplexHalf
+	ComplexFloat
+	ComplexDouble
+	Bool
+	QInt8
+	QUInt8
+	QInt32
+	BFloat16
+	Invalid Dtype = -1
 )
 
 var (
-    // A mapping of Golang element types to their associated Torch data-type.
-    // https://pytorch.org/docs/stable/tensors.html#torch-tensor
-    reflectKindToDtype = map[reflect.Kind]Dtype{
-        reflect.Bool:       Bool,
-        reflect.Uint8:      Byte,
-        reflect.Int8:       Char,
-        reflect.Int16:      Short,
-        reflect.Int32:      Int,
-        reflect.Int64:      Long,
-        reflect.Uint16:     Half, // TODO: add Bfloat16.
-        reflect.Float32:    Float,
-        reflect.Float64:    Double,
-        // reflect.Uint32:     ComplexHalf,
-        reflect.Complex64:  ComplexFloat,
-        reflect.Complex128: ComplexDouble,
-    }
+	// A mapping of Golang element types to their associated Torch data-type.
+	// https://pytorch.org/docs/stable/tensors.html#torch-tensor
+	reflectKindToDtype = map[reflect.Kind]Dtype{
+		reflect.Bool:       Bool,
+		reflect.Uint8:      Byte,
+		reflect.Int8:       Char,
+		reflect.Int16:      Short,
+		reflect.Int32:      Int,
+		reflect.Int64:      Long,
+		reflect.Uint16:     Half, // TODO: add Bfloat16.
+		reflect.Float32:    Float,
+		reflect.Float64:    Double,
+		// reflect.Uint32:     ComplexHalf,
+		reflect.Complex64:  ComplexFloat,
+		reflect.Complex128: ComplexDouble,
+	}
 )
 
 // Map an element type kind to its associated Dtype.
 func GetDtypeOfKind(kind reflect.Kind) Dtype {
-    if dtype, ok := reflectKindToDtype[kind]; ok {
-        return dtype
-    }
-    return Invalid
+	if dtype, ok := reflectKindToDtype[kind]; ok {
+		return dtype
+	}
+	return Invalid
 }
 
 // Return the number of bytes consumed by each element of the given data-type.
 func (dtype Dtype) NumBytes() int64 {
-    switch (dtype) {
-    case Byte:          return 1
-    case Char:          return 1
-    case Short:         return 2
-    case Int:           return 4
-    case Long:          return 8
-    case Half:          return 2
-    case Float:         return 4
-    case Double:        return 8
-    case ComplexHalf:   return 2
-    case ComplexFloat:  return 4
-    case ComplexDouble: return 8
-    case Bool:          return 1
-    case QInt8:         return 1
-    case QUInt8:        return 1
-    case QInt32:        return 4
-    case BFloat16:      return 2
-    }
-    panic(fmt.Sprintf("Received invalid dtype %v", dtype))
+	switch (dtype) {
+	case Byte:          return 1
+	case Char:          return 1
+	case Short:         return 2
+	case Int:           return 4
+	case Long:          return 8
+	case Half:          return 2
+	case Float:         return 4
+	case Double:        return 8
+	case ComplexHalf:   return 2
+	case ComplexFloat:  return 4
+	case ComplexDouble: return 8
+	case Bool:          return 1
+	case QInt8:         return 1
+	case QUInt8:        return 1
+	case QInt32:        return 4
+	case BFloat16:      return 2
+	}
+	panic(fmt.Sprintf("Received invalid dtype %v", dtype))
 }

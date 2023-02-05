@@ -25,8 +25,8 @@
 package vision_transforms_functional
 
 import (
-    "github.com/Kautenja/gotorch"
-    F "github.com/Kautenja/gotorch/nn/functional"
+	"github.com/Kautenja/gotorch"
+	F "github.com/Kautenja/gotorch/nn/functional"
 )
 
 // Crop a slice from a tensor with shape (..., H, W).
@@ -34,39 +34,39 @@ import (
 // Tensor with expected shape of (..., H, W). If image size is smaller than
 // output size along any edge, image is padded with 0 and then cropped.
 func Crop(tensor torch.Tensor, xmin, ymin, xmax, ymax int64) torch.Tensor {
-    shape := tensor.Shape()
-    dim := len(shape)
-    if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }
-    yDim := int64(dim - 2)
-    xDim := int64(dim - 1)
-    H := shape[yDim]
-    W := shape[xDim]
-    // First check if the crop expands past the height or width of the tensor.
-    var padx1 int64 = 0
-    if xmax > W {
-        padx1 = xmax - W
-    }
-    var pady1 int64 = 0
-    if ymax > H {
-        pady1 = ymax - H
-    }
-    // Next check if the crop expands past the (x,y) origin. This is done second
-    // because it will influence the (xmax,ymax) indexes when padding the origin
-    // due to a global shift of the pixel index grid.
-    var padx0 int64 = 0
-    if xmin < 0 {
-        padx0 = -xmin
-        xmax = xmax + padx0  // correct for the index grid shift
-        xmin = 0             // Once padded, the index implicitly becomes 0
-    }
-    var pady0 int64 = 0
-    if ymin < 0 {
-        pady0 = -ymin
-        ymax = ymax + pady0  // correct for the index grid shift
-        ymin = 0             // Once padded, the index implicitly becomes 0
-    }
-    tensor = F.Pad(tensor, []int64{padx0, padx1, pady0, pady1}, F.PadConstant, 0)
-    tensor = tensor.Slice(yDim, ymin, ymax, 1)  // t = t[..., ymin:ymax, :]
-    tensor = tensor.Slice(xDim, xmin, xmax, 1)  // t = t[..., :, xmin:xmax]
-    return tensor
+	shape := tensor.Shape()
+	dim := len(shape)
+	if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }
+	yDim := int64(dim - 2)
+	xDim := int64(dim - 1)
+	H := shape[yDim]
+	W := shape[xDim]
+	// First check if the crop expands past the height or width of the tensor.
+	var padx1 int64 = 0
+	if xmax > W {
+		padx1 = xmax - W
+	}
+	var pady1 int64 = 0
+	if ymax > H {
+		pady1 = ymax - H
+	}
+	// Next check if the crop expands past the (x,y) origin. This is done second
+	// because it will influence the (xmax,ymax) indexes when padding the origin
+	// due to a global shift of the pixel index grid.
+	var padx0 int64 = 0
+	if xmin < 0 {
+		padx0 = -xmin
+		xmax = xmax + padx0  // correct for the index grid shift
+		xmin = 0             // Once padded, the index implicitly becomes 0
+	}
+	var pady0 int64 = 0
+	if ymin < 0 {
+		pady0 = -ymin
+		ymax = ymax + pady0  // correct for the index grid shift
+		ymin = 0             // Once padded, the index implicitly becomes 0
+	}
+	tensor = F.Pad(tensor, []int64{padx0, padx1, pady0, pady1}, F.PadConstant, 0)
+	tensor = tensor.Slice(yDim, ymin, ymax, 1)  // t = t[..., ymin:ymax, :]
+	tensor = tensor.Slice(xDim, xmin, xmax, 1)  // t = t[..., :, xmin:xmax]
+	return tensor
 }

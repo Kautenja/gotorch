@@ -25,30 +25,30 @@
 package vision_transforms
 
 import (
-    "github.com/Kautenja/gotorch"
-    F "github.com/Kautenja/gotorch/nn/functional"
+	"github.com/Kautenja/gotorch"
+	F "github.com/Kautenja/gotorch/nn/functional"
 )
 
 // A transformer that resizes images to a certain size at the center
 type ResizeTransformer struct {
-    // The height and width to resize images to
-    height, width int64
-    // The kind of interpolation to use when resizing images
-    interpolation F.InterpolateMode
-    // Whether to align corners
-    alignCorners bool
-    // Whether to use anti-aliasing filters
-    antialias bool
+	// The height and width to resize images to
+	height, width int64
+	// The kind of interpolation to use when resizing images
+	interpolation F.InterpolateMode
+	// Whether to align corners
+	alignCorners bool
+	// Whether to use anti-aliasing filters
+	antialias bool
 }
 
 // Create a new ResizeTransformer with given parameters.
 func Resize(height, width int64, interpolation F.InterpolateMode, alignCorners, antialias bool) *ResizeTransformer {
-    if height <= 0 { panic("height should be greater than 0") }
-    if width <= 0 { panic("width should be greater than 0") }
-    return &ResizeTransformer{height, width, interpolation, alignCorners, antialias}
+	if height <= 0 { panic("height should be greater than 0") }
+	if width <= 0 { panic("width should be greater than 0") }
+	return &ResizeTransformer{height, width, interpolation, alignCorners, antialias}
 }
 
 // Forward pass an image through the transformer to resize it.
 func (t ResizeTransformer) Forward(tensor torch.Tensor) torch.Tensor {
-    return F.InterpolateSize(tensor, []int64{t.height, t.width}, t.interpolation, t.alignCorners, t.antialias)
+	return F.InterpolateSize(tensor, []int64{t.height, t.width}, t.interpolation, t.alignCorners, t.antialias)
 }

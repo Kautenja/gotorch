@@ -26,10 +26,10 @@
 package nn_initialize_test
 
 import (
-    // "testing"
-    // "github.com/stretchr/testify/assert"
-    // "github.com/Kautenja/gotorch"
-    // initialize "github.com/Kautenja/gotorch/nn/initialize"
+	// "testing"
+	// "github.com/stretchr/testify/assert"
+	// "github.com/Kautenja/gotorch"
+	// initialize "github.com/Kautenja/gotorch/nn/initialize"
 )
 
 // func forAllElements(t *testing.T, x torch.Tensor, ck func(elem interface{}) bool) {

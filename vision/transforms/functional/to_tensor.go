@@ -25,32 +25,32 @@
 package vision_transforms_functional
 
 import (
-    "fmt"
-    "unsafe"
-    "image"
-    "image/draw"
-    "github.com/Kautenja/gotorch"
+	"fmt"
+	"unsafe"
+	"image"
+	"image/draw"
+	"github.com/Kautenja/gotorch"
 )
 
 // Convert `image.Image` to `torch.Tensor`.
 func ToTensor(frame image.Image) torch.Tensor {
-    window := frame.Bounds()
-    height := int64(window.Dy())
-    width := int64(window.Dx())
-    var tensor torch.Tensor
-    switch typedImage := frame.(type) {
-    case *image.Uniform:
-        panic(fmt.Sprintf("ToTensor not implemented for image of type Uniform"))
-    case *image.RGBA:  // Image is already in RGB format.
-        tensor = torch.TensorFromBlob(unsafe.Pointer(&typedImage.Pix[0]), torch.Byte, []int64{height, width, 4})
-    default:  // Draw the image in RGB format.
-        output := image.NewRGBA(window)
-        draw.Draw(output, output.Bounds(), frame, window.Min, draw.Src)
-        tensor = torch.TensorFromBlob(unsafe.Pointer(&output.Pix[0]), torch.Byte, []int64{height, width, 4})
-    }
-    return tensor.
-        CastTo(torch.Float).                 // char -> float
-        Div(torch.FullLike(tensor, 255.0)).  // [0., 255.] -> [0., 1.]
-        Permute(2, 0, 1).                    // HWC -> CHW
-        Slice(0, 0, 3, 1)                    // RGBA -> RGB
+	window := frame.Bounds()
+	height := int64(window.Dy())
+	width := int64(window.Dx())
+	var tensor torch.Tensor
+	switch typedImage := frame.(type) {
+	case *image.Uniform:
+		panic(fmt.Sprintf("ToTensor not implemented for image of type Uniform"))
+	case *image.RGBA:  // Image is already in RGB format.
+		tensor = torch.TensorFromBlob(unsafe.Pointer(&typedImage.Pix[0]), torch.Byte, []int64{height, width, 4})
+	default:  // Draw the image in RGB format.
+		output := image.NewRGBA(window)
+		draw.Draw(output, output.Bounds(), frame, window.Min, draw.Src)
+		tensor = torch.TensorFromBlob(unsafe.Pointer(&output.Pix[0]), torch.Byte, []int64{height, width, 4})
+	}
+	return tensor.
+		CastTo(torch.Float).                 // char -> float
+		Div(torch.FullLike(tensor, 255.0)).  // [0., 255.] -> [0., 1.]
+		Permute(2, 0, 1).                    // HWC -> CHW
+		Slice(0, 0, 3, 1)                    // RGBA -> RGB
 }

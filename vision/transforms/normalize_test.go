@@ -25,57 +25,57 @@
 package vision_transforms_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    "github.com/Kautenja/gotorch/vision/transforms"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch/vision/transforms"
 )
 
 func TestNormalizeTransform(t *testing.T) {
-    a := assert.New(t)
-    trans := vision_transforms.Normalize([]float32{10.0}, []float32{2.3})
-    t1 := torch.NewTensor([]float32{10.2, 11.3, 9.2})
-    t2 := trans.Forward(t1)
-    expected := torch.NewTensor([]float32{
-        (10.2 - 10.0) / 2.3,
-        (11.3 - 10.0) / 2.3,
-        (9.2 - 10.0) / 2.3})
-    a.True(torch.AllClose(t2, expected, 1e-5, 1e-8))
+	a := assert.New(t)
+	trans := vision_transforms.Normalize([]float32{10.0}, []float32{2.3})
+	t1 := torch.NewTensor([]float32{10.2, 11.3, 9.2})
+	t2 := trans.Forward(t1)
+	expected := torch.NewTensor([]float32{
+		(10.2 - 10.0) / 2.3,
+		(11.3 - 10.0) / 2.3,
+		(9.2 - 10.0) / 2.3})
+	a.True(torch.AllClose(t2, expected, 1e-5, 1e-8))
 }
 
 func TestNormalizeTransform3D(t *testing.T) {
-    a := assert.New(t)
-    trans := vision_transforms.Normalize([]float32{1.0, 2.0, 3.0}, []float32{2.3, 2.4, 2.5})
-    // an image in torch should be a 3D tensor with CHW format
-    t1 := torch.NewTensor([][][]float32{{{10.2}}, {{11.3}}, {{9.2}}})
-    t2 := trans.Forward(t1)
-    expected := torch.NewTensor([][][]float32{
-        {{(10.2 - 1.0) / 2.3}},
-        {{(11.3 - 2.0) / 2.4}},
-        {{(9.2 - 3.0) / 2.5}}})
-    a.True(torch.AllClose(t2, expected, 1e-5, 1e-8))
+	a := assert.New(t)
+	trans := vision_transforms.Normalize([]float32{1.0, 2.0, 3.0}, []float32{2.3, 2.4, 2.5})
+	// an image in torch should be a 3D tensor with CHW format
+	t1 := torch.NewTensor([][][]float32{{{10.2}}, {{11.3}}, {{9.2}}})
+	t2 := trans.Forward(t1)
+	expected := torch.NewTensor([][][]float32{
+		{{(10.2 - 1.0) / 2.3}},
+		{{(11.3 - 2.0) / 2.4}},
+		{{(9.2 - 3.0) / 2.5}}})
+	a.True(torch.AllClose(t2, expected, 1e-5, 1e-8))
 }
 
 func TestNormalizeTransformPanicsOnEmptyMean(t *testing.T) {
-    assert.PanicsWithValue(t, "len(mean) should be greater than 0", func() {
-        vision_transforms.Normalize([]float32{}, []float32{1.0})
-    })
+	assert.PanicsWithValue(t, "len(mean) should be greater than 0", func() {
+		vision_transforms.Normalize([]float32{}, []float32{1.0})
+	})
 }
 
 func TestNormalizeTransformPanicsOnEmptyStddev(t *testing.T) {
-    assert.PanicsWithValue(t, "len(stddev) should be greater than 0", func() {
-        vision_transforms.Normalize([]float32{1.0}, []float32{})
-    })
+	assert.PanicsWithValue(t, "len(stddev) should be greater than 0", func() {
+		vision_transforms.Normalize([]float32{1.0}, []float32{})
+	})
 }
 
 func TestNormalizeTransformPanicsOnZerosInStddev(t *testing.T) {
-    assert.PanicsWithValue(t, "stddev contains zeros (pre-emptive divide-by-zero error)", func() {
-        vision_transforms.Normalize([]float32{1.0, 1.0, 1.0}, []float32{1.0, 0.0, 1.0})
-    })
+	assert.PanicsWithValue(t, "stddev contains zeros (pre-emptive divide-by-zero error)", func() {
+		vision_transforms.Normalize([]float32{1.0, 1.0, 1.0}, []float32{1.0, 0.0, 1.0})
+	})
 }
 
 func TestNormalizeTransformPanicsOnShapeInequality(t *testing.T) {
-    assert.PanicsWithValue(t, "len(mean)=2 and len(stddev)=3 should be the same", func() {
-        vision_transforms.Normalize([]float32{1.0, 1.0}, []float32{1.0, 0.0, 1.0})
-    })
+	assert.PanicsWithValue(t, "len(mean)=2 and len(stddev)=3 should be the same", func() {
+		vision_transforms.Normalize([]float32{1.0, 1.0}, []float32{1.0, 0.0, 1.0})
+	})
 }

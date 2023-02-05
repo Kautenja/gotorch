@@ -25,9 +25,9 @@
 package vision_transforms_functional
 
 import (
-    "math"
-    "github.com/Kautenja/gotorch"
-    F "github.com/Kautenja/gotorch/nn/functional"
+	"math"
+	"github.com/Kautenja/gotorch"
+	F "github.com/Kautenja/gotorch/nn/functional"
 )
 
 // Pad the input tensor to the given minimum height and width. If padding is
@@ -35,23 +35,23 @@ import (
 // use the given constant padding value. Returns the padded tensor and the
 // padding that was applied in [left, right, top, bottom] format.
 func PadIfNeeded(
-    tensor torch.Tensor,
-    min_height, min_width int64,
-    mode F.PadMode,
-    value ...float64,
+	tensor torch.Tensor,
+	min_height, min_width int64,
+	mode F.PadMode,
+	value ...float64,
 ) (torch.Tensor, []int64) {
-    shape := tensor.Shape()
-    dim := len(shape)
-    if dim < 2 { panic("PadIfNeeded requires tensor with 2 or more dimensions") }
-    H := math.Max(0.0, (float64(min_height) - float64(shape[int64(dim - 2)])) / 2)
-    top := int64(math.Floor(H))
-    bottom := int64(math.Ceil(H))
-    W := math.Max(0.0, (float64(min_width) - float64(shape[int64(dim - 1)])) / 2)
-    left := int64(math.Floor(W))
-    right := int64(math.Ceil(W))
-    padding := []int64{left, right, top, bottom}
-    // Padding vectors are constructed from the last dimension backwards. This
-    // is convenient for vision where the format is NCHW typically. I.e., we
-    // can always create a length 4 slice in [left, right, top, bottom] format.
-    return F.Pad(tensor, padding, mode, value...), padding
+	shape := tensor.Shape()
+	dim := len(shape)
+	if dim < 2 { panic("PadIfNeeded requires tensor with 2 or more dimensions") }
+	H := math.Max(0.0, (float64(min_height) - float64(shape[int64(dim - 2)])) / 2)
+	top := int64(math.Floor(H))
+	bottom := int64(math.Ceil(H))
+	W := math.Max(0.0, (float64(min_width) - float64(shape[int64(dim - 1)])) / 2)
+	left := int64(math.Floor(W))
+	right := int64(math.Ceil(W))
+	padding := []int64{left, right, top, bottom}
+	// Padding vectors are constructed from the last dimension backwards. This
+	// is convenient for vision where the format is NCHW typically. I.e., we
+	// can always create a length 4 slice in [left, right, top, bottom] format.
+	return F.Pad(tensor, padding, mode, value...), padding
 }

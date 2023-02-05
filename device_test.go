@@ -26,32 +26,32 @@
 package torch_test
 
 import (
-    "strings"
-    "testing"
-    "github.com/stretchr/testify/assert"
-    torch "github.com/Kautenja/gotorch"
+	"strings"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	torch "github.com/Kautenja/gotorch"
 )
 
 func TestDevice(t *testing.T) {
-    assert.NotPanics(t, func() {
-        _ = torch.NewDevice("cpu")
-    })
+	assert.NotPanics(t, func() {
+		_ = torch.NewDevice("cpu")
+	})
 }
 
 func TestDevicePanicWithUnknown(t *testing.T) {
-    defer func() {
-        if recovered_state := recover(); recovered_state != nil {
-            assert.Equal(t, "Expected one of cpu",
-                strings.Split(recovered_state.(string), ",")[0])
-        } else {  // No error occurred to recover from
-            t.Log("Expected panic to occur!")
-            t.Fail()
-        }
-    }()
-    _ = torch.NewDevice("unknown")
+	defer func() {
+		if recovered_state := recover(); recovered_state != nil {
+			assert.Equal(t, "Expected one of cpu",
+				strings.Split(recovered_state.(string), ",")[0])
+		} else {  // No error occurred to recover from
+			t.Log("Expected panic to occur!")
+			t.Fail()
+		}
+	}()
+	_ = torch.NewDevice("unknown")
 }
 
 func TestIsDevice(t *testing.T) {
-    assert.True(t, torch.IsDevice("cpu"))
-    assert.False(t, torch.IsDevice("asdf"))
+	assert.True(t, torch.IsDevice("cpu"))
+	assert.False(t, torch.IsDevice("asdf"))
 }

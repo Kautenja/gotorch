@@ -24,44 +24,44 @@
 package vision_ops
 
 import (
-    "fmt"
-    "github.com/Kautenja/gotorch"
+	"fmt"
+	"github.com/Kautenja/gotorch"
 )
 
 // Clip boxes so that they lie inside an image of size size. Boxes are
 // expected to have shape (N, 4, ...) and be in (xmin, ymin, xmax, ymax)
 // format.
 func ClipBoxesToImage(boxes torch.Tensor, height, width int64) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    dtype := boxes.Dtype()
-    // Create the metadata tensors for the clamping operation.
-    min := torch.NewTensor([]int64{0}).CastTo(dtype)
-    xmax := torch.NewTensor([]int64{width}).CastTo(dtype)
-    ymax := torch.NewTensor([]int64{height}).CastTo(dtype)
-    // Select the x and y hyper columns (assumed to be interlaced) and clamp.
-    x := boxes.Slice(1, 0, shape[1], 2).Clamp(min, xmax)
-    y := boxes.Slice(1, 1, shape[1], 2).Clamp(min, ymax)
-    // Stack the boxes back together and flatten them back to interlaced format.
-    boxes = torch.Stack([]torch.Tensor{x, y}, 2).Flatten(1, 2)
-    return boxes
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	dtype := boxes.Dtype()
+	// Create the metadata tensors for the clamping operation.
+	min := torch.NewTensor([]int64{0}).CastTo(dtype)
+	xmax := torch.NewTensor([]int64{width}).CastTo(dtype)
+	ymax := torch.NewTensor([]int64{height}).CastTo(dtype)
+	// Select the x and y hyper columns (assumed to be interlaced) and clamp.
+	x := boxes.Slice(1, 0, shape[1], 2).Clamp(min, xmax)
+	y := boxes.Slice(1, 1, shape[1], 2).Clamp(min, ymax)
+	// Stack the boxes back together and flatten them back to interlaced format.
+	boxes = torch.Stack([]torch.Tensor{x, y}, 2).Flatten(1, 2)
+	return boxes
 }
 
 // In-place version of ClipBoxesToImage.
 func ClipBoxesToImage_(boxes torch.Tensor, height, width int64) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    dtype := boxes.Dtype()
-    // Create the metadata tensors for the clamping operation.
-    min := torch.NewTensor([]int64{0}).CastTo(dtype)
-    xmax := torch.NewTensor([]int64{width}).CastTo(dtype)
-    ymax := torch.NewTensor([]int64{height}).CastTo(dtype)
-    // Select the x and y hyper columns (assumed to be interlaced) and clamp.
-    boxes.Slice(1, 0, shape[1], 2).Clamp_(min, xmax)
-    boxes.Slice(1, 1, shape[1], 2).Clamp_(min, ymax)
-    return boxes
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	dtype := boxes.Dtype()
+	// Create the metadata tensors for the clamping operation.
+	min := torch.NewTensor([]int64{0}).CastTo(dtype)
+	xmax := torch.NewTensor([]int64{width}).CastTo(dtype)
+	ymax := torch.NewTensor([]int64{height}).CastTo(dtype)
+	// Select the x and y hyper columns (assumed to be interlaced) and clamp.
+	boxes.Slice(1, 0, shape[1], 2).Clamp_(min, xmax)
+	boxes.Slice(1, 1, shape[1], 2).Clamp_(min, ymax)
+	return boxes
 }

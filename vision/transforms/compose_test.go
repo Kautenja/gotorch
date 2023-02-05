@@ -25,21 +25,21 @@
 package vision_transforms_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    "github.com/Kautenja/gotorch/vision/transforms"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch/vision/transforms"
 )
 
 func TestComposeIsIdentityWithNoTransformers(t *testing.T) {
-    tensor := torch.Rand([]int64{1, 2, 3}, torch.NewTensorOptions())
-    transformer := vision_transforms.Compose()
-    assert.True(t, transformer.Forward(tensor).Equal(tensor))
+	tensor := torch.Rand([]int64{1, 2, 3}, torch.NewTensorOptions())
+	transformer := vision_transforms.Compose()
+	assert.True(t, transformer.Forward(tensor).Equal(tensor))
 }
 
 func TestComposeAppliesTransforms(t *testing.T) {
-    tensor := torch.Rand([]int64{1, 3, 4, 4}, torch.NewTensorOptions())
-    transformer := vision_transforms.Compose(vision_transforms.CenterCrop(2, 2))
-    cropped := tensor.Slice(2, 1, 3, 1).Slice(3, 1, 3, 1)
-    assert.True(t, transformer.Forward(tensor).Equal(cropped))
+	tensor := torch.Rand([]int64{1, 3, 4, 4}, torch.NewTensorOptions())
+	transformer := vision_transforms.Compose(vision_transforms.CenterCrop(2, 2))
+	cropped := tensor.Slice(2, 1, 3, 1).Slice(3, 1, 3, 1)
+	assert.True(t, transformer.Forward(tensor).Equal(cropped))
 }

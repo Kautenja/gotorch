@@ -25,53 +25,53 @@
 package vision_transforms_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    "github.com/Kautenja/gotorch/vision/transforms"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch/vision/transforms"
 )
 
 func TestCenterCrop(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {5, 6},
-        {9, 8},
-    })
-    transform := vision_transforms.CenterCrop(2, 2)
-    assert.True(t, transform.Forward(tensor).Equal(expected))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{5, 6},
+		{9, 8},
+	})
+	transform := vision_transforms.CenterCrop(2, 2)
+	assert.True(t, transform.Forward(tensor).Equal(expected))
 }
 
 func TestCenterCropTransformPanicsOnZeroHeight(t *testing.T) {
-    assert.PanicsWithValue(t, "height should be greater than 0", func() {
-        vision_transforms.CenterCrop(0, 224)
-    })
+	assert.PanicsWithValue(t, "height should be greater than 0", func() {
+		vision_transforms.CenterCrop(0, 224)
+	})
 }
 
 func TestCenterCropTransformPanicsOnNegativeHeight(t *testing.T) {
-    assert.PanicsWithValue(t, "height should be greater than 0", func() {
-        vision_transforms.CenterCrop(-1, 224)
-    })
+	assert.PanicsWithValue(t, "height should be greater than 0", func() {
+		vision_transforms.CenterCrop(-1, 224)
+	})
 }
 
 func TestCenterCropTransformPanicsOnZeroWidth(t *testing.T) {
-    assert.PanicsWithValue(t, "width should be greater than 0", func() {
-        vision_transforms.CenterCrop(224, 0)
-    })
+	assert.PanicsWithValue(t, "width should be greater than 0", func() {
+		vision_transforms.CenterCrop(224, 0)
+	})
 }
 
 func TestCenterCropTransformPanicsOnNegativeWidth(t *testing.T) {
-    assert.PanicsWithValue(t, "width should be greater than 0", func() {
-        vision_transforms.CenterCrop(224, -1)
-    })
+	assert.PanicsWithValue(t, "width should be greater than 0", func() {
+		vision_transforms.CenterCrop(224, -1)
+	})
 }
 
 func TestCenterCropTransformPanicsOnOneDimensionalInputs(t *testing.T) {
-    assert.PanicsWithValue(t, "CenterCrop only supports tensors with 2 or more dimensions", func() {
-        vision_transforms.CenterCrop(224, 224).Forward(torch.Zeros([]int64{5}, torch.NewTensorOptions()))
-    })
+	assert.PanicsWithValue(t, "CenterCrop only supports tensors with 2 or more dimensions", func() {
+		vision_transforms.CenterCrop(224, 224).Forward(torch.Zeros([]int64{5}, torch.NewTensorOptions()))
+	})
 }

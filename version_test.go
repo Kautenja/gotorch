@@ -24,15 +24,15 @@
 package torch_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
 )
 
 func TestLibtorchVersion(t *testing.T) {
-    assert.Equal(t, "1.11.0", torch.TorchVersion())
+	assert.Equal(t, "1.11.0", torch.TorchVersion())
 }
 
 func TestGoTorchVersion(t *testing.T) {
-    assert.Equal(t, "0.1.0", torch.Version())
+	assert.Equal(t, "0.1.0", torch.Version())
 }

@@ -25,7 +25,7 @@
 package torch_test
 
 // import (
-//  "testing"
-//  "github.com/stretchr/testify/assert"
-//  torch "github.com/Kautenja/gotorch"
+// 	"testing"
+// 	"github.com/stretchr/testify/assert"
+// 	torch "github.com/Kautenja/gotorch"
 // )

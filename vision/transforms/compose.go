@@ -25,7 +25,7 @@
 package vision_transforms
 
 import (
-    "github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch"
 )
 
 // An abstract transformer that performs operations on tensors.

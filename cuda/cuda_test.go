@@ -26,30 +26,30 @@
 package torch_cuda_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    // torch "github.com/Kautenja/gotorch"
-    cuda "github.com/Kautenja/gotorch/cuda"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	// torch "github.com/Kautenja/gotorch"
+	cuda "github.com/Kautenja/gotorch/cuda"
 )
 
 func TestCUDAIsAvailable(t *testing.T) {
-    assert.NotPanics(t, func() {
-        if cuda.IsAvailable() {
-            t.Log("CUDA is available")
-        } else {
-            t.Log("No CUDA found")
-        }
-    })
+	assert.NotPanics(t, func() {
+		if cuda.IsAvailable() {
+			t.Log("CUDA is available")
+		} else {
+			t.Log("No CUDA found")
+		}
+	})
 }
 
 func TestCUDAIsCUDNNAvailable(t *testing.T) {
-    assert.NotPanics(t, func() {
-        if cuda.IsCUDNNAvailable() {
-            t.Log("CUDNN is available")
-        } else {
-            t.Log("No CUDNN found")
-        }
-    })
+	assert.NotPanics(t, func() {
+		if cuda.IsCUDNNAvailable() {
+			t.Log("CUDNN is available")
+		} else {
+			t.Log("No CUDNN found")
+		}
+	})
 }
 
 // func getDefaultDevice() torch.Device {

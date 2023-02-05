@@ -32,19 +32,19 @@ package torch_cuda
 // #include "cgotorch/cgotorch.h"
 import "C"
 import (
-    // "unsafe"
-    // torch "github.com/Kautenja/gotorch"
-    // internal "github.com/Kautenja/gotorch/internal"
+	// "unsafe"
+	// torch "github.com/Kautenja/gotorch"
+	// internal "github.com/Kautenja/gotorch/internal"
 )
 
 // Return true if CUDA is available
 func IsAvailable() bool {
-    return bool(C.Torch_CUDA_IsAvailable())
+	return bool(C.Torch_CUDA_IsAvailable())
 }
 
 // Return true if cuDNN is available
 func IsCUDNNAvailable() bool {
-    return bool(C.Torch_CUDA_IsCUDNNAvailable())
+	return bool(C.Torch_CUDA_IsCUDNNAvailable())
 }
 
 // // CUDAStream struct wrapped Nvidia CUDA Stream

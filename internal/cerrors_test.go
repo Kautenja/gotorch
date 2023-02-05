@@ -25,31 +25,31 @@
 package torch_internal_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    internal "github.com/Kautenja/gotorch/internal"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	internal "github.com/Kautenja/gotorch/internal"
 )
 
 func Test_PanicOnCException_WithNilInput(t *testing.T) {
-    assert.NotPanics(t, func() { internal.PanicOnCException(nil) })
+	assert.NotPanics(t, func() { internal.PanicOnCException(nil) })
 }
 
 func Test_PanicOnCException_WithMockedCException(t *testing.T) {
-    message := "an error message"
-    assert.PanicsWithValue(t, message, func() {
-        internal.PanicOnCException(internal.MockCException(message))
-    })
+	message := "an error message"
+	assert.PanicsWithValue(t, message, func() {
+		internal.PanicOnCException(internal.MockCException(message))
+	})
 }
 
 func Test_NewTorchError_WithNilInput(t *testing.T) {
-    error := internal.NewTorchError(nil)
-    assert.NotNil(t, error)
-    assert.Equal(t, "", error.Error())
+	error := internal.NewTorchError(nil)
+	assert.NotNil(t, error)
+	assert.Equal(t, "", error.Error())
 }
 
 func Test_NewTorchError_WithMockedCException(t *testing.T) {
-    message := "an error message"
-    error := internal.NewTorchError(internal.MockCException(message))
-    assert.NotNil(t, error)
-    assert.Equal(t, message, error.Error())
+	message := "an error message"
+	error := internal.NewTorchError(internal.MockCException(message))
+	assert.NotNil(t, error)
+	assert.Equal(t, message, error.Error())
 }

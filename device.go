@@ -32,33 +32,33 @@ package torch
 // #include "cgotorch/cgotorch.h"
 import "C"
 import (
-    "runtime"
-    "unsafe"
-    internal "github.com/Kautenja/gotorch/internal"
+	"runtime"
+	"unsafe"
+	internal "github.com/Kautenja/gotorch/internal"
 )
 
 // Device wrapper a pointer to C.Device
 type Device struct {
-    T C.Device
+	T C.Device
 }
 
 // NewDevice returns a Device
 func NewDevice(deviceName string) Device {
-    var device C.Device
-    deviceNameCString := C.CString(deviceName)
-    defer C.free(unsafe.Pointer(deviceNameCString))
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device, deviceNameCString)))
-    // Set the finalizer for the Go structure to free the heap-allocated C
-    // memory when the garbage collector finalizes the object.
-    runtime.SetFinalizer((*unsafe.Pointer)(&device), func(t *unsafe.Pointer) {
-        C.Torch_Device_Free(C.Device(*t))
-    })
-    return Device{device}
+	var device C.Device
+	deviceNameCString := C.CString(deviceName)
+	defer C.free(unsafe.Pointer(deviceNameCString))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device, deviceNameCString)))
+	// Set the finalizer for the Go structure to free the heap-allocated C
+	// memory when the garbage collector finalizes the object.
+	runtime.SetFinalizer((*unsafe.Pointer)(&device), func(t *unsafe.Pointer) {
+		C.Torch_Device_Free(C.Device(*t))
+	})
+	return Device{device}
 }
 
 // Return true if the given device is valid, false otherwise.
 func IsDevice(deviceName string) bool {
-    deviceNameCString := C.CString(deviceName)
-    defer C.free(unsafe.Pointer(deviceNameCString))
-    return bool(C.Torch_IsDevice(deviceNameCString))
+	deviceNameCString := C.CString(deviceName)
+	defer C.free(unsafe.Pointer(deviceNameCString))
+	return bool(C.Torch_IsDevice(deviceNameCString))
 }

@@ -26,11 +26,11 @@
 package nn_functional_test
 
 import (
-    "unsafe"
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    F "github.com/Kautenja/gotorch/nn/functional"
+	"unsafe"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	F "github.com/Kautenja/gotorch/nn/functional"
 )
 
 // MARK: torch::nn::functional::adaptive_avg_pool1d
@@ -85,21 +85,21 @@ import (
 // MARK: torch::nn::functional::instance_norm
 
 func TestInterpolateSize(t *testing.T) {
-    tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
-    output := F.InterpolateSize(tensor, []int64{128, 64}, F.InterpolateNearest, false, false)
-    assert.NotNil(t, output.T)
-    assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
-    // The input tensor should not be changed
-    assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
+	tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
+	output := F.InterpolateSize(tensor, []int64{128, 64}, F.InterpolateNearest, false, false)
+	assert.NotNil(t, output.T)
+	assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
+	// The input tensor should not be changed
+	assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
 }
 
 func TestInterpolateScale(t *testing.T) {
-    tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
-    output := F.InterpolateScale(tensor, []float64{0.5, 0.25}, F.InterpolateNearest, false, false)
-    assert.NotNil(t, output.T)
-    assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
-    // The input tensor should not be changed
-    assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
+	tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
+	output := F.InterpolateScale(tensor, []float64{0.5, 0.25}, F.InterpolateNearest, false, false)
+	assert.NotNil(t, output.T)
+	assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
+	// The input tensor should not be changed
+	assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
 }
 
 // MARK: torch::nn::functional::kl_div
@@ -151,10 +151,10 @@ func TestInterpolateScale(t *testing.T) {
 // MARK: torch::nn::functional::nll_loss
 
 func TestNormalize(t *testing.T) {
-    data := [2][3]float32{{1.0, 1.1, 1.2}, {2, 3, 4}}
-    tensor := torch.TensorFromBlob(unsafe.Pointer(&data), torch.Float, []int64{2, 3})
-    output := F.Normalize(tensor, 2.0, 1, 1e-12)
-    assert.InEpsilon(t, 2.0, output.Square().Sum().Item().(float32), 1e-6)
+	data := [2][3]float32{{1.0, 1.1, 1.2}, {2, 3, 4}}
+	tensor := torch.TensorFromBlob(unsafe.Pointer(&data), torch.Float, []int64{2, 3})
+	output := F.Normalize(tensor, 2.0, 1, 1e-12)
+	assert.InEpsilon(t, 2.0, output.Square().Sum().Item().(float32), 1e-6)
 }
 
 // MARK: torch::nn::functional::one_hot
@@ -167,11 +167,11 @@ func TestNormalize(t *testing.T) {
 //         [2, 3, 0],
 //         [0, 0, 0]])
 func TestPad(t *testing.T) {
-    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
-    output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant)
-    assert.NotNil(t, output.T)
-    expected := torch.NewTensor([][]int64{{0, 1, 0}, {2, 3, 0}, {0, 0, 0}})
-    assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+	output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant)
+	assert.NotNil(t, output.T)
+	expected := torch.NewTensor([][]int64{{0, 1, 0}, {2, 3, 0}, {0, 0, 0}})
+	assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
 }
 
 // >>> a = torch.tensor([[0, 1], [2, 3]])
@@ -180,18 +180,18 @@ func TestPad(t *testing.T) {
 //         [2, 3, 1],
 //         [1, 1, 1]])
 func TestPadWithConstantValue(t *testing.T) {
-    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
-    output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant, 1)
-    assert.NotNil(t, output.T)
-    expected := torch.NewTensor([][]int64{{0, 1, 1}, {2, 3, 1}, {1, 1, 1}})
-    assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+	output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant, 1)
+	assert.NotNil(t, output.T)
+	expected := torch.NewTensor([][]int64{{0, 1, 1}, {2, 3, 1}, {1, 1, 1}})
+	assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
 }
 
 func TestPadPanicsOnPaddingValueLengthGreaterThan1(t *testing.T) {
-    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
-    assert.PanicsWithValue(t, "value should contain 0 or 1 values", func() {
-        F.Pad(tensor, []int64{0, 0, 0, 0}, F.PadConstant, 1, 1)
-    })
+	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+	assert.PanicsWithValue(t, "value should contain 0 or 1 values", func() {
+		F.Pad(tensor, []int64{0, 0, 0, 0}, F.PadConstant, 1, 1)
+	})
 }
 
 // >>> a = torch.tensor([[0, 1], [2, 3]])
@@ -200,10 +200,10 @@ func TestPadPanicsOnPaddingValueLengthGreaterThan1(t *testing.T) {
 //   File "<stdin>", line 1, in <module>
 // RuntimeError: Padding length must be divisible by 2
 func TestPadPanicsOnPaddingLengthNotDivisbleBy2(t *testing.T) {
-    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
-    assert.PanicsWithValue(t, "Padding length must be divisible by 2", func() {
-        F.Pad(tensor, []int64{0, 1, 0, 1, 1}, F.PadConstant)
-    })
+	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+	assert.PanicsWithValue(t, "Padding length must be divisible by 2", func() {
+		F.Pad(tensor, []int64{0, 1, 0, 1, 1}, F.PadConstant)
+	})
 }
 
 // >>> a = torch.tensor([[0, 1], [2, 3]])
@@ -212,10 +212,10 @@ func TestPadPanicsOnPaddingLengthNotDivisbleBy2(t *testing.T) {
 //   File "<stdin>", line 1, in <module>
 // RuntimeError: Padding length too large
 func TestPadPanicsOnPaddingLengthTooLarge(t *testing.T) {
-    tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
-    assert.PanicsWithValue(t, "Padding length too large", func() {
-        F.Pad(tensor, []int64{0, 1, 0, 1, 1, 1}, F.PadConstant)
-    })
+	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
+	assert.PanicsWithValue(t, "Padding length too large", func() {
+		F.Pad(tensor, []int64{0, 1, 0, 1, 1, 1}, F.PadConstant)
+	})
 }
 
 // MARK: torch::nn::functional::pairwise_distance
@@ -229,10 +229,10 @@ func TestPadPanicsOnPaddingLengthTooLarge(t *testing.T) {
 // tensor([[0.0000, 0.0000],
 //         [1.0000, 0.5000]])
 func TestRelu(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{{-0.5, -1}, {1, 0.5}})
-    r := F.Relu(tensor, false)
-    g := " 0.0000  0.0000\n 1.0000  0.5000\n[ CPUFloatType{2,2} ]"
-    assert.Equal(t, g, r.String())
+	tensor := torch.NewTensor([][]float32{{-0.5, -1}, {1, 0.5}})
+	r := F.Relu(tensor, false)
+	g := " 0.0000  0.0000\n 1.0000  0.5000\n[ CPUFloatType{2,2} ]"
+	assert.Equal(t, g, r.String())
 }
 
 // MARK: torch::nn::functional::relu6
@@ -246,10 +246,10 @@ func TestRelu(t *testing.T) {
 // tensor([[0.7311, 0.2689],
 //         [0.2689, 0.7311]])
 func TestSoftmax(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{{1.0, 0.0}, {0.0, 1.0}})
-    output := F.Softmax(tensor, -1)
-    expected := torch.NewTensor([][]float32{{0.7311, 0.2689}, {0.2689, 0.7311}})
-    assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{{1.0, 0.0}, {0.0, 1.0}})
+	output := F.Softmax(tensor, -1)
+	expected := torch.NewTensor([][]float32{{0.7311, 0.2689}, {0.2689, 0.7311}})
+	assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
 }
 
 // MARK: torch::nn::functional::softmin

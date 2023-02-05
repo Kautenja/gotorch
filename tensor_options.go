@@ -31,15 +31,15 @@ package torch
 // #include "cgotorch/cgotorch.h"
 import "C"
 import (
-    "unsafe"
-    "runtime"
-    internal "github.com/Kautenja/gotorch/internal"
+	"unsafe"
+	"runtime"
+	internal "github.com/Kautenja/gotorch/internal"
 )
 
 // TensorOptions wraps a pointer to a C.TensorOptions as an unsafe Pointer.
 type TensorOptions struct {
-    // A pointer to a C.TensorOptions.
-    T *unsafe.Pointer
+	// A pointer to a C.TensorOptions.
+	T *unsafe.Pointer
 }
 
 // Free the heap-allocated C memory when the garbage collector finalizes.
@@ -52,28 +52,28 @@ type TensorOptions struct {
 // would create a single TensorOptions and mutate its state and mock the
 // functional interface here at the Go layer, but this is not possible ATM.
 func (options TensorOptions) withFinalizerSet() TensorOptions {
-    runtime.SetFinalizer((*unsafe.Pointer)(options.T), func(t *unsafe.Pointer) {
-        C.Torch_TensorOptions_Free(C.TensorOptions(*t))
-    })
-    return options
+	runtime.SetFinalizer((*unsafe.Pointer)(options.T), func(t *unsafe.Pointer) {
+		C.Torch_TensorOptions_Free(C.TensorOptions(*t))
+	})
+	return options
 }
 
 // Create a new TensorOptions.
 func NewTensorOptions() TensorOptions {
-    var output C.TensorOptions
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&output)))
-    return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	var output C.TensorOptions
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&output)))
+	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }
 
 // Create a new TensorOptions with the given data type.
 func (options TensorOptions) Dtype(value Dtype) TensorOptions {
-    var output C.TensorOptions
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Dtype(
-        &output,
-        C.TensorOptions(*options.T),
-        C.int8_t(value),
-    )))
-    return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	var output C.TensorOptions
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Dtype(
+		&output,
+		C.TensorOptions(*options.T),
+		C.int8_t(value),
+	)))
+	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }
 
 // TODO:
@@ -121,33 +121,33 @@ func (options TensorOptions) Dtype(value Dtype) TensorOptions {
 
 // Create a new TensorOptions with the given compute device.
 func (options TensorOptions) Device(device Device) TensorOptions {
-    var output C.TensorOptions
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Device(
-        &output,
-        C.TensorOptions(*options.T),
-        (C.Device)(device.T),
-    )))
-    return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	var output C.TensorOptions
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Device(
+		&output,
+		C.TensorOptions(*options.T),
+		(C.Device)(device.T),
+	)))
+	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }
 
 // Create a new TensorOptions with the given gradient taping state.
 func (options TensorOptions) RequiresGrad(requiresGrad bool) TensorOptions {
-    var output C.TensorOptions
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_RequiresGrad(
-        &output,
-        C.TensorOptions(*options.T),
-        C.bool(requiresGrad),
-    )))
-    return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	var output C.TensorOptions
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_RequiresGrad(
+		&output,
+		C.TensorOptions(*options.T),
+		C.bool(requiresGrad),
+	)))
+	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }
 
 // Create a new TensorOptions with the given memory pinning state.
 func (options TensorOptions) PinnedMemory(pinnedMemory bool) TensorOptions {
-    var output C.TensorOptions
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_PinnedMemory(
-        &output,
-        C.TensorOptions(*options.T),
-        C.bool(pinnedMemory),
-    )))
-    return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	var output C.TensorOptions
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_PinnedMemory(
+		&output,
+		C.TensorOptions(*options.T),
+		C.bool(pinnedMemory),
+	)))
+	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }

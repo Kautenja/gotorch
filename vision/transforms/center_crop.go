@@ -25,37 +25,37 @@
 package vision_transforms
 
 import (
-    "github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch"
 )
 
 // A transformer that crops images to a certain size at the center
 type CenterCropTransformer struct {
-    height, width int64
+	height, width int64
 }
 
 // Create a new CenterCropTransformer with given height and width.
 func CenterCrop(height, width int64) *CenterCropTransformer {
-    if height <= 0 { panic("height should be greater than 0") }
-    if width <= 0 { panic("width should be greater than 0") }
-    return &CenterCropTransformer{height, width}
+	if height <= 0 { panic("height should be greater than 0") }
+	if width <= 0 { panic("width should be greater than 0") }
+	return &CenterCropTransformer{height, width}
 }
 
 // Forward pass an image through the transformer to center crop it.
 func (t CenterCropTransformer) Forward(tensor torch.Tensor) torch.Tensor {
-    shape := tensor.Shape()
-    if len(shape) < 2 {
-        panic("CenterCrop only supports tensors with 2 or more dimensions")
-    }
-    // Determine which dimensions the height and width are in
-    height_dim := int64(len(shape) - 2)
-    width_dim := int64(len(shape) - 1)
-    // Select the height and width from the shape slice.
-    height := shape[height_dim]
-    width := shape[width_dim]
-    // Calculate the offset for the height and width.
-    offset_height := int64((height - t.height) / 2)
-    offset_width := int64((width - t.width) / 2)
-    tensor = tensor.Slice(height_dim, offset_height, height - offset_height, 1)
-    tensor = tensor.Slice(width_dim, offset_width,  width - offset_width,   1)
-    return tensor
+	shape := tensor.Shape()
+	if len(shape) < 2 {
+		panic("CenterCrop only supports tensors with 2 or more dimensions")
+	}
+	// Determine which dimensions the height and width are in
+	height_dim := int64(len(shape) - 2)
+	width_dim := int64(len(shape) - 1)
+	// Select the height and width from the shape slice.
+	height := shape[height_dim]
+	width := shape[width_dim]
+	// Calculate the offset for the height and width.
+	offset_height := int64((height - t.height) / 2)
+	offset_width := int64((width - t.width) / 2)
+	tensor = tensor.Slice(height_dim, offset_height, height - offset_height, 1)
+	tensor = tensor.Slice(width_dim, offset_width,  width - offset_width,   1)
+	return tensor
 }

@@ -26,30 +26,30 @@
 package torch_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
 )
 
 func TestManualSeed(t *testing.T) {
-    torch.ManualSeed(1)
-    x := torch.RandN([]int64{1}, torch.NewTensorOptions())
-    assert.Equal(t, float32(0.66135216), x.Item().(float32))
+	torch.ManualSeed(1)
+	x := torch.RandN([]int64{1}, torch.NewTensorOptions())
+	assert.Equal(t, float32(0.66135216), x.Item().(float32))
 }
 
 func TestGradientState(t *testing.T) {
-    // Grad should be enabled by default.
-    assert.True(t, torch.IsGradEnabled())
-    // A nop state change should do nothing.
-    torch.SetGradEnabled(true)
-    assert.True(t, torch.IsGradEnabled())
-    // Setting the state to false should persist
-    torch.SetGradEnabled(false)
-    assert.False(t, torch.IsGradEnabled())
-    // A nop state change should do nothing.
-    torch.SetGradEnabled(false)
-    assert.False(t, torch.IsGradEnabled())
-    // Setting the state again should work
-    torch.SetGradEnabled(true)
-    assert.True(t, torch.IsGradEnabled())
+	// Grad should be enabled by default.
+	assert.True(t, torch.IsGradEnabled())
+	// A nop state change should do nothing.
+	torch.SetGradEnabled(true)
+	assert.True(t, torch.IsGradEnabled())
+	// Setting the state to false should persist
+	torch.SetGradEnabled(false)
+	assert.False(t, torch.IsGradEnabled())
+	// A nop state change should do nothing.
+	torch.SetGradEnabled(false)
+	assert.False(t, torch.IsGradEnabled())
+	// Setting the state again should work
+	torch.SetGradEnabled(true)
+	assert.True(t, torch.IsGradEnabled())
 }

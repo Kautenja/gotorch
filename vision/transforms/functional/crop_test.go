@@ -25,198 +25,198 @@
 package vision_transforms_functional_test
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/Kautenja/gotorch"
-    "github.com/Kautenja/gotorch/vision/transforms/functional"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch/vision/transforms/functional"
 )
 
 func TestCropIdentity(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, 0, 4, 4)
-    assert.True(t, output.Equal(tensor))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, 0, 4, 4)
+	assert.True(t, output.Equal(tensor))
 }
 
 func TestCropExpandsYBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, 0, 4, 5)
-    expected := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-        {0, 0, 0, 0},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, 0, 4, 5)
+	expected := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+		{0, 0, 0, 0},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropExpandsXBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, 0, 5, 4)
-    expected := torch.NewTensor([][]float32{
-        {0, 1, 2, 3, 0},
-        {4, 5, 6, 7, 0},
-        {8, 9, 8, 7, 0},
-        {6, 5, 4, 3, 0},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, 0, 5, 4)
+	expected := torch.NewTensor([][]float32{
+		{0, 1, 2, 3, 0},
+		{4, 5, 6, 7, 0},
+		{8, 9, 8, 7, 0},
+		{6, 5, 4, 3, 0},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropExpandsBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, 0, 5, 5)
-    expected := torch.NewTensor([][]float32{
-        {0, 1, 2, 3, 0},
-        {4, 5, 6, 7, 0},
-        {8, 9, 8, 7, 0},
-        {6, 5, 4, 3, 0},
-        {0, 0, 0, 0, 0},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, 0, 5, 5)
+	expected := torch.NewTensor([][]float32{
+		{0, 1, 2, 3, 0},
+		{4, 5, 6, 7, 0},
+		{8, 9, 8, 7, 0},
+		{6, 5, 4, 3, 0},
+		{0, 0, 0, 0, 0},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropShiftsYOrigin(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, -1, 4, 4)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 0, 0},
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, -1, 4, 4)
+	expected := torch.NewTensor([][]float32{
+		{0, 0, 0, 0},
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropShiftsXOrigin(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, -1, 0, 4, 4)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 1, 2, 3},
-        {0, 4, 5, 6, 7},
-        {0, 8, 9, 8, 7},
-        {0, 6, 5, 4, 3},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, -1, 0, 4, 4)
+	expected := torch.NewTensor([][]float32{
+		{0, 0, 1, 2, 3},
+		{0, 4, 5, 6, 7},
+		{0, 8, 9, 8, 7},
+		{0, 6, 5, 4, 3},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropShiftsOrigin(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, -1, -1, 4, 4)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 0, 0, 0},
-        {0, 0, 1, 2, 3},
-        {0, 4, 5, 6, 7},
-        {0, 8, 9, 8, 7},
-        {0, 6, 5, 4, 3},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, -1, -1, 4, 4)
+	expected := torch.NewTensor([][]float32{
+		{0, 0, 0, 0, 0},
+		{0, 0, 1, 2, 3},
+		{0, 4, 5, 6, 7},
+		{0, 8, 9, 8, 7},
+		{0, 6, 5, 4, 3},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropShiftsOriginAndExpandsBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, -1, -1, 5, 5)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 1, 2, 3, 0},
-        {0, 4, 5, 6, 7, 0},
-        {0, 8, 9, 8, 7, 0},
-        {0, 6, 5, 4, 3, 0},
-        {0, 0, 0, 0, 0, 0},
-    })
-    assert.True(t, expected.Equal(output))
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, -1, -1, 5, 5)
+	expected := torch.NewTensor([][]float32{
+		{0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 2, 3, 0},
+		{0, 4, 5, 6, 7, 0},
+		{0, 8, 9, 8, 7, 0},
+		{0, 6, 5, 4, 3, 0},
+		{0, 0, 0, 0, 0, 0},
+	})
+	assert.True(t, expected.Equal(output))
 }
 
 func TestCropFromOriginToSafeBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {0, 1},
-        {4, 5},
-        {8, 9},
-    })
-    output := vision_transforms_functional.Crop(tensor, 0, 0, 2, 3)
-    assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{0, 1},
+		{4, 5},
+		{8, 9},
+	})
+	output := vision_transforms_functional.Crop(tensor, 0, 0, 2, 3)
+	assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
 func TestCropFromSafePointToBounds(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {6, 7},
-        {8, 7},
-        {4, 3},
-    })
-    output := vision_transforms_functional.Crop(tensor, 2, 1, 4, 4)
-    assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{6, 7},
+		{8, 7},
+		{4, 3},
+	})
+	output := vision_transforms_functional.Crop(tensor, 2, 1, 4, 4)
+	assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
 func TestCropOfArbitrarySafeWindow(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    expected := torch.NewTensor([][]float32{
-        {5, 6},
-        {9, 8},
-    })
-    output := vision_transforms_functional.Crop(tensor, 1, 1, 3, 3)
-    assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
+	tensor := torch.NewTensor([][]float32{
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{8, 9, 8, 7},
+		{6, 5, 4, 3},
+	})
+	expected := torch.NewTensor([][]float32{
+		{5, 6},
+		{9, 8},
+	})
+	output := vision_transforms_functional.Crop(tensor, 1, 1, 3, 3)
+	assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
 func TestCropTransformPanicsOn1DimensionalInput(t *testing.T) {
-    tensor := torch.NewTensor([]float32{0, 1, 2, 3})
-    assert.PanicsWithValue(t, "Crop requires inputs with 2 or more dimensions", func() {
-        vision_transforms_functional.Crop(tensor, 0, 0, 1, 1)
-    })
+	tensor := torch.NewTensor([]float32{0, 1, 2, 3})
+	assert.PanicsWithValue(t, "Crop requires inputs with 2 or more dimensions", func() {
+		vision_transforms_functional.Crop(tensor, 0, 0, 1, 1)
+	})
 }

@@ -25,7 +25,7 @@
 package vision_transforms_functional
 
 import (
-    "github.com/Kautenja/gotorch"
+	"github.com/Kautenja/gotorch"
 )
 
 // Crop a slice from a tensor with shape (..., H, W).
@@ -44,16 +44,16 @@ import (
 // zero padding.
 //
 func SafeCrop(tensor torch.Tensor, xmin, ymin, xmax, ymax int64) torch.Tensor {
-    shape := tensor.Shape()
-    dim := len(shape)
-    if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }
-    H := shape[int64(dim - 2)]
-    W := shape[int64(dim - 1)]
-    if xmin < 0 { xmin = 0 }
-    if ymin < 0 { ymin = 0 }
-    if xmax > W { xmax = W }
-    if ymax > H { ymax = H }
-    tensor = tensor.Slice(int64(dim - 2), ymin, ymax, 1)  // t = t[..., ymin:ymax, :]
-    tensor = tensor.Slice(int64(dim - 1), xmin, xmax, 1)  // t = t[..., :, xmin:xmax]
-    return tensor
+	shape := tensor.Shape()
+	dim := len(shape)
+	if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }
+	H := shape[int64(dim - 2)]
+	W := shape[int64(dim - 1)]
+	if xmin < 0 { xmin = 0 }
+	if ymin < 0 { ymin = 0 }
+	if xmax > W { xmax = W }
+	if ymax > H { ymax = H }
+	tensor = tensor.Slice(int64(dim - 2), ymin, ymax, 1)  // t = t[..., ymin:ymax, :]
+	tensor = tensor.Slice(int64(dim - 1), xmin, xmax, 1)  // t = t[..., :, xmin:xmax]
+	return tensor
 }

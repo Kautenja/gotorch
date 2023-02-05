@@ -24,65 +24,65 @@
 package vision_ops
 
 import (
-    "fmt"
-    "github.com/Kautenja/gotorch"
+	"fmt"
+	"github.com/Kautenja/gotorch"
 )
 
 // Find boxes within a particular inclusive minimum and maximum bound. Boxes
 // are expected to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
 func FindBoxesInSizeRange(
-    boxes torch.Tensor,
-    widthMin, heightMin, widthMax, heightMax int64,
+	boxes torch.Tensor,
+	widthMin, heightMin, widthMax, heightMax int64,
 ) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    boxes = boxes.CastTo(torch.Float)
-    // Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
-    width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
-    height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
-    // Calculate vectors determining if the boxes are within the bounds.
-    isWideEnough := width.GreaterEqual(torch.FullLike(width, float32(widthMin)))
-    isNotTooWide := width.LessEqual(torch.FullLike(width, float32(widthMax)))
-    isTallEnough := height.GreaterEqual(torch.FullLike(height, float32(heightMin)))
-    isNotTooTall := height.LessEqual(torch.FullLike(height, float32(heightMax)))
-    // Aggregate the boolean vectors using logical AND operations.
-    return isWideEnough.LogicalAnd(isNotTooWide).LogicalAnd(isTallEnough).LogicalAnd(isNotTooTall)
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	boxes = boxes.CastTo(torch.Float)
+	// Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
+	width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
+	height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
+	// Calculate vectors determining if the boxes are within the bounds.
+	isWideEnough := width.GreaterEqual(torch.FullLike(width, float32(widthMin)))
+	isNotTooWide := width.LessEqual(torch.FullLike(width, float32(widthMax)))
+	isTallEnough := height.GreaterEqual(torch.FullLike(height, float32(heightMin)))
+	isNotTooTall := height.LessEqual(torch.FullLike(height, float32(heightMax)))
+	// Aggregate the boolean vectors using logical AND operations.
+	return isWideEnough.LogicalAnd(isNotTooWide).LogicalAnd(isTallEnough).LogicalAnd(isNotTooTall)
 }
 
 // Find boxes that are larger than or equal to a given size. Boxes are expected
 // to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
 func FindLargeBoxes(boxes torch.Tensor, widthMin, heightMin int64) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    boxes = boxes.CastTo(torch.Float)
-    // Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
-    width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
-    height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
-    // Calculate vectors determining if the boxes are larger than the size.
-    isWideEnough := width.GreaterEqual(torch.FullLike(width, float32(widthMin)))
-    isTallEnough := height.GreaterEqual(torch.FullLike(height, float32(heightMin)))
-    // Aggregate the boolean vectors using logical AND operations.
-    return isWideEnough.LogicalAnd(isTallEnough)
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	boxes = boxes.CastTo(torch.Float)
+	// Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
+	width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
+	height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
+	// Calculate vectors determining if the boxes are larger than the size.
+	isWideEnough := width.GreaterEqual(torch.FullLike(width, float32(widthMin)))
+	isTallEnough := height.GreaterEqual(torch.FullLike(height, float32(heightMin)))
+	// Aggregate the boolean vectors using logical AND operations.
+	return isWideEnough.LogicalAnd(isTallEnough)
 }
 
 // Find boxes that are smaller than or equal to a given size. Boxes are
 // expected to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
 func FindSmallBoxes(boxes torch.Tensor, widthMax, heightMax int64) torch.Tensor {
-    shape := boxes.Shape()
-    if len(shape) < 2 || shape[1] != 4 {
-        panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
-    }
-    boxes = boxes.CastTo(torch.Float)
-    // Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
-    width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
-    height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
-    // Calculate vectors determining if the boxes are smaller than the size.
-    isNotTooWide := width.LessEqual(torch.FullLike(width, float32(widthMax)))
-    isNotTooTall := height.LessEqual(torch.FullLike(height, float32(heightMax)))
-    // Aggregate the boolean vectors using logical AND operations.
-    return isNotTooWide.LogicalAnd(isNotTooTall)
+	shape := boxes.Shape()
+	if len(shape) < 2 || shape[1] != 4 {
+		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
+	}
+	boxes = boxes.CastTo(torch.Float)
+	// Calculate the width and height from the xmin,ymin,xmax,ymax boxes.
+	width := boxes.Slice(1, 2, 3, 1).Sub(boxes.Slice(1, 0, 1, 1), 1.0)
+	height := boxes.Slice(1, 3, 4, 1).Sub(boxes.Slice(1, 1, 2, 1), 1.0)
+	// Calculate vectors determining if the boxes are smaller than the size.
+	isNotTooWide := width.LessEqual(torch.FullLike(width, float32(widthMax)))
+	isNotTooTall := height.LessEqual(torch.FullLike(height, float32(heightMax)))
+	// Aggregate the boolean vectors using logical AND operations.
+	return isNotTooWide.LogicalAnd(isNotTooTall)
 }
