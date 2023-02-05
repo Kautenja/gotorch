@@ -79,25 +79,32 @@ func GetDtypeOfKind(kind reflect.Kind) Dtype {
 	return Invalid
 }
 
+var (
+	// A mapping of Torch data-type to the number of bytes they require.
+	dtypeToNumBytes = map[Dtype]int64{
+		Byte:          1,
+		Char:          1,
+		Short:         2,
+		Int:           4,
+		Long:          8,
+		Half:          2,
+		Float:         4,
+		Double:        8,
+		ComplexHalf:   2,
+		ComplexFloat:  4,
+		ComplexDouble: 8,
+		Bool:          1,
+		QInt8:         1,
+		QUInt8:        1,
+		QInt32:        4,
+		BFloat16:      2,
+	}
+)
+
 // Return the number of bytes consumed by each element of the given data-type.
 func (dtype Dtype) NumBytes() int64 {
-	switch (dtype) {
-	case Byte:          return 1
-	case Char:          return 1
-	case Short:         return 2
-	case Int:           return 4
-	case Long:          return 8
-	case Half:          return 2
-	case Float:         return 4
-	case Double:        return 8
-	case ComplexHalf:   return 2
-	case ComplexFloat:  return 4
-	case ComplexDouble: return 8
-	case Bool:          return 1
-	case QInt8:         return 1
-	case QUInt8:        return 1
-	case QInt32:        return 4
-	case BFloat16:      return 2
+	if numBytes, ok := dtypeToNumBytes[dtype]; ok {
+		return numBytes
 	}
 	panic(fmt.Sprintf("Received invalid dtype %v", dtype))
 }
