@@ -25,7 +25,7 @@ package torch
 
 // Return the version of the GoTorch library.
 func Version() string {
-	return "0.0.0"
+	return "0.1.0"
 }
 
 // Return the version of the libtorch back-end.
