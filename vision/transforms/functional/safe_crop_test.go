@@ -31,73 +31,29 @@ import (
     "github.com/Kautenja/gotorch/vision/transforms/functional"
 )
 
-func TestSafeCropIdentity(t *testing.T) {
+func TestCropSafeIdentity(t *testing.T) {
     tensor := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
         {8, 9, 8, 7},
         {6, 5, 4, 3},
     })
-    output := vision_transforms_functional.SafeCrop(tensor, 0, 0, 4, 4)
+    output := vision_transforms_functional.CropSafe(tensor, 0, 0, 4, 4)
     assert.True(t, output.Equal(tensor))
 }
 
-func TestSafeCropExpandsBounds(t *testing.T) {
+func TestCropSafeClipsBounds(t *testing.T) {
     tensor := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
         {8, 9, 8, 7},
         {6, 5, 4, 3},
     })
-    output := vision_transforms_functional.SafeCrop(tensor, -1, -1, 5, 5)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 1, 2, 3, 0},
-        {0, 4, 5, 6, 7, 0},
-        {0, 8, 9, 8, 7, 0},
-        {0, 6, 5, 4, 3, 0},
-        {0, 0, 0, 0, 0, 0},
-    })
-    assert.True(t, expected.Equal(output))
+    output := vision_transforms_functional.CropSafe(tensor, -1, -1, 5, 5)
+    assert.True(t, output.Equal(tensor))
 }
 
-func TestSafeCropExpandsBoundsFromOrigin(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.SafeCrop(tensor, 0, 0, 5, 5)
-    expected := torch.NewTensor([][]float32{
-        {0, 1, 2, 3, 0},
-        {4, 5, 6, 7, 0},
-        {8, 9, 8, 7, 0},
-        {6, 5, 4, 3, 0},
-        {0, 0, 0, 0, 0},
-    })
-    assert.True(t, expected.Equal(output))
-}
-
-func TestSafeCropExpandsBoundsFromWindow(t *testing.T) {
-    tensor := torch.NewTensor([][]float32{
-        {0, 1, 2, 3},
-        {4, 5, 6, 7},
-        {8, 9, 8, 7},
-        {6, 5, 4, 3},
-    })
-    output := vision_transforms_functional.SafeCrop(tensor, -1, -1, 4, 4)
-    expected := torch.NewTensor([][]float32{
-        {0, 0, 0, 0, 0},
-        {0, 0, 1, 2, 3},
-        {0, 4, 5, 6, 7},
-        {0, 8, 9, 8, 7},
-        {0, 6, 5, 4, 3},
-    })
-    assert.True(t, expected.Equal(output))
-}
-
-func TestSafeCropFromOrigin(t *testing.T) {
+func TestCropSafeFromOrigin(t *testing.T) {
     tensor := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
@@ -109,11 +65,11 @@ func TestSafeCropFromOrigin(t *testing.T) {
         {4, 5},
         {8, 9},
     })
-    output := vision_transforms_functional.SafeCrop(tensor, 0, 0, 2, 3)
+    output := vision_transforms_functional.CropSafe(tensor, 0, 0, 2, 3)
     assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
-func TestSafeCropToBorder(t *testing.T) {
+func TestCropSafeToBorder(t *testing.T) {
     tensor := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
@@ -125,11 +81,11 @@ func TestSafeCropToBorder(t *testing.T) {
         {8, 7},
         {4, 3},
     })
-    output := vision_transforms_functional.SafeCrop(tensor, 2, 1, 4, 4)
+    output := vision_transforms_functional.CropSafe(tensor, 2, 1, 4, 4)
     assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
-func TestSafeCropArbitrarySafeWindow(t *testing.T) {
+func TestCropSafeArbitraryWindow(t *testing.T) {
     tensor := torch.NewTensor([][]float32{
         {0, 1, 2, 3},
         {4, 5, 6, 7},
@@ -140,13 +96,13 @@ func TestSafeCropArbitrarySafeWindow(t *testing.T) {
         {5, 6},
         {9, 8},
     })
-    output := vision_transforms_functional.SafeCrop(tensor, 1, 1, 3, 3)
+    output := vision_transforms_functional.CropSafe(tensor, 1, 1, 3, 3)
     assert.True(t, output.Equal(expected), "got %v, expected %v", output, expected)
 }
 
-func TestSafeCropTransformPanicsOn1DimensionalInput(t *testing.T) {
+func TestCropSafeTransformPanicsOn1DimensionalInput(t *testing.T) {
     tensor := torch.NewTensor([]float32{0, 1, 2, 3})
     assert.PanicsWithValue(t, "Crop requires inputs with 2 or more dimensions", func() {
-        vision_transforms_functional.SafeCrop(tensor, 0, 0, 1, 1)
+        vision_transforms_functional.CropSafe(tensor, 0, 0, 1, 1)
     })
 }
