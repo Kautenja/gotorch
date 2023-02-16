@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Usage main.sh [options] [routine]
 #
@@ -20,11 +20,9 @@
 #     bash         Start a bash session within the container
 #
 
-# --- Constants --------------------------------------------------------------
-
-export ENV_FILE_PATH="${PWD}/.env"
-export OPERATING_SYSTEM=$(uname -s)
-VERSION_FILE="${PWD}/pkg/version/version.go"
+set -x
+set -e
+set -o pipefail
 
 # --- Functions --------------------------------------------------------------
 
@@ -67,13 +65,11 @@ while getopts ":dhlv" optname; do
   esac
 done
 
-_timeout() { ( set +b; sleep "$1" & "${@:2}" & wait; r=$?; kill -9 `jobs -p`; exit $r; ) }
-
 shift $(($OPTIND - 1))
 
 # --- Body -------------------------------------------------------------------
 
-IMAGE=sensory-cgotorch
+IMAGE=gotorch
 
 case "$1" in
 
@@ -115,7 +111,7 @@ case "$1" in
 
 "download")
   if [ $CONTAINER -eq 1 ]; then
-    docker run --rm ${IMAGE} bash -c "./main.sh install"
+    docker run --rm ${IMAGE} bash -c "./main.sh download"
     exit 0;
   fi
   go mod download -x
@@ -124,16 +120,25 @@ case "$1" in
 
 "tidy")
   if [ $CONTAINER -eq 1 ]; then
-    docker run --rm ${IMAGE} bash -c "./main.sh install"
+    docker run --rm ${IMAGE} bash -c "./main.sh tidy"
     exit 0;
   fi
   go mod tidy
   exit 0;
 ;;
 
+"fmt")
+  if [ $CONTAINER -eq 1 ]; then
+    docker run --rm ${IMAGE} bash -c "./main.sh fmt"
+    exit 0;
+  fi
+  go fmt ./...
+  exit 0;
+;;
+
 "build")
   if [ $CONTAINER -eq 1 ]; then
-    docker run --rm ${IMAGE} bash -c "./main.sh install"
+    docker run --rm ${IMAGE} bash -c "./main.sh build"
     exit 0;
   fi
   go build

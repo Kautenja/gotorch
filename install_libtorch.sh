@@ -22,6 +22,8 @@
 # SOFTWARE.
 #
 set -x
+set -e
+set -o pipefail
 # Get the source directory for creating the build directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Ensure the output directories exits

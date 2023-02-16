@@ -22,13 +22,12 @@
 # SOFTWARE.
 #
 set -x
+set -e
+set -o pipefail
 # Get the source directory for creating the build directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Ensure the output directories exits
-$(which sudo) mkdir -p /usr/local/bin
-$(which sudo) mkdir -p /usr/local/include
-$(which sudo) mkdir -p /usr/local/lib
-$(which sudo) mkdir -p /usr/local/share
+$(which sudo) mkdir -p /usr/local/{bin,include,lib,share}
 # Copy the build artifacts to the system
 (cd ${DIR}/build; $(which sudo) cp -r libcgotorch/* /usr/local/)
 # Reload on Linux
