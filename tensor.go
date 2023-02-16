@@ -172,7 +172,9 @@ func (tensor Tensor) Encode() ([]byte, error) {
 // Decode a pickled tensor back into a structured numerical format.
 func Decode(buffer []byte) (Tensor, error) {
 	var tensor C.Tensor
-	err := unsafe.Pointer(C.Torch_Tensor_Decode(&tensor, C.CBytes(buffer), C.int64_t(int64(len(buffer)))))
+	theBytes := C.CBytes(buffer)
+	defer C.free(theBytes)
+	err := unsafe.Pointer(C.Torch_Tensor_Decode(&tensor, theBytes, C.int64_t(int64(len(buffer)))))
 	if err != nil {
 		return Tensor{}, internal.NewTorchError(err)
 	}
