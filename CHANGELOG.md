@@ -1,5 +1,17 @@
 # Change log
 
+## v1.11.0-0.1.2
+
+-   Fix a memory leak in the `torch.Decode` function.
+-   Update installation and development scripts to terminate if any
+    sub-commands fail
+    -   This resolves issues of silent installation failures that were being
+        observed when deploying the code into Docker containers
+
+## v1.11.0-0.1.1
+
+-   Convert spaces to tabs following Go standard conventions
+
 ## v1.11.0-0.1.0
 
 -   vision
