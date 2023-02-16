@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Usage main.sh [options] [routine]
 #
@@ -19,6 +19,10 @@
 #     ci           Install, download, tidy, build, and test
 #     bash         Start a bash session within the container
 #
+
+set -x
+set -e
+set -o pipefail
 
 # --- Constants --------------------------------------------------------------
 
