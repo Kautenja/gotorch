@@ -17,9 +17,9 @@ GoTorch requires the installation of libtorch and libcgotorch (a C-binding
 written for CGo.) To install these libraries to `/usr/local`, use:
 
 ```shell
-git clone --depth 1 --branch v1.11.0-0.0.0 https://github.com/Kautenja/gotorch
-./gotorch/install.sh
-rm -rf ./gotorch
+git clone --depth 1 --branch v1.11.0-0.1.2 https://github.com/Kautenja/gotorch /tmp/gotorch
+/tmp/gotorch/install.sh
+rm -rf /tmp/gotorch
 ```
 
 You may refer to the 
