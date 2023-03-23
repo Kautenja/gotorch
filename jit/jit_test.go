@@ -41,20 +41,20 @@ import (
 
 func TestJitLoadThrowsErrorOnInvalidPath(t *testing.T) {
 	module, err := jit.Load("../data/nonexistent.pt", torch.NewDevice("cpu"))
-	assert.Nil(t, module.T)
+	assert.Nil(t, module)
 	assert.NotNil(t, err)
 }
 
 func TestJitLoadTracedModule(t *testing.T) {
 	module, err := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
 	assert.Nil(t, err)
-	assert.NotNil(t, module.T)
+	assert.NotNil(t, module.Pointer)
 }
 
 func TestJitLoadScriptedModule(t *testing.T) {
 	module, err := jit.Load("../data/script_identity.pt", torch.NewDevice("cpu"))
 	assert.Nil(t, err)
-	assert.NotNil(t, module.T)
+	assert.NotNil(t, module.Pointer)
 }
 
 // This test checks that the finalizer runs when the jit module is de-allocated.
@@ -68,7 +68,7 @@ func TestJitModuleGarbageCollection(t *testing.T) {
 func TestJitModuleSaveThrowsErrorOnInvalidPath(t *testing.T) {
 	module, err := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
 	assert.Nil(t, err)
-	assert.NotNil(t, module.T)
+	assert.NotNil(t, module.Pointer)
 	save_err := module.Save("./foo/bar/baz.pt")
 	assert.NotNil(t, save_err)
 	assert.Equal(t,
@@ -88,7 +88,7 @@ func TestJitModuleSaveDoesSaveModule(t *testing.T) {
 	// Load a module
 	module, err := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
 	assert.Nil(t, err)
-	assert.NotNil(t, module.T)
+	assert.NotNil(t, module.Pointer)
 	// Save the module to the temporary directory
 	output_path := filepath.Join(temp_dir, "foo.pt")
 	save_err := module.Save(output_path)
@@ -102,7 +102,7 @@ func TestJitModuleSaveDoesSaveModule(t *testing.T) {
 	// Load the data from the filesystem into a new module
 	deserialized_module, load_err := jit.Load(output_path, torch.NewDevice("cpu"))
 	assert.Nil(t, load_err)
-	assert.NotNil(t, deserialized_module.T)
+	assert.NotNil(t, deserialized_module.Pointer)
 }
 
 // MARK: String
@@ -129,7 +129,7 @@ func TestJitModuleTrain(t *testing.T) {
 
 func TestJitModuleTrainReturnsSelf(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-	assert.Equal(t, module.T, module.Train(false).T)
+	assert.Equal(t, module.Pointer, module.Train(false).Pointer)
 }
 
 // MARK: Eval
@@ -148,7 +148,7 @@ func TestJitModuleEval(t *testing.T) {
 
 func TestJitModuleEvalReturnsSelf(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-	assert.Equal(t, module.T, module.Eval().T)
+	assert.Equal(t, module.Pointer, module.Eval().Pointer)
 }
 
 // // MARK: SetOptimized/IsOptimized
@@ -167,7 +167,7 @@ func TestJitModuleEvalReturnsSelf(t *testing.T) {
 
 // func TestJitModuleSetOptimizedReturnsSelf(t *testing.T) {
 //  module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-//  assert.Equal(t, module.T, module.SetOptimized(false).T)
+//  assert.Equal(t, module.Pointer, module.SetOptimized(false).Pointer)
 // }
 
 // MARK: CastTo
@@ -186,7 +186,7 @@ func TestJitModuleCastTo(t *testing.T) {
 
 func TestJitModuleCastToReturnsSelf(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-	assert.Equal(t, module.T, module.CastTo(torch.Double).T)
+	assert.Equal(t, module.Pointer, module.CastTo(torch.Double).Pointer)
 }
 
 // MARK: CopyTo
@@ -201,7 +201,7 @@ func TestJitModuleCopyTo(t *testing.T) {
 
 func TestJitModuleCopyToReturnsSelf(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-	assert.Equal(t, module.T, module.CopyTo(torch.NewDevice("cpu")).T)
+	assert.Equal(t, module.Pointer, module.CopyTo(torch.NewDevice("cpu")).Pointer)
 }
 
 // TODO: Torch_Jit_Module_Copy
