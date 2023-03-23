@@ -144,7 +144,7 @@ func NewIValue(data interface{}) IValue {
 	//     for _, value := range t { values = append(values, C.IValue(*value.T)) }
 	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromList(&output, (*C.IValue)(&values[0]), C.int(len(values)))))
 	//     break
-	case Device:
+	case *Device:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromDevice(&output, t.T)))
 		break
 	default:

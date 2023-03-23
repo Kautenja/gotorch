@@ -42,18 +42,23 @@ type Device struct {
 	T C.Device
 }
 
-// NewDevice returns a Device
-func NewDevice(deviceName string) Device {
-	var device C.Device
+// Create a new Device.
+func NewDevice(deviceName string) (device *Device) {
+	device = &Device{}
 	deviceNameCString := C.CString(deviceName)
 	defer C.free(unsafe.Pointer(deviceNameCString))
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device, deviceNameCString)))
-	// Set the finalizer for the Go structure to free the heap-allocated C
-	// memory when the garbage collector finalizes the object.
-	runtime.SetFinalizer((*unsafe.Pointer)(&device), func(t *unsafe.Pointer) {
-		C.Torch_Device_Free(C.Device(*t))
-	})
-	return Device{device}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device.T, deviceNameCString)))
+	runtime.SetFinalizer(device, (*Device).free)
+	return
+}
+
+// Free a device from memory.
+func (device *Device) free() {
+	if device.T == nil {
+		panic("Attempting to free a device that has already been freed!")
+	}
+	C.Torch_Device_Free(device.T)
+    device.T = nil
 }
 
 // Return true if the given device is valid, false otherwise.

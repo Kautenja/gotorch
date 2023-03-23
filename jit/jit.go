@@ -46,7 +46,7 @@ type JitModule struct {
 // Load the trace from the given path on the filesystem. Returns a tuple of (1)
 // The JitModule that was loaded (nil if an error occurred,) and (2) an error
 // that may have occurred (nil if the operation succeeds.)
-func Load(path string, device torch.Device) (JitModule, error) {
+func Load(path string, device *torch.Device) (JitModule, error) {
 	path_cstring := C.CString(path)
 	defer C.free(unsafe.Pointer(path_cstring))
 	var module C.JitModule
@@ -121,15 +121,31 @@ func (module JitModule) Eval() JitModule {
 
 // Cast the model's parameters to the given data-type in-place.
 func (module JitModule) CastTo(dtype torch.Dtype) JitModule {
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_CastTo(C.JitModule(*module.T), C.int8_t(dtype))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_CastTo(
+		C.JitModule(*module.T),
+		C.int8_t(dtype),
+	)))
 	return module
 }
 
 // Copy the model's parameters to the given compute accelerator in-place.
-func (module JitModule) CopyTo(device torch.Device) JitModule {
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_CopyTo(C.JitModule(*module.T), (C.Device)(device.T))))
+func (module JitModule) CopyTo(device *torch.Device) JitModule {
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_CopyTo(
+		C.JitModule(*module.T),
+		(C.Device)(device.T),
+	)))
 	return module
 }
+
+// // Cast the model's parameters to the given data-type in-place.
+// func (module JitModule) To(device *torch.Device, dtype torch.Dtype) JitModule {
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_To(
+// 		C.JitModule(*module.T),
+// 		(C.Device)(device.T),
+// 		C.int8_t(dtype),
+// 	)))
+// 	return module
+// }
 
 // TODO: func (module JitModule) Copy() { }
 // TODO: func (module JitModule) DeepCopy() { }

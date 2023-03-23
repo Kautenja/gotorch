@@ -308,7 +308,7 @@ func (tensor Tensor) CastTo(dtype Dtype) Tensor {
 }
 
 // Create a new tensor with data copied to given device.
-func (tensor Tensor) CopyTo(device Device) Tensor {
+func (tensor Tensor) CopyTo(device *Device) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_CopyTo(
 		&output,
@@ -319,7 +319,7 @@ func (tensor Tensor) CopyTo(device Device) Tensor {
 }
 
 // Create a new tensor with data copied to given device and cast to given type.
-func (tensor Tensor) To(device Device, dtype Dtype) Tensor {
+func (tensor Tensor) To(device *Device, dtype Dtype) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_To(
 		&output,
