@@ -36,10 +36,16 @@ import (
 	internal "github.com/Kautenja/gotorch/internal"
 )
 
-// TensorOptions wraps a pointer to a C.TensorOptions as an unsafe Pointer.
+// TensorOptions wraps a C.TensorOptions.
 type TensorOptions struct {
-	// A pointer to a C.TensorOptions.
-	T *unsafe.Pointer
+	T C.TensorOptions
+}
+
+// Create a new TensorOptions.
+func NewTensorOptions() (options *TensorOptions) {
+	options = &TensorOptions{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&options.T)))
+	return options.withFinalizerSet()
 }
 
 // Free the heap-allocated C memory when the garbage collector finalizes.
@@ -51,29 +57,29 @@ type TensorOptions struct {
 // `set_*` semantics of TensorOptions private to the structure. Ideally we
 // would create a single TensorOptions and mutate its state and mock the
 // functional interface here at the Go layer, but this is not possible ATM.
-func (options TensorOptions) withFinalizerSet() TensorOptions {
-	runtime.SetFinalizer((*unsafe.Pointer)(options.T), func(t *unsafe.Pointer) {
-		C.Torch_TensorOptions_Free(C.TensorOptions(*t))
-	})
+func (options *TensorOptions) withFinalizerSet() *TensorOptions {
+	runtime.SetFinalizer(options, (*TensorOptions).free)
 	return options
 }
 
-// Create a new TensorOptions.
-func NewTensorOptions() TensorOptions {
-	var output C.TensorOptions
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&output)))
-	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+// Free a tensor options from memory.
+func (options *TensorOptions) free() {
+	if options.T == nil {
+		panic("Attempting to free a tensor options that has already been freed!")
+	}
+	C.Torch_TensorOptions_Free(options.T)
+    options.T = nil
 }
 
 // Create a new TensorOptions with the given data type.
-func (options TensorOptions) Dtype(value Dtype) TensorOptions {
-	var output C.TensorOptions
+func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
+	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Dtype(
-		&output,
-		C.TensorOptions(*options.T),
+		&output.T,
+		options.T,
 		C.int8_t(value),
 	)))
-	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	return output.withFinalizerSet()
 }
 
 // TODO:
@@ -89,14 +95,14 @@ func (options TensorOptions) Dtype(value Dtype) TensorOptions {
 // };
 
 // // Create a new TensorOptions with the given data layout.
-// func (options TensorOptions) Layout(value Layout) TensorOptions {
-//     var output C.TensorOptions
+// func (options *TensorOptions) Layout(value Layout) *TensorOptions {
+//     output := &TensorOptions{}
 //     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Layout(
-//         &output,
-//         C.TensorOptions(*options.T),
+//         &output.T,
+//         options.T,
 //         C.int8_t(value),
 //     )))
-//     return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+//     return output.withFinalizerSet()
 // }
 
 // TODO:
@@ -109,45 +115,45 @@ func (options TensorOptions) Dtype(value Dtype) TensorOptions {
 // };
 
 // // Create a new TensorOptions with the given memory format.
-// func (options TensorOptions) MemoryFormat(value MemoryFormat) TensorOptions {
-//     var output C.TensorOptions
+// func (options *TensorOptions) MemoryFormat(value MemoryFormat) *TensorOptions {
+//     output := &TensorOptions{}
 //     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_MemoryFormat(
-//         &output,
-//         C.TensorOptions(*options.T),
+//         &output.T,
+//         options.T,
 //         C.int8_t(value),
 //     )))
-//     return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+//     return output.withFinalizerSet()
 // }
 
 // Create a new TensorOptions with the given compute device.
-func (options TensorOptions) Device(device Device) TensorOptions {
-	var output C.TensorOptions
+func (options *TensorOptions) Device(device Device) *TensorOptions {
+	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Device(
-		&output,
-		C.TensorOptions(*options.T),
+		&output.T,
+		options.T,
 		(C.Device)(device.Pointer),
 	)))
-	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	return output.withFinalizerSet()
 }
 
 // Create a new TensorOptions with the given gradient taping state.
-func (options TensorOptions) RequiresGrad(requiresGrad bool) TensorOptions {
-	var output C.TensorOptions
+func (options *TensorOptions) RequiresGrad(requiresGrad bool) *TensorOptions {
+	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_RequiresGrad(
-		&output,
-		C.TensorOptions(*options.T),
+		&output.T,
+		options.T,
 		C.bool(requiresGrad),
 	)))
-	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	return output.withFinalizerSet()
 }
 
 // Create a new TensorOptions with the given memory pinning state.
-func (options TensorOptions) PinnedMemory(pinnedMemory bool) TensorOptions {
-	var output C.TensorOptions
+func (options *TensorOptions) PinnedMemory(pinnedMemory bool) *TensorOptions {
+	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_PinnedMemory(
-		&output,
-		C.TensorOptions(*options.T),
+		&output.T,
+		options.T,
 		C.bool(pinnedMemory),
 	)))
-	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
+	return output.withFinalizerSet()
 }

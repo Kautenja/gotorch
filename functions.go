@@ -108,14 +108,14 @@ func (tensor Tensor) IsNonzero() bool {
 // ---------------------------------------------------------------------------
 
 // Create a new tensor of given size filled with zeros.
-func Zeros(size []int64, options TensorOptions) Tensor {
+func Zeros(size []int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Zeros(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -132,14 +132,14 @@ func ZerosLike(reference Tensor) Tensor {
 }
 
 // Create a new tensor of given size filled with ones.
-func Ones(size []int64, options TensorOptions) Tensor {
+func Ones(size []int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Ones(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -157,49 +157,49 @@ func OnesLike(reference Tensor) Tensor {
 
 // Create an inclusive range tensor from begin position to end position along
 // integer step size.
-func Arange(begin, end, step float32, options TensorOptions) Tensor {
+func Arange(begin, end, step float32, options *TensorOptions) Tensor {
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Arange(
 		&tensor,
 		C.float(begin),
 		C.float(end),
 		C.float(step),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
 // Create an exclusive range tensor from begin position to end position along
 // integer step size.
-func Range(begin, end, step float32, options TensorOptions) Tensor {
+func Range(begin, end, step float32, options *TensorOptions) Tensor {
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Range(
 		&tensor,
 		C.float(begin),
 		C.float(end),
 		C.float(step),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
 // Create an linear space tensor from begin to end with given number of total
 // steps.
-func Linspace(begin, end float32, steps int64, options TensorOptions) Tensor {
+func Linspace(begin, end float32, steps int64, options *TensorOptions) Tensor {
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Linspace(
 		&tensor,
 		C.float(begin),
 		C.float(end),
 		C.int64_t(steps),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
 // Create an logarithmic space tensor from begin to end with given number of
 // total steps.
-func Logspace(begin, end float32, steps int64, base float64, options TensorOptions) Tensor {
+func Logspace(begin, end float32, steps int64, base float64, options *TensorOptions) Tensor {
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Logspace(
 		&tensor,
@@ -207,32 +207,32 @@ func Logspace(begin, end float32, steps int64, base float64, options TensorOptio
 		C.float(end),
 		C.int64_t(steps),
 		C.double(base),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
 // Create an NxM identity matrix.
-func Eye(n, m int64, options TensorOptions) Tensor {
+func Eye(n, m int64, options *TensorOptions) Tensor {
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Eye(
 		&tensor,
 		C.int64_t(n),
 		C.int64_t(m),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
 
 // Create a new tensor of given size filled with empty values.
-func Empty(size []int64, options TensorOptions) Tensor {
+func Empty(size []int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Empty(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -249,14 +249,14 @@ func EmptyLike(reference Tensor) Tensor {
 }
 
 // Create a new tensor of given size filled with static values.
-func Full(size []int64, value float32, options TensorOptions) Tensor {
+func Full(size []int64, value float32, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Full(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)), C.float(value),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -274,14 +274,14 @@ func FullLike(reference Tensor, value float32) Tensor {
 }
 
 // Create a new tensor of given size filled with uniform random values.
-func Rand(size []int64, options TensorOptions) Tensor {
+func Rand(size []int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Rand(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -297,7 +297,7 @@ func RandLike(reference Tensor) Tensor {
 }
 
 // Create a new tensor of given size filled with random integers in [low, high).
-func RandInt(size []int64, low int64, high int64, options TensorOptions) Tensor {
+func RandInt(size []int64, low int64, high int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandInt(
@@ -306,7 +306,7 @@ func RandInt(size []int64, low int64, high int64, options TensorOptions) Tensor 
 		C.int64_t(len(size)),
 		C.int64_t(low),
 		C.int64_t(high),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -326,14 +326,14 @@ func RandIntLike(reference Tensor, low int64, high int64) Tensor {
 }
 
 // Create a new tensor of given size filled with Gaussian random values.
-func RandN(size []int64, options TensorOptions) Tensor {
+func RandN(size []int64, options *TensorOptions) Tensor {
 	if len(size) == 0 { panic("size is empty") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandN(
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		(C.TensorOptions)(*options.T),
+		options.T,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
