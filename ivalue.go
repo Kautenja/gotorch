@@ -85,7 +85,7 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromString(&ivalue.Pointer, stringData)))
 		break
 	case Tensor:
-		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensor(&ivalue.Pointer, (C.Tensor)(*t.T))))
+		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensor(&ivalue.Pointer, (C.Tensor)(*t.Pointer))))
 		break
 	case []bool:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromBoolList(
@@ -135,7 +135,7 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 	//     break
 	case []Tensor:
 		tensors := []C.Tensor{}
-		for _, tensor := range t { tensors = append(tensors, C.Tensor(*tensor.T)) }
+		for _, tensor := range t { tensors = append(tensors, C.Tensor(*tensor.Pointer)) }
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensorList(
 			&ivalue.Pointer,
 			(*C.Tensor)(&tensors[0]),

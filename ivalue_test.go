@@ -52,7 +52,7 @@ func TestIValueTensor(t *testing.T) {
 	assert.True(t, data.IsTensor())
 	value := data.ToTensor()
 	assert.True(t, torch.Equal(tensor, value))
-	assert.NotEqual(t, tensor.T, value.T)
+	assert.NotEqual(t, tensor.Pointer, value.Pointer)
 }
 
 func TestIValueFloat32(t *testing.T) {

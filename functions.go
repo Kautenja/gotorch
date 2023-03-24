@@ -46,7 +46,7 @@ type ValueIndexPair struct {
 // Return the number of elements in the tensor.
 func Numel(tensor Tensor) int64 {
 	var output C.int64_t
-	C.Torch_Tensor_Numel(&output, C.Tensor(*tensor.T))
+	C.Torch_Tensor_Numel(&output, C.Tensor(*tensor.Pointer))
 	return int64(output)
 }
 
@@ -58,7 +58,7 @@ func (tensor Tensor) Numel() int64 {
 // Return true if the tensor of a complex data-type.
 func IsComplex(tensor Tensor) bool {
 	var output C.bool
-	C.Torch_Tensor_Is_Complex(&output, C.Tensor(*tensor.T))
+	C.Torch_Tensor_Is_Complex(&output, C.Tensor(*tensor.Pointer))
 	return bool(output)
 }
 
@@ -70,7 +70,7 @@ func (tensor Tensor) IsComplex() bool {
 // Return true if the (complex) tensor is in conjugated form.
 func IsConj(tensor Tensor) bool {
 	var output C.bool
-	C.Torch_Tensor_Is_Conj(&output, C.Tensor(*tensor.T))
+	C.Torch_Tensor_Is_Conj(&output, C.Tensor(*tensor.Pointer))
 	return bool(output)
 }
 
@@ -82,7 +82,7 @@ func (tensor Tensor) IsConj() bool {
 // Return true if the tensor of a floating-point data-type.
 func IsFloatingPoint(tensor Tensor) bool {
 	var output C.bool
-	C.Torch_Tensor_Is_Floating_Point(&output, C.Tensor(*tensor.T))
+	C.Torch_Tensor_Is_Floating_Point(&output, C.Tensor(*tensor.Pointer))
 	return bool(output)
 }
 
@@ -94,7 +94,7 @@ func (tensor Tensor) IsFloatingPoint() bool {
 // Return true if the tensor is a single non-zero element (i.e., scalar.)
 func IsNonzero(tensor Tensor) bool {
 	var output C.bool
-	C.Torch_Tensor_Is_Nonzero(&output, C.Tensor(*tensor.T))
+	C.Torch_Tensor_Is_Nonzero(&output, C.Tensor(*tensor.Pointer))
 	return bool(output)
 }
 
@@ -122,11 +122,11 @@ func Zeros(size []int64, options *TensorOptions) Tensor {
 
 // Create a tensor filled with zeros in the shape of a reference.
 func ZerosLike(reference Tensor) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ZerosLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -146,11 +146,11 @@ func Ones(size []int64, options *TensorOptions) Tensor {
 
 // Create a tensor filled with ones in the shape of a reference.
 func OnesLike(reference Tensor) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_OnesLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -239,11 +239,11 @@ func Empty(size []int64, options *TensorOptions) Tensor {
 
 // Create a tensor filled with empty values in the shape of a reference.
 func EmptyLike(reference Tensor) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_EmptyLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -263,11 +263,11 @@ func Full(size []int64, value float32, options *TensorOptions) Tensor {
 
 // Create a tensor filled with static values in the shape of a reference.
 func FullLike(reference Tensor, value float32) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_FullLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 		C.float(value),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
@@ -288,10 +288,10 @@ func Rand(size []int64, options *TensorOptions) Tensor {
 
 // Create a tensor filled with uniform random values in the shape of a reference.
 func RandLike(reference Tensor) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandLike(
-		&tensor, (C.Tensor)(*reference.T),
+		&tensor, (C.Tensor)(*reference.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -314,11 +314,11 @@ func RandInt(size []int64, low int64, high int64, options *TensorOptions) Tensor
 // Create a tensor filled with random integers in [low, high) in the shape of
 // a reference.
 func RandIntLike(reference Tensor, low int64, high int64) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandIntLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 		C.int64_t(low),
 		C.int64_t(high),
 	)))
@@ -341,11 +341,11 @@ func RandN(size []int64, options *TensorOptions) Tensor {
 // Create a tensor filled with Gaussian random values in the shape of a
 // reference.
 func RandNLike(reference Tensor) Tensor {
-	if reference.T == nil { panic("input tensor is nil") }
+	if reference.Pointer == nil { panic("input tensor is nil") }
 	var tensor C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandNLike(
 		&tensor,
-		(C.Tensor)(*reference.T),
+		(C.Tensor)(*reference.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -444,8 +444,8 @@ func (tensor Tensor) ToSlice() interface{} {
 func Add(tensor, other Tensor, alpha float32) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Add(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.float(alpha),
 		&output,
 	)))
@@ -460,8 +460,8 @@ func (tensor Tensor) Add(other Tensor, alpha float32) Tensor {
 // In-place version of Add().
 func (tensor Tensor) Add_(other Tensor, alpha float32) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Add_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.float(alpha),
 	)))
 	return tensor
@@ -474,8 +474,8 @@ func (tensor Tensor) Add_(other Tensor, alpha float32) Tensor {
 func Sub(tensor, other Tensor, alpha float32) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.float(alpha),
 		&output,
 	)))
@@ -490,8 +490,8 @@ func (tensor Tensor) Sub(other Tensor, alpha float32) Tensor {
 // In-place version of Sub().
 func (tensor Tensor) Sub_(other Tensor, alpha float32) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.float(alpha),
 	)))
 	return tensor
@@ -504,8 +504,8 @@ func (tensor Tensor) Sub_(other Tensor, alpha float32) Tensor {
 func Mul(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		&output,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
@@ -519,8 +519,8 @@ func (tensor Tensor) Mul(other Tensor) Tensor {
 // In-place version of Mul().
 func (tensor Tensor) Mul_(other Tensor) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return tensor
 }
@@ -532,8 +532,8 @@ func (tensor Tensor) Mul_(other Tensor) Tensor {
 func Div(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Div(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		&output,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
@@ -547,8 +547,8 @@ func (tensor Tensor) Div(other Tensor) Tensor {
 // In-place version of Div().
 func (tensor Tensor) Div_(other Tensor) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Div_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return tensor
 }
@@ -559,7 +559,7 @@ func (tensor Tensor) Div_(other Tensor) Tensor {
 // Take the absolute value of input.
 func Abs(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs(C.Tensor(*tensor.T), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs(C.Tensor(*tensor.Pointer), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -570,7 +570,7 @@ func (tensor Tensor) Abs() Tensor {
 
 // In-place version of Abs().
 func Abs_(tensor Tensor) Tensor {
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs_(C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs_(C.Tensor(*tensor.Pointer))))
 	return tensor
 }
 
@@ -582,7 +582,7 @@ func (tensor Tensor) Abs_() Tensor {
 // Take the square of input.
 func Square(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square(C.Tensor(*tensor.T), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square(C.Tensor(*tensor.Pointer), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -593,7 +593,7 @@ func (tensor Tensor) Square() Tensor {
 
 // In-place version of Square().
 func Square_(tensor Tensor) Tensor {
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square_(C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square_(C.Tensor(*tensor.Pointer))))
 	return tensor
 }
 
@@ -605,7 +605,7 @@ func (tensor Tensor) Square_() Tensor {
 // Take the square-root of input.
 func Sqrt(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt(C.Tensor(*tensor.T), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt(C.Tensor(*tensor.Pointer), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -616,7 +616,7 @@ func (tensor Tensor) Sqrt() Tensor {
 
 // In-place version of Sqrt().
 func Sqrt_(tensor Tensor) Tensor {
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt_(C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt_(C.Tensor(*tensor.Pointer))))
 	return tensor
 }
 
@@ -628,7 +628,7 @@ func (tensor Tensor) Sqrt_() Tensor {
 // Take the power of each element in input with exponent and returns a tensor with the result.
 func Pow(tensor Tensor, exponent float64) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Pow(C.Tensor(*tensor.T), C.double(exponent), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Pow(C.Tensor(*tensor.Pointer), C.double(exponent), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -645,7 +645,7 @@ func Tanh(tensor Tensor) Tensor {
 // Return a new tensor with the hyperbolic tangent of the elements of input.
 func (tensor Tensor) Tanh() Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(C.Tensor(*tensor.T), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(C.Tensor(*tensor.Pointer), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -659,7 +659,7 @@ func Sigmoid(tensor Tensor) Tensor {
 // elements of input.
 func (tensor Tensor) Sigmoid() Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(C.Tensor(*tensor.T), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(C.Tensor(*tensor.Pointer), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -679,7 +679,7 @@ func LogSoftmax(tensor Tensor, dim int64) Tensor {
 // an alternative formulation to compute the output and gradient correctly.
 func (tensor Tensor) LogSoftmax(dim int64) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(C.Tensor(*tensor.T), C.int64_t(dim), &output)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(C.Tensor(*tensor.Pointer), C.int64_t(dim), &output)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -689,8 +689,8 @@ func LogicalAnd(tensor Tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalAnd(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -708,7 +708,7 @@ func LogicalNot(tensor Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalNot(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -726,8 +726,8 @@ func LogicalOr(tensor Tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalOr(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -744,8 +744,8 @@ func LogicalXor(tensor Tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalXor(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -761,9 +761,9 @@ func Clamp(tensor, minimum, maximum Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*minimum.T),
-		C.Tensor(*maximum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*minimum.Pointer),
+		C.Tensor(*maximum.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -776,9 +776,9 @@ func (tensor Tensor) Clamp(minimum, maximum Tensor) Tensor {
 // In-place version of torch.Clamp()
 func Clamp_(tensor, minimum, maximum Tensor) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*minimum.T),
-		C.Tensor(*maximum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*minimum.Pointer),
+		C.Tensor(*maximum.Pointer),
 	)))
 	return tensor
 }
@@ -793,8 +793,8 @@ func ClampMax(tensor, maximum Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*maximum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*maximum.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -807,8 +807,8 @@ func (tensor Tensor) ClampMax(maximum Tensor) Tensor {
 // In-place version of torch.ClampMax()
 func ClampMax_(tensor, maximum Tensor) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*maximum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*maximum.Pointer),
 	)))
 	return tensor
 }
@@ -823,8 +823,8 @@ func ClampMin(tensor, minimum Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*minimum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*minimum.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -837,8 +837,8 @@ func (tensor Tensor) ClampMin(minimum Tensor) Tensor {
 // In-place version of torch.ClampMin()
 func ClampMin_(tensor, minimum Tensor) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin_(
-		C.Tensor(*tensor.T),
-		C.Tensor(*minimum.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*minimum.Pointer),
 	)))
 	return tensor
 }
@@ -856,7 +856,7 @@ func (tensor Tensor) ClampMin_(minimum Tensor) Tensor {
 func Permute(tensor Tensor, dims ...int64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Permute(
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		(*C.int64_t)(&dims[0]),
 		C.int64_t(len(dims)),
 		&output,
@@ -886,7 +886,7 @@ func (tensor Tensor) Permute(dims ...int64) Tensor {
 func Transpose(tensor Tensor, dim0, dim1 int64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Transpose(
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim0),
 		C.int64_t(dim1),
 		&output,
@@ -925,7 +925,7 @@ func (tensor Tensor) Transpose(dim0, dim1 int64) Tensor {
 func Flatten(tensor Tensor, startDim, endDim int64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Flatten(
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(startDim),
 		C.int64_t(endDim),
 		&output,
@@ -958,13 +958,13 @@ func Squeeze(tensor Tensor, dim ...int64) Tensor {
 	switch len(dim) {
 	case 0:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Squeeze(
-			C.Tensor(*tensor.T),
+			C.Tensor(*tensor.Pointer),
 			&output,
 		)))
 		return NewTorchTensor((*unsafe.Pointer)(&output))
 	case 1:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_SqueezeWithDim(
-			C.Tensor(*tensor.T),
+			C.Tensor(*tensor.Pointer),
 			C.int64_t(dim[0]),
 			&output,
 		)))
@@ -993,7 +993,7 @@ func Unsqueeze(tensor Tensor, dim int64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Unsqueeze(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
@@ -1012,8 +1012,8 @@ func (tensor Tensor) Unsqueeze(dim int64) Tensor {
 // be of the same size.
 func Stack(tensors []Tensor, dim int64) Tensor {
 	CT := []C.Tensor{}
-	for _, t := range tensors {
-		CT = append(CT, C.Tensor(*t.T))
+	for _, tensor := range tensors {
+		CT = append(CT, C.Tensor(*tensor.Pointer))
 	}
 	p := (*C.Tensor)(unsafe.Pointer(&CT[0]))
 	var output C.Tensor
@@ -1031,8 +1031,8 @@ func Stack(tensors []Tensor, dim int64) Tensor {
 // dimension) or be empty.
 func Cat(tensors []Tensor, dim int64) Tensor {
 	CT := []C.Tensor{}
-	for _, t := range tensors {
-		CT = append(CT, C.Tensor(*t.T))
+	for _, tensor := range tensors {
+		CT = append(CT, C.Tensor(*tensor.Pointer))
 	}
 	p := (*C.Tensor)(unsafe.Pointer(&CT[0]))
 	var output C.Tensor
@@ -1066,7 +1066,7 @@ func Slice(tensor Tensor, dim, start, stop, step int64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Slice(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.int64_t(start),
 		C.int64_t(stop),
@@ -1090,9 +1090,9 @@ func (tensor Tensor) Slice(dim, start, stop, step int64) Tensor {
 func IndexSelect(tensor Tensor, dim int64, index Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IndexSelect(
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
-		C.Tensor(*index.T),
+		C.Tensor(*index.Pointer),
 		&output,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
@@ -1114,7 +1114,7 @@ func (tensor Tensor) IndexSelect(dim int64, index Tensor) Tensor {
 // Reduce a tensor to its minimum index.
 func Argmin(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmin(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmin(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1128,7 +1128,7 @@ func ArgminByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgminByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1143,7 +1143,7 @@ func (tensor Tensor) ArgminByDim(dim int, keep_dims bool) Tensor {
 // Reduce a tensor to its maximum index.
 func Argmax(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmax(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmax(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1157,7 +1157,7 @@ func ArgmaxByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgmaxByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1176,7 +1176,7 @@ func (tensor Tensor) ArgmaxByDim(dim int, keep_dims bool) Tensor {
 // Check if all values in the tensor evaluate to true.
 func All(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_All(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_All(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1190,7 +1190,7 @@ func AllByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_AllByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1205,7 +1205,7 @@ func (tensor Tensor) AllByDim(dim int, keep_dims bool) Tensor {
 // Check if any values in the tensor evaluate to true.
 func Any(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Any(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Any(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1219,7 +1219,7 @@ func AnyByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_AnyByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1237,7 +1237,7 @@ func (tensor Tensor) AnyByDim(dim int, keep_dims bool) Tensor {
 // Reduce a tensor to its maximum value.
 func Max(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Max(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Max(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1252,7 +1252,7 @@ func MaxByDim(tensor Tensor, dim int, keep_dims bool) ValueIndexPair {
 	var indices C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_MaxByDim(
 		&values, &indices,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1270,7 +1270,7 @@ func (tensor Tensor) MaxByDim(dim int, keep_dims bool) ValueIndexPair {
 // Reduce a tensor to its minimum value.
 func Min(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Min(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Min(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1285,7 +1285,7 @@ func MinByDim(tensor Tensor, dim int, keep_dims bool) ValueIndexPair {
 	var indices C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_MinByDim(
 		&values, &indices,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1303,7 +1303,7 @@ func (tensor Tensor) MinByDim(dim int, keep_dims bool) ValueIndexPair {
 // Reduce a tensor to its mean value.
 func Mean(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mean(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mean(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1317,7 +1317,7 @@ func MeanByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_MeanByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1334,7 +1334,7 @@ func (tensor Tensor) MeanByDim(dim int, keep_dims bool) Tensor {
 // Reduce a tensor to its median value.
 func Median(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Median(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Median(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1349,7 +1349,7 @@ func MedianByDim(tensor Tensor, dim int, keep_dims bool) ValueIndexPair {
 	var indices C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_MedianByDim(
 		&values, &indices,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1375,7 +1375,7 @@ func (tensor Tensor) MedianByDim(dim int, keep_dims bool) ValueIndexPair {
 // Reduce a tensor to its standard deviation.
 func Std(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Std(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Std(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1389,7 +1389,7 @@ func StdByDim(tensor Tensor, dim int, unbiased bool, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(unbiased),
 		C.bool(keep_dims),
@@ -1406,7 +1406,7 @@ func (tensor Tensor) StdByDim(dim int, unbiased bool, keep_dims bool) Tensor {
 func StdMean(tensor Tensor) (Tensor, Tensor) {
 	var std C.Tensor
 	var mean C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMean(&std, &mean, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMean(&std, &mean, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&std)), NewTorchTensor((*unsafe.Pointer)(&mean))
 }
 
@@ -1421,7 +1421,7 @@ func StdMeanByDim(tensor Tensor, dim int, unbiased bool, keep_dims bool) (Tensor
 	var mean C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMeanByDim(
 		&std, &mean,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(unbiased),
 		C.bool(keep_dims),
@@ -1437,7 +1437,7 @@ func (tensor Tensor) StdMeanByDim(dim int, unbiased bool, keep_dims bool) (Tenso
 // Reduce a tensor to its sum.
 func Sum(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sum(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sum(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1451,7 +1451,7 @@ func SumByDim(tensor Tensor, dim int, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_SumByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(keep_dims),
 	)))
@@ -1469,7 +1469,7 @@ func (tensor Tensor) SumByDim(dim int, keep_dims bool) Tensor {
 // Reduce a tensor to its variance.
 func Var(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Var(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Var(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1483,7 +1483,7 @@ func VarByDim(tensor Tensor, dim int, unbiased bool, keep_dims bool) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarByDim(
 		&output,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(unbiased),
 		C.bool(keep_dims),
@@ -1500,7 +1500,7 @@ func (tensor Tensor) VarByDim(dim int, unbiased bool, keep_dims bool) Tensor {
 func VarMean(tensor Tensor) (Tensor, Tensor) {
 	var variance C.Tensor
 	var mean C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMean(&variance, &mean, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMean(&variance, &mean, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&variance)), NewTorchTensor((*unsafe.Pointer)(&mean))
 }
 
@@ -1515,7 +1515,7 @@ func VarMeanByDim(tensor Tensor, dim int, unbiased bool, keep_dims bool) (Tensor
 	var mean C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMeanByDim(
 		&variance, &mean,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(unbiased),
 		C.bool(keep_dims),
@@ -1543,8 +1543,8 @@ func AllClose(tensor, other Tensor, rtol, atol float64) bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_AllClose(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.double(rtol),
 		C.double(atol),
 	)))
@@ -1573,8 +1573,8 @@ func IsClose(tensor, other Tensor, rtol, atol float64) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsClose(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 		C.double(rtol),
 		C.double(atol),
 	)))
@@ -1599,8 +1599,8 @@ func Eq(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Eq(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1615,8 +1615,8 @@ func Equal(tensor, other Tensor) bool {
 	var output bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Equal(
 		(*C.bool)(&output),
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return output
 }
@@ -1631,8 +1631,8 @@ func GreaterEqual(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_GreaterEqual(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1647,8 +1647,8 @@ func Greater(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Greater(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1663,8 +1663,8 @@ func LessEqual(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_LessEqual(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1679,8 +1679,8 @@ func Less(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Less(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1695,8 +1695,8 @@ func Maximum(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Maximum(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1711,8 +1711,8 @@ func Minimum(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Minimum(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1727,8 +1727,8 @@ func NotEqual(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NotEqual(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1744,8 +1744,8 @@ func IsIn(tensor, other Tensor) Tensor {
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsIn(
 		&output,
-		C.Tensor(*tensor.T),
-		C.Tensor(*other.T),
+		C.Tensor(*tensor.Pointer),
+		C.Tensor(*other.Pointer),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -1759,7 +1759,7 @@ func (tensor Tensor) IsIn(other Tensor) Tensor {
 // Test if each element of the tensor is finite or not.
 func IsFinite(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsFinite(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsFinite(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1771,7 +1771,7 @@ func (tensor Tensor) IsFinite() Tensor {
 // Test if each element of the tensor is infinite (positive or negative) or not.
 func IsInf(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsInf(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsInf(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1783,7 +1783,7 @@ func (tensor Tensor) IsInf() Tensor {
 // Test if each element of the tensor is positive infinity or not.
 func IsPosInf(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsPosInf(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsPosInf(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1795,7 +1795,7 @@ func (tensor Tensor) IsPosInf() Tensor {
 // Test if each element of the tensor is negative infinity or not.
 func IsNegInf(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNegInf(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNegInf(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1809,7 +1809,7 @@ func (tensor Tensor) IsNegInf() Tensor {
 // real and/or imaginary part is NaN.
 func IsNaN(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNan(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNan(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1825,7 +1825,7 @@ func (tensor Tensor) IsNaN() Tensor {
 // Complex values are considered real when their imaginary part is 0.
 func IsReal(tensor Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsReal(&output, C.Tensor(*tensor.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsReal(&output, C.Tensor(*tensor.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
@@ -1856,7 +1856,7 @@ func TopK(tensor Tensor, k, dim int64, largest, sorted bool) ValueIndexPair {
 	}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TopK(
 		&values, &indices,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(k),
 		C.int64_t(dim),
 		C.int8_t(l),
@@ -1888,7 +1888,7 @@ func Sort(tensor Tensor, dim int64, descending bool) ValueIndexPair {
 	var indices C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sort(
 		&values, &indices,
-		C.Tensor(*tensor.T),
+		C.Tensor(*tensor.Pointer),
 		C.int64_t(dim),
 		C.bool(descending),
 	)))
@@ -2013,7 +2013,7 @@ func (tensor Tensor) Sort(dim int64, descending bool) ValueIndexPair {
 // tensor, B is an (m×p) tensor, the output will be an (n×p) tensor.
 func MM(a, b Tensor) Tensor {
 	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_MM(&output, C.Tensor(*a.T), C.Tensor(*b.T))))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MM(&output, C.Tensor(*a.Pointer), C.Tensor(*b.Pointer))))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
 
