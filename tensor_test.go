@@ -638,7 +638,7 @@ func Test_Tensor_Reshape(t *testing.T) {
 func Test_Tensor_ReshapeDoesNotImposeContiguityConstraint(t *testing.T) {
 	z := torch.Zeros([]int64{3, 2}, torch.NewTensorOptions())
 	y := z.Transpose(0, 1)
-	var k torch.Tensor
+	var k *torch.Tensor
 	assert.NotPanics(t, func() { k = y.Reshape(6) })
 	assert.Equal(t, []int64{6}, k.Shape())
 }
@@ -671,7 +671,7 @@ func Test_Tensor_ReshapeAsDoesNotImposeContiguityConstraint(t *testing.T) {
 	z := torch.Zeros([]int64{3, 2}, torch.NewTensorOptions())
 	y := z.Transpose(0, 1)
 	x := torch.Zeros([]int64{6}, torch.NewTensorOptions())
-	var k torch.Tensor
+	var k *torch.Tensor
 	assert.NotPanics(t, func() { k = y.ReshapeAs(x) })
 	assert.Equal(t, []int64{6}, k.Shape())
 }

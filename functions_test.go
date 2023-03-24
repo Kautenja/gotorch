@@ -118,7 +118,7 @@ func TestZerosLike(t *testing.T) {
 }
 
 func TestZerosLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.ZerosLike(tensor)
 	})
@@ -178,7 +178,7 @@ func TestOnesLikeWithoutGrad(t *testing.T) {
 }
 
 func TestOnesLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.OnesLike(tensor)
 	})
@@ -435,7 +435,7 @@ func TestEmptyLike(t *testing.T) {
 }
 
 func TestEmptyLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.EmptyLike(tensor)
 	})
@@ -499,7 +499,7 @@ func TestFullLike(t *testing.T) {
 }
 
 func TestFullLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.FullLike(tensor, 1)
 	})
@@ -564,7 +564,7 @@ func TestRandLike(t *testing.T) {
 }
 
 func TestRandLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandLike(tensor)
 	})
@@ -629,7 +629,7 @@ func TestRandIntLike(t *testing.T) {
 }
 
 func TestRandIntLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandIntLike(tensor, 0, 1)
 	})
@@ -694,7 +694,7 @@ func TestRandNLike(t *testing.T) {
 }
 
 func TestRandNLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandNLike(tensor)
 	})
@@ -1113,28 +1113,28 @@ func TestUnsqueezeAllowsNegativeDim(t *testing.T) {
 func TestStack(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Stack([]torch.Tensor{t1, t2}, 0)
+	out := torch.Stack([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{2, 2, 3}, out.Shape())
 }
 
 func TestCat(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Cat([]torch.Tensor{t1, t2}, 0)
+	out := torch.Cat([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
 func TestConcat(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Concat([]torch.Tensor{t1, t2}, 0)
+	out := torch.Concat([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
 func TestConcatenate(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Concatenate([]torch.Tensor{t1, t2}, 0)
+	out := torch.Concatenate([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
