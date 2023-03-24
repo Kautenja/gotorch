@@ -204,6 +204,20 @@ func TestJitModuleCopyToReturnsSelf(t *testing.T) {
 	assert.Equal(t, module.Pointer, module.CopyTo(torch.NewDevice("cpu")).Pointer)
 }
 
+// MARK: To
+
+func TestJitModuleTo(t *testing.T) {
+	module, err := jit.Load("../data/trace_linear.pt", torch.NewDevice("cpu"))
+	if !assert.Nil(t, err) { return }
+	module = module.To(torch.NewDevice("cpu"), torch.Double)
+	tensor := torch.Rand([]int64{1, 1}, torch.NewTensorOptions()).CastTo(torch.Double)
+	ivalues := []torch.IValue{torch.NewIValue(tensor)}
+	assert.NotPanics(t, func() { module.Forward(ivalues) })
+	outputs := module.Forward(ivalues)
+	assert.True(t, outputs.IsTensor())
+	assert.Equal(t, outputs.ToTensor().Dtype(), torch.Double)
+}
+
 // TODO: Torch_Jit_Module_Copy
 // TODO: Torch_Jit_Module_DeepCopy
 // TODO: Torch_Jit_Module_Clone

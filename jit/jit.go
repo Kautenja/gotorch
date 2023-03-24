@@ -138,15 +138,16 @@ func (module *JitModule) CopyTo(device *torch.Device) *JitModule {
 	return module
 }
 
-// // Cast the model's parameters to the given data-type in-place.
-// func (module *JitModule) To(device *torch.Device, dtype torch.Dtype) JitModule {
-// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_To(
-// 		module.Pointer,
-// 		(C.Device)(device.T),
-// 		C.int8_t(dtype),
-// 	)))
-// 	return module
-// }
+// Cast the model's parameters to the given data-type in-place.
+func (module *JitModule) To(device *torch.Device, dtype torch.Dtype) *JitModule {
+	return module.CopyTo(device).CastTo(dtype)
+	// internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_To(
+	// 	module.Pointer,
+	// 	(C.Device)(device.T),
+	// 	C.int8_t(dtype),
+	// )))
+	// return module
+}
 
 // TODO: func (module *JitModule) Copy() { }
 // TODO: func (module *JitModule) DeepCopy() { }
