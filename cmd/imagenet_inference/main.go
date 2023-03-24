@@ -65,7 +65,7 @@ func main() {
 	tensor := transform.Forward(T.ToTensor(imageData).CopyTo(device).Unsqueeze(0))
 
 	// Forward pass the tensor data through the model.
-	logits := model.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	logits := model.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	if !logits.IsTensor() {
 		log.Fatal("Expected model to output an IValue with a single tensor!")
 		return

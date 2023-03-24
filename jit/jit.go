@@ -154,19 +154,27 @@ func (module *JitModule) To(device *torch.Device, dtype torch.Dtype) *JitModule 
 // TODO: func (module *JitModule) Clone(inplace bool) { }
 
 // Forward pass IValues through the module and return the resulting IValue.
-func (module *JitModule) Forward(inputs []torch.IValue) torch.IValue {
+func (module *JitModule) Forward(inputs []*torch.IValue) (output *torch.IValue) {
+	output = &torch.IValue{}
 	// Convert the torch IValues to C IValues.
 	var ivalues []C.IValue
-	for _, element := range inputs {
-		ivalues = append(ivalues, (C.IValue)(*element.T))
+	for _, ivalue := range inputs {
+		ivalues = append(ivalues, (C.IValue)(ivalue.T))
 	}
 	// Call the forward method with a reference to the output.
-	var output C.IValue
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_Forward(
-		&output,
+		(*C.IValue)(&output.T),
 		module.Pointer,
 		&ivalues[0],
 		C.int64_t(len(ivalues)),
 	)))
-	return torch.IValue{(*unsafe.Pointer)(&output)}
+	// We can't access the `free` method of the IValue, so redefine it here...
+	runtime.SetFinalizer(output, func(ivalue *torch.IValue) {
+		if ivalue.T == nil {
+			panic("Attempting to free an ivalue that has already been freed!")
+		}
+		C.Torch_IValue_Free((C.IValue)(ivalue.T))
+	    ivalue.T = nil
+	})
+	return
 }

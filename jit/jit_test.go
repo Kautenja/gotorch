@@ -177,7 +177,7 @@ func TestJitModuleCastTo(t *testing.T) {
 	if !assert.Nil(t, err) { return }
 	module = module.CastTo(torch.Double)
 	tensor := torch.Rand([]int64{1, 1}, torch.NewTensorOptions()).CastTo(torch.Double)
-	ivalues := []torch.IValue{torch.NewIValue(tensor)}
+	ivalues := []*torch.IValue{torch.NewIValue(tensor)}
 	assert.NotPanics(t, func() { module.Forward(ivalues) })
 	outputs := module.Forward(ivalues)
 	assert.True(t, outputs.IsTensor())
@@ -211,7 +211,7 @@ func TestJitModuleTo(t *testing.T) {
 	if !assert.Nil(t, err) { return }
 	module = module.To(torch.NewDevice("cpu"), torch.Double)
 	tensor := torch.Rand([]int64{1, 1}, torch.NewTensorOptions()).CastTo(torch.Double)
-	ivalues := []torch.IValue{torch.NewIValue(tensor)}
+	ivalues := []*torch.IValue{torch.NewIValue(tensor)}
 	assert.NotPanics(t, func() { module.Forward(ivalues) })
 	outputs := module.Forward(ivalues)
 	assert.True(t, outputs.IsTensor())
@@ -227,9 +227,18 @@ func TestJitModuleTo(t *testing.T) {
 func TestJitModuleForwardTracedModule(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsTensor())
 	assert.True(t, torch.Equal(output.ToTensor(), tensor))
+}
+
+func TestJitModuleForwardFinalizesOutputIValue(t *testing.T) {
+	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
+	tensor := torch.NewTensor([][]float32{{1}})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
+	assert.True(t, output.IsTensor())
+	assert.True(t, torch.Equal(output.ToTensor(), tensor))
+	runtime.GC()
 }
 
 func TestJitModuleForwardTracedModuleInGoRoutine(t *testing.T) {
@@ -237,7 +246,7 @@ func TestJitModuleForwardTracedModuleInGoRoutine(t *testing.T) {
 	channel := make(chan torch.Tensor)
 	go func() {
 		tensor := torch.NewTensor([][]float32{{1}})
-		channel <- module.Forward([]torch.IValue{torch.NewIValue(tensor)}).ToTensor()
+		channel <- module.Forward([]*torch.IValue{torch.NewIValue(tensor)}).ToTensor()
 	}()
 	output := <-channel
 	expected := torch.NewTensor([][]float32{{1}})
@@ -247,7 +256,7 @@ func TestJitModuleForwardTracedModuleInGoRoutine(t *testing.T) {
 func TestJitModuleForwardScriptedModule(t *testing.T) {
 	module, _ := jit.Load("../data/script_identity.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsTensor())
 	assert.True(t, torch.Equal(output.ToTensor(), tensor))
 }
@@ -255,7 +264,7 @@ func TestJitModuleForwardScriptedModule(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToInt(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_int.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsInt())
 	assert.Equal(t, 222, output.ToInt())
 }
@@ -263,7 +272,7 @@ func TestJitModuleForwardScriptedModuleToInt(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToDouble(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_float.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsDouble())
 	assert.Equal(t, 2.22, output.ToDouble())
 }
@@ -271,7 +280,7 @@ func TestJitModuleForwardScriptedModuleToDouble(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToBool(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_bool.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsBool())
 	assert.True(t, output.ToBool())
 }
@@ -279,7 +288,7 @@ func TestJitModuleForwardScriptedModuleToBool(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToString(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_string.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsString())
 	assert.Equal(t, "foo", output.ToString())
 }
@@ -287,7 +296,7 @@ func TestJitModuleForwardScriptedModuleToString(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToTensorList(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_tensor_list.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsTensorList())
 	assert.True(t, output.IsList())
 	tensors := output.ToTensorList()
@@ -299,7 +308,7 @@ func TestJitModuleForwardScriptedModuleToTensorList(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToList(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_list.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.False(t, output.IsTensorList())
 	assert.True(t, output.IsList())
 	values := output.ToList()
@@ -312,7 +321,7 @@ func TestJitModuleForwardScriptedModuleToList(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToEmptyList(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_empty_list.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.False(t, output.IsTensorList())
 	assert.True(t, output.IsList())
 	values := output.ToList()
@@ -322,7 +331,7 @@ func TestJitModuleForwardScriptedModuleToEmptyList(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToTuple(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_tuple.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsTuple())
 	values := output.ToTuple()
 	assert.Equal(t, 3, len(values))
@@ -334,14 +343,14 @@ func TestJitModuleForwardScriptedModuleToTuple(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToNone(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_none.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsNil())
 }
 
 func TestJitModuleForwardScriptedModuleToDictFloatKeys(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_dict_float_key.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsGenericDict())
 	dict := output.ToGenericDict()
 	value, ok := dict[1.23]
@@ -353,7 +362,7 @@ func TestJitModuleForwardScriptedModuleToDictFloatKeys(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToDictIntKeys(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_dict_int_key.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsGenericDict())
 	dict := output.ToGenericDict()
 	value, ok := dict[45]
@@ -365,7 +374,7 @@ func TestJitModuleForwardScriptedModuleToDictIntKeys(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToDictStringKeys(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_dict_str_key.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsGenericDict())
 	dict := output.ToGenericDict()
 	value, ok := dict["bar"]
@@ -377,7 +386,7 @@ func TestJitModuleForwardScriptedModuleToDictStringKeys(t *testing.T) {
 func TestJitModuleForwardScriptedModuleToDictBoolKeys(t *testing.T) {
 	module, _ := jit.Load("../data/module_that_returns_dict_bool_key.pt", torch.NewDevice("cpu"))
 	tensor := torch.NewTensor([][]float32{{1}})
-	output := module.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	output := module.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	assert.True(t, output.IsGenericDict())
 	dict := output.ToGenericDict()
 	value, ok := dict[true]

@@ -150,7 +150,7 @@ func TestIValueComplex128(t *testing.T) {
 
 func TestIValueBoolList(t *testing.T) {
 	slice := []bool{true, false, false, true, true}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
 	assert.NotNil(t, data.T)
 	assert.False(t, data.IsNil())
@@ -174,7 +174,7 @@ func TestIValueBoolList(t *testing.T) {
 
 // func TestIValueInt32List(t *testing.T) {
 //     slice := []int32{1, 0, 0, 1, 1}
-//     var data torch.IValue
+//     var data *torch.IValue
 //     assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
 //     assert.NotNil(t, data.T)
 //     assert.False(t, data.IsNil())
@@ -198,7 +198,7 @@ func TestIValueBoolList(t *testing.T) {
 
 // func TestIValueIntList(t *testing.T) {
 //     slice := []int{1, 0, 0, 1, 1}
-//     var data torch.IValue
+//     var data *torch.IValue
 //     assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
 //     assert.NotNil(t, data.T)
 //     assert.False(t, data.IsNil())
@@ -222,7 +222,7 @@ func TestIValueBoolList(t *testing.T) {
 
 func TestIValueFloat32List(t *testing.T) {
 	slice := []float32{1, 0, 0, 1, 1}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
 	assert.NotNil(t, data.T)
 	assert.False(t, data.IsNil())
@@ -246,7 +246,7 @@ func TestIValueFloat32List(t *testing.T) {
 
 func TestIValueFloat64List(t *testing.T) {
 	slice := []float64{1, 0, 0, 1, 1}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
 	assert.NotNil(t, data.T)
 	assert.False(t, data.IsNil())

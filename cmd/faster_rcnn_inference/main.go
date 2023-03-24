@@ -55,7 +55,7 @@ func main() {
 	// Copy the pixel data into a tensor representation on the CPU.
 	tensor := T.ToTensor(imageData).CopyTo(device)
 	// Forward pass the tensor and extract the predictions from the IValue.
-	predictions := model.Forward([]torch.IValue{torch.NewIValue([]torch.Tensor{tensor})}).ToTuple()[1].ToList()[0].ToGenericDict()
+	predictions := model.Forward([]*torch.IValue{torch.NewIValue([]torch.Tensor{tensor})}).ToTuple()[1].ToList()[0].ToGenericDict()
 
 	// Select the scores, boxes, and labels, and filter predictions with scores
 	// that are above the threshold.
