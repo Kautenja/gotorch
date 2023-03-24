@@ -115,7 +115,7 @@ func Zeros(size []int64, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -139,7 +139,7 @@ func Ones(size []int64, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -164,7 +164,7 @@ func Arange(begin, end, step float32, options *TensorOptions) Tensor {
 		C.float(begin),
 		C.float(end),
 		C.float(step),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -178,7 +178,7 @@ func Range(begin, end, step float32, options *TensorOptions) Tensor {
 		C.float(begin),
 		C.float(end),
 		C.float(step),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -192,7 +192,7 @@ func Linspace(begin, end float32, steps int64, options *TensorOptions) Tensor {
 		C.float(begin),
 		C.float(end),
 		C.int64_t(steps),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -207,7 +207,7 @@ func Logspace(begin, end float32, steps int64, base float64, options *TensorOpti
 		C.float(end),
 		C.int64_t(steps),
 		C.double(base),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -219,7 +219,7 @@ func Eye(n, m int64, options *TensorOptions) Tensor {
 		&tensor,
 		C.int64_t(n),
 		C.int64_t(m),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -232,7 +232,7 @@ func Empty(size []int64, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -256,7 +256,7 @@ func Full(size []int64, value float32, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)), C.float(value),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -281,7 +281,7 @@ func Rand(size []int64, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -306,7 +306,7 @@ func RandInt(size []int64, low int64, high int64, options *TensorOptions) Tensor
 		C.int64_t(len(size)),
 		C.int64_t(low),
 		C.int64_t(high),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }
@@ -333,7 +333,7 @@ func RandN(size []int64, options *TensorOptions) Tensor {
 		&tensor,
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
-		options.T,
+		options.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&tensor))
 }

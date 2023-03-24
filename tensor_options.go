@@ -38,13 +38,13 @@ import (
 
 // TensorOptions wraps a C.TensorOptions.
 type TensorOptions struct {
-	T C.TensorOptions
+	Pointer C.TensorOptions
 }
 
 // Create a new TensorOptions.
 func NewTensorOptions() (options *TensorOptions) {
 	options = &TensorOptions{}
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&options.T)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions(&options.Pointer)))
 	return options.withFinalizerSet()
 }
 
@@ -64,19 +64,19 @@ func (options *TensorOptions) withFinalizerSet() *TensorOptions {
 
 // Free a tensor options from memory.
 func (options *TensorOptions) free() {
-	if options.T == nil {
+	if options.Pointer == nil {
 		panic("Attempting to free a tensor options that has already been freed!")
 	}
-	C.Torch_TensorOptions_Free(options.T)
-    options.T = nil
+	C.Torch_TensorOptions_Free(options.Pointer)
+    options.Pointer = nil
 }
 
 // Create a new TensorOptions with the given data type.
 func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
 	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Dtype(
-		&output.T,
-		options.T,
+		&output.Pointer,
+		options.Pointer,
 		C.int8_t(value),
 	)))
 	return output.withFinalizerSet()
@@ -98,8 +98,8 @@ func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
 // func (options *TensorOptions) Layout(value Layout) *TensorOptions {
 //     output := &TensorOptions{}
 //     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Layout(
-//         &output.T,
-//         options.T,
+//         &output.Pointer,
+//         options.Pointer,
 //         C.int8_t(value),
 //     )))
 //     return output.withFinalizerSet()
@@ -118,8 +118,8 @@ func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
 // func (options *TensorOptions) MemoryFormat(value MemoryFormat) *TensorOptions {
 //     output := &TensorOptions{}
 //     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_MemoryFormat(
-//         &output.T,
-//         options.T,
+//         &output.Pointer,
+//         options.Pointer,
 //         C.int8_t(value),
 //     )))
 //     return output.withFinalizerSet()
@@ -129,8 +129,8 @@ func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
 func (options *TensorOptions) Device(device Device) *TensorOptions {
 	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Device(
-		&output.T,
-		options.T,
+		&output.Pointer,
+		options.Pointer,
 		(C.Device)(device.Pointer),
 	)))
 	return output.withFinalizerSet()
@@ -140,8 +140,8 @@ func (options *TensorOptions) Device(device Device) *TensorOptions {
 func (options *TensorOptions) RequiresGrad(requiresGrad bool) *TensorOptions {
 	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_RequiresGrad(
-		&output.T,
-		options.T,
+		&output.Pointer,
+		options.Pointer,
 		C.bool(requiresGrad),
 	)))
 	return output.withFinalizerSet()
@@ -151,8 +151,8 @@ func (options *TensorOptions) RequiresGrad(requiresGrad bool) *TensorOptions {
 func (options *TensorOptions) PinnedMemory(pinnedMemory bool) *TensorOptions {
 	output := &TensorOptions{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_PinnedMemory(
-		&output.T,
-		options.T,
+		&output.Pointer,
+		options.Pointer,
 		C.bool(pinnedMemory),
 	)))
 	return output.withFinalizerSet()
