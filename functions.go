@@ -1011,16 +1011,15 @@ func (tensor Tensor) Unsqueeze(dim int64) Tensor {
 // Concatenate a sequence of tensors along a new dimension. All tensors need to
 // be of the same size.
 func Stack(tensors []Tensor, dim int64) Tensor {
-	CT := []C.Tensor{}
+	pointers := []C.Tensor{}
 	for _, tensor := range tensors {
-		CT = append(CT, C.Tensor(*tensor.Pointer))
+		pointers = append(pointers, C.Tensor(*tensor.Pointer))
 	}
-	p := (*C.Tensor)(unsafe.Pointer(&CT[0]))
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Stack(
 		&output,
-		p,
-		C.int64_t(len(CT)),
+		&pointers[0],
+		C.int64_t(len(pointers)),
 		C.int64_t(dim),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
@@ -1030,16 +1029,15 @@ func Stack(tensors []Tensor, dim int64) Tensor {
 // tensors must either have the same shape (except in the concatenating
 // dimension) or be empty.
 func Cat(tensors []Tensor, dim int64) Tensor {
-	CT := []C.Tensor{}
+	pointers := []C.Tensor{}
 	for _, tensor := range tensors {
-		CT = append(CT, C.Tensor(*tensor.Pointer))
+		pointers = append(pointers, C.Tensor(*tensor.Pointer))
 	}
-	p := (*C.Tensor)(unsafe.Pointer(&CT[0]))
 	var output C.Tensor
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Cat(
 		&output,
-		p,
-		C.int64_t(len(CT)),
+		&pointers[0],
+		C.int64_t(len(pointers)),
 		C.int64_t(dim),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
