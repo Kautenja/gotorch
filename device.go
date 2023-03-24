@@ -58,7 +58,7 @@ func (device *Device) free() {
 		panic("Attempting to free a device that has already been freed!")
 	}
 	C.Torch_Device_Free(device.Pointer)
-    device.Pointer = nil
+	device.Pointer = nil
 }
 
 // Return true if the given device is valid, false otherwise.

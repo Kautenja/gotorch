@@ -64,7 +64,7 @@ func (module *JitModule) free() {
 		panic("Attempting to free a module that has already been freed!")
 	}
 	C.Torch_Jit_Module_Free(module.Pointer)
-    module.Pointer = nil
+	module.Pointer = nil
 }
 
 // Save the module to the given path.
@@ -174,7 +174,7 @@ func (module *JitModule) Forward(inputs []*torch.IValue) (output *torch.IValue) 
 			panic("Attempting to free an ivalue that has already been freed!")
 		}
 		C.Torch_IValue_Free((C.IValue)(ivalue.Pointer))
-	    ivalue.Pointer = nil
+		ivalue.Pointer = nil
 	})
 	return
 }

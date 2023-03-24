@@ -163,7 +163,7 @@ func (ivalue *IValue) free() {
 		panic("Attempting to free an ivalue that has already been freed!")
 	}
 	C.Torch_IValue_Free(ivalue.Pointer)
-    ivalue.Pointer = nil
+	ivalue.Pointer = nil
 }
 
 // ---------------------------------------------------------------------------

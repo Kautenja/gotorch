@@ -68,7 +68,7 @@ func (options *TensorOptions) free() {
 		panic("Attempting to free a tensor options that has already been freed!")
 	}
 	C.Torch_TensorOptions_Free(options.Pointer)
-    options.Pointer = nil
+	options.Pointer = nil
 }
 
 // Create a new TensorOptions with the given data type.
