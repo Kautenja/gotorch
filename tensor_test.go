@@ -364,7 +364,7 @@ func Test_Tensor_LoadReturnsErrorOnInvalidPath(t *testing.T) {
 	output_path := filepath.Join(temp_dir, "foo.pt")
 	tensor, err := torch.Load(output_path)
 	assert.NotNil(t, err)
-	assert.Nil(t, tensor.Pointer)
+	assert.Nil(t, tensor)
 	assert.Contains(t, err.Error(), "open file failed because of errno 2 on fopen:")
 }
 
@@ -418,7 +418,7 @@ func Test_Tensor_EncodeDecode(t *testing.T) {
 func Test_Tensor_DecodeShouldReturnErrorOnInvalidBuffer(t *testing.T) {
 	bytes := []byte{1, 2, 3}
 	tensor, err := torch.Decode(bytes)
-	assert.Nil(t, tensor.Pointer)
+	assert.Nil(t, tensor)
 	assert.NotNil(t, err)
 }
 
