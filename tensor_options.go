@@ -125,7 +125,7 @@ func (options TensorOptions) Device(device Device) TensorOptions {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Device(
 		&output,
 		C.TensorOptions(*options.T),
-		(C.Device)(device.T),
+		(C.Device)(device.Pointer),
 	)))
 	return TensorOptions{(*unsafe.Pointer)(&output)}.withFinalizerSet()
 }

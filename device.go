@@ -39,7 +39,7 @@ import (
 
 // Device wrapper a pointer to C.Device
 type Device struct {
-	T C.Device
+	Pointer C.Device
 }
 
 // Create a new Device.
@@ -47,18 +47,18 @@ func NewDevice(deviceName string) (device *Device) {
 	device = &Device{}
 	deviceNameCString := C.CString(deviceName)
 	defer C.free(unsafe.Pointer(deviceNameCString))
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device.T, deviceNameCString)))
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Device(&device.Pointer, deviceNameCString)))
 	runtime.SetFinalizer(device, (*Device).free)
 	return
 }
 
 // Free a device from memory.
 func (device *Device) free() {
-	if device.T == nil {
+	if device.Pointer == nil {
 		panic("Attempting to free a device that has already been freed!")
 	}
-	C.Torch_Device_Free(device.T)
-    device.T = nil
+	C.Torch_Device_Free(device.Pointer)
+    device.Pointer = nil
 }
 
 // Return true if the given device is valid, false otherwise.

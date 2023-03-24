@@ -313,7 +313,7 @@ func (tensor Tensor) CopyTo(device *Device) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_CopyTo(
 		&output,
 		C.Tensor(*tensor.T),
-		device.T,
+		device.Pointer,
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))
 }
@@ -324,7 +324,7 @@ func (tensor Tensor) To(device *Device, dtype Dtype) Tensor {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_To(
 		&output,
 		C.Tensor(*tensor.T),
-		device.T,
+		device.Pointer,
 		C.int8_t(dtype),
 	)))
 	return NewTorchTensor((*unsafe.Pointer)(&output))

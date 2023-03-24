@@ -49,7 +49,7 @@ func Load(path string, device *torch.Device) (*JitModule, error) {
 	internalErr := unsafe.Pointer(C.Torch_Jit_Load(
 		&module.Pointer,
 		path_cstring,
-		(C.Device)(device.T),
+		(C.Device)(device.Pointer),
 	))
 	if internalErr != nil {
 		return nil, internal.NewTorchError(internalErr)
@@ -133,7 +133,7 @@ func (module *JitModule) CastTo(dtype torch.Dtype) *JitModule {
 func (module *JitModule) CopyTo(device *torch.Device) *JitModule {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_CopyTo(
 		module.Pointer,
-		(C.Device)(device.T),
+		(C.Device)(device.Pointer),
 	)))
 	return module
 }
@@ -143,7 +143,7 @@ func (module *JitModule) To(device *torch.Device, dtype torch.Dtype) *JitModule 
 	return module.CopyTo(device).CastTo(dtype)
 	// internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_To(
 	// 	module.Pointer,
-	// 	(C.Device)(device.T),
+	// 	(C.Device)(device.Pointer),
 	// 	C.int8_t(dtype),
 	// )))
 	// return module

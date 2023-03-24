@@ -145,7 +145,7 @@ func NewIValue(data interface{}) IValue {
 	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromList(&output, (*C.IValue)(&values[0]), C.int(len(values)))))
 	//     break
 	case *Device:
-		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromDevice(&output, t.T)))
+		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromDevice(&output, t.Pointer)))
 		break
 	default:
 		panic(fmt.Sprintf("IValue not supported for data of type %s", reflect.TypeOf(data)))
