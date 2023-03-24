@@ -159,22 +159,22 @@ func (module *JitModule) Forward(inputs []*torch.IValue) (output *torch.IValue) 
 	// Convert the torch IValues to C IValues.
 	var ivalues []C.IValue
 	for _, ivalue := range inputs {
-		ivalues = append(ivalues, (C.IValue)(ivalue.T))
+		ivalues = append(ivalues, (C.IValue)(ivalue.Pointer))
 	}
 	// Call the forward method with a reference to the output.
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_Forward(
-		(*C.IValue)(&output.T),
+		(*C.IValue)(&output.Pointer),
 		module.Pointer,
 		&ivalues[0],
 		C.int64_t(len(ivalues)),
 	)))
 	// We can't access the `free` method of the IValue, so redefine it here...
 	runtime.SetFinalizer(output, func(ivalue *torch.IValue) {
-		if ivalue.T == nil {
+		if ivalue.Pointer == nil {
 			panic("Attempting to free an ivalue that has already been freed!")
 		}
-		C.Torch_IValue_Free((C.IValue)(ivalue.T))
-	    ivalue.T = nil
+		C.Torch_IValue_Free((C.IValue)(ivalue.Pointer))
+	    ivalue.Pointer = nil
 	})
 	return
 }
