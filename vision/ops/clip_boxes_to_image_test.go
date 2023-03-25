@@ -77,9 +77,9 @@ func TestClipBoxesToImage_ClipsBoxesInSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{ 0,  0, 200, 200}})
 	c := torch.NewTensor([][]int64{{ 0, -5, 150,  25}})
 	d := torch.NewTensor([][]int64{{-5,  0,  25,  75}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.ClipBoxesToImage_(boxes, 50, 100)
 	// Create the expected output tensor.
@@ -87,9 +87,9 @@ func TestClipBoxesToImage_ClipsBoxesInSpatialLayout(t *testing.T) {
 	b = torch.NewTensor([][]int64{{0, 0, 100, 50}})
 	c = torch.NewTensor([][]int64{{0, 0, 100, 25}})
 	d = torch.NewTensor([][]int64{{0, 0,  25, 50}})
-	expected := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	expected := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	assert.True(t, output.Equal(expected))
 	assert.True(t, output.Equal(boxes))
@@ -143,9 +143,9 @@ func TestClipBoxesToImageClipsBoxesInSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{ 0,  0, 200, 200}})
 	c := torch.NewTensor([][]int64{{ 0, -5, 150,  25}})
 	d := torch.NewTensor([][]int64{{-5,  0,  25,  75}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.ClipBoxesToImage(boxes, 50, 100)
 	t.Log(output)
@@ -154,9 +154,9 @@ func TestClipBoxesToImageClipsBoxesInSpatialLayout(t *testing.T) {
 	b = torch.NewTensor([][]int64{{0, 0, 100, 50}})
 	c = torch.NewTensor([][]int64{{0, 0, 100, 25}})
 	d = torch.NewTensor([][]int64{{0, 0,  25, 50}})
-	expected := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	expected := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	t.Log(expected)
 	assert.True(t, output.Equal(expected))

@@ -43,7 +43,7 @@ import (
 // the conventions are allow shifts past the window and larger bounds via
 // zero padding.
 //
-func SafeCrop(tensor torch.Tensor, xmin, ymin, xmax, ymax int64) torch.Tensor {
+func SafeCrop(tensor *torch.Tensor, xmin, ymin, xmax, ymax int64) *torch.Tensor {
 	shape := tensor.Shape()
 	dim := len(shape)
 	if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }

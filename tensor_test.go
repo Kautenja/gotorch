@@ -364,7 +364,7 @@ func Test_Tensor_LoadReturnsErrorOnInvalidPath(t *testing.T) {
 	output_path := filepath.Join(temp_dir, "foo.pt")
 	tensor, err := torch.Load(output_path)
 	assert.NotNil(t, err)
-	assert.Nil(t, tensor.Pointer)
+	assert.Nil(t, tensor)
 	assert.Contains(t, err.Error(), "open file failed because of errno 2 on fopen:")
 }
 
@@ -418,7 +418,7 @@ func Test_Tensor_EncodeDecode(t *testing.T) {
 func Test_Tensor_DecodeShouldReturnErrorOnInvalidBuffer(t *testing.T) {
 	bytes := []byte{1, 2, 3}
 	tensor, err := torch.Decode(bytes)
-	assert.Nil(t, tensor.Pointer)
+	assert.Nil(t, tensor)
 	assert.NotNil(t, err)
 }
 
@@ -638,7 +638,7 @@ func Test_Tensor_Reshape(t *testing.T) {
 func Test_Tensor_ReshapeDoesNotImposeContiguityConstraint(t *testing.T) {
 	z := torch.Zeros([]int64{3, 2}, torch.NewTensorOptions())
 	y := z.Transpose(0, 1)
-	var k torch.Tensor
+	var k *torch.Tensor
 	assert.NotPanics(t, func() { k = y.Reshape(6) })
 	assert.Equal(t, []int64{6}, k.Shape())
 }
@@ -671,7 +671,7 @@ func Test_Tensor_ReshapeAsDoesNotImposeContiguityConstraint(t *testing.T) {
 	z := torch.Zeros([]int64{3, 2}, torch.NewTensorOptions())
 	y := z.Transpose(0, 1)
 	x := torch.Zeros([]int64{6}, torch.NewTensorOptions())
-	var k torch.Tensor
+	var k *torch.Tensor
 	assert.NotPanics(t, func() { k = y.ReshapeAs(x) })
 	assert.Equal(t, []int64{6}, k.Shape())
 }

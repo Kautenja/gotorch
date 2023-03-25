@@ -35,11 +35,11 @@ import (
 // use the given constant padding value. Returns the padded tensor and the
 // padding that was applied in [left, right, top, bottom] format.
 func PadIfNeeded(
-	tensor torch.Tensor,
+	tensor *torch.Tensor,
 	min_height, min_width int64,
 	mode F.PadMode,
 	value ...float64,
-) (torch.Tensor, []int64) {
+) (*torch.Tensor, []int64) {
 	shape := tensor.Shape()
 	dim := len(shape)
 	if dim < 2 { panic("PadIfNeeded requires tensor with 2 or more dimensions") }

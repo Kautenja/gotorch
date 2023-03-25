@@ -49,6 +49,6 @@ func Resize(height, width int64, interpolation F.InterpolateMode, alignCorners, 
 }
 
 // Forward pass an image through the transformer to resize it.
-func (t ResizeTransformer) Forward(tensor torch.Tensor) torch.Tensor {
+func (t ResizeTransformer) Forward(tensor *torch.Tensor) *torch.Tensor {
 	return F.InterpolateSize(tensor, []int64{t.height, t.width}, t.interpolation, t.alignCorners, t.antialias)
 }

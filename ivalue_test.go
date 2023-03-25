@@ -271,7 +271,7 @@ func TestIValueFloat64List(t *testing.T) {
 func TestIValueTensorList(t *testing.T) {
 	tensorA := torch.NewTensor([]float32{1})
 	tensorB := torch.NewTensor([]float32{2})
-	data := torch.NewIValue([]torch.Tensor{tensorA, tensorB})
+	data := torch.NewIValue([]*torch.Tensor{tensorA, tensorB})
 	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsTensorList())

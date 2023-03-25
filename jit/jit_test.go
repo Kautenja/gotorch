@@ -243,7 +243,7 @@ func TestJitModuleForwardFinalizesOutputIValue(t *testing.T) {
 
 func TestJitModuleForwardTracedModuleInGoRoutine(t *testing.T) {
 	module, _ := jit.Load("../data/trace_identity.pt", torch.NewDevice("cpu"))
-	channel := make(chan torch.Tensor)
+	channel := make(chan *torch.Tensor)
 	go func() {
 		tensor := torch.NewTensor([][]float32{{1}})
 		channel <- module.Forward([]*torch.IValue{torch.NewIValue(tensor)}).ToTensor()

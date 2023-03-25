@@ -84,8 +84,8 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 		defer C.free(unsafe.Pointer(stringData))
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromString(&ivalue.Pointer, stringData)))
 		break
-	case Tensor:
-		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensor(&ivalue.Pointer, (C.Tensor)(*t.Pointer))))
+	case *Tensor:
+		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensor(&ivalue.Pointer, t.Pointer)))
 		break
 	case []bool:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromBoolList(
@@ -133,9 +133,9 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 	// case []complex128:
 	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromComplexDoubleList(&ivalue.Pointer, (*C.complexdouble)(&t[0]))))
 	//     break
-	case []Tensor:
+	case []*Tensor:
 		tensors := []C.Tensor{}
-		for _, tensor := range t { tensors = append(tensors, C.Tensor(*tensor.Pointer)) }
+		for _, tensor := range t { tensors = append(tensors, tensor.Pointer) }
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromTensorList(
 			&ivalue.Pointer,
 			(*C.Tensor)(&tensors[0]),
@@ -480,10 +480,11 @@ func (ivalue *IValue) ToString() string {
 }
 
 // Convert the IValue to a tensor.
-func (ivalue *IValue) ToTensor() Tensor {
-	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToTensor(&output, ivalue.Pointer)))
-	return NewTorchTensor((*unsafe.Pointer)(&output))
+func (ivalue *IValue) ToTensor() *Tensor {
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToTensor(&output.Pointer, ivalue.Pointer)))
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // // Convert the IValue to a list of booleans.
@@ -499,19 +500,20 @@ func (ivalue *IValue) ToTensor() Tensor {
 // func (ivalue *IValue) ToComplexDoubleList()
 
 // Convert the IValue to a list of tensors.
-func (ivalue *IValue) ToTensorList() []Tensor {
+func (ivalue *IValue) ToTensorList() []*Tensor {
 	pointers := make([]C.Tensor, ivalue.LengthList())
-	if len(pointers) == 0 { return []Tensor{} }
+	if len(pointers) == 0 { return []*Tensor{} }
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToTensorList(
 		(*C.Tensor)(unsafe.Pointer(&pointers[0])),
 		C.int64_t(len(pointers)),
 		ivalue.Pointer,
 	)))
 	// Wrap the pointers with finalized Go structs
-	tensors := []Tensor{}
+	tensors := []*Tensor{}
 	for index, _ := range pointers {
-		pointer := (C.Tensor)(pointers[index])
-		tensors = append(tensors, NewTorchTensor((*unsafe.Pointer)(&pointer)))
+		tensor := &Tensor{pointers[index]}
+		runtime.SetFinalizer(tensor, (*Tensor).free)
+		tensors = append(tensors, tensor)
 	}
 	return tensors
 }
