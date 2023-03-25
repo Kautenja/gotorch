@@ -31,9 +31,10 @@ func main() {
 
 	// Disable autograd for this inference context
 	torch.SetGradEnabled(false)
+	device := torch.NewDevice("cpu")
 
 	// Load the model
-	model, err := jit.Load(modelPath, torch.NewDevice("cpu"))
+	model, err := jit.Load(modelPath, device)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -61,10 +62,10 @@ func main() {
 	}
 
 	// Convert the image data to a tensor and apply transformations.
-	tensor := transform.Forward(T.ToTensor(imageData).CopyTo(torch.NewDevice("cpu")).Unsqueeze(0))
+	tensor := transform.Forward(T.ToTensor(imageData).CopyTo(device).Unsqueeze(0))
 
 	// Forward pass the tensor data through the model.
-	logits := model.Forward([]torch.IValue{torch.NewIValue(tensor)})
+	logits := model.Forward([]*torch.IValue{torch.NewIValue(tensor)})
 	if !logits.IsTensor() {
 		log.Fatal("Expected model to output an IValue with a single tensor!")
 		return
@@ -73,25 +74,4 @@ func main() {
 	score := largest_probit.Values.Item().(float32)
 	label := labels[largest_probit.Indices.Item().(int64)]
 	fmt.Println(fmt.Sprintf("P[%s] = %.2f%%", label, 100 * score))
-
-	// for {
-	//     _ = transforms.ToTensor(imageData)
-	// }
-
-	// for {
-	//     a := torch.NewIValue(tensor)
-	//     if !a.IsTensor() {
-	//         log.Fatal("asdf")
-	//         return
-	//     }
-	// }
-
-	// for {
-	//     module, err := jit.Load(modelPath, device)
-	//     _ = module.String()
-	//     if err != nil {
-	//         log.Fatal(err)
-	//         return
-	//     }
-	// }
 }

@@ -30,7 +30,7 @@ import (
 	"github.com/Kautenja/gotorch/vision/transforms/functional"
 )
 
-// A transformer that converts `torch.Tensor` to `image.Image`.
+// A transformer that converts a torch Tensor to an image.Image.
 type FromTensorTransformer struct { }
 
 // Create a new FromTensorTransformer with given parameters.
@@ -39,6 +39,6 @@ func FromTensor() *FromTensorTransformer {
 }
 
 // Forward pass a tensor through the transformer to convert it to an image.
-func (_ FromTensorTransformer) Forward(frame torch.Tensor) image.Image {
+func (_ FromTensorTransformer) Forward(frame *torch.Tensor) image.Image {
 	return vision_transforms_functional.FromTensor(frame)
 }

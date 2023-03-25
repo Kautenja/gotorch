@@ -33,7 +33,7 @@ import (
 // Crop the given image at specified location and output size. The input is a
 // Tensor with expected shape of (..., H, W). If image size is smaller than
 // output size along any edge, image is padded with 0 and then cropped.
-func Crop(tensor torch.Tensor, xmin, ymin, xmax, ymax int64) torch.Tensor {
+func Crop(tensor *torch.Tensor, xmin, ymin, xmax, ymax int64) *torch.Tensor {
 	shape := tensor.Shape()
 	dim := len(shape)
 	if dim < 2 { panic("Crop requires inputs with 2 or more dimensions") }

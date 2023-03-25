@@ -31,7 +31,7 @@ import (
 // Compute the area of a set of bounding boxes. boxes are expected to be in
 // (N, 4, ...) (xmin, ymin, xmax, ymax) format with 0 <= xmin < xmax and
 // 0 <= ymin < ymax.
-func BoxArea(boxes torch.Tensor) torch.Tensor {
+func BoxArea(boxes *torch.Tensor) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))

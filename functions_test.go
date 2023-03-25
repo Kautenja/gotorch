@@ -70,25 +70,25 @@ func TestIsNonzero(t *testing.T) {
 
 func TestZerosCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.Zeros([]int64{0}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestZerosCreatesItem(t *testing.T) {
 	tensor := torch.Zeros([]int64{1}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{0}).Equal(tensor))
 }
 
 func TestZerosCreatesMatrix(t *testing.T) {
 	tensor := torch.Zeros([]int64{3, 3}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}).Equal(tensor))
 }
 
 func TestZerosUsesTensorOptions(t *testing.T) {
 	tensor := torch.Zeros([]int64{1}, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -111,14 +111,14 @@ func TestZerosPanicsOnInvalidSize(t *testing.T) {
 func TestZerosLike(t *testing.T) {
 	reference := torch.Ones([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.ZerosLike(reference)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{3, 3}, tensor.Shape())
 	expected := torch.Zeros([]int64{3, 3}, torch.NewTensorOptions())
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestZerosLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.ZerosLike(tensor)
 	})
@@ -130,25 +130,25 @@ func TestZerosLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestOnesCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.Ones([]int64{0}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestOnesCreatesItem(t *testing.T) {
 	tensor := torch.Ones([]int64{1}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{1}).Equal(tensor))
 }
 
 func TestOnesCreatesMatrix(t *testing.T) {
 	tensor := torch.Ones([]int64{3, 3}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}).Equal(tensor))
 }
 
 func TestOnesUsesTensorOptions(t *testing.T) {
 	tensor := torch.Ones([]int64{1}, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -171,14 +171,14 @@ func TestOnesPanicsOnInvalidSize(t *testing.T) {
 func TestOnesLikeWithoutGrad(t *testing.T) {
 	reference := torch.Zeros([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.OnesLike(reference)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, reference.Shape(), tensor.Shape())
 	expected := torch.Ones([]int64{3, 3}, torch.NewTensorOptions())
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestOnesLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.OnesLike(tensor)
 	})
@@ -190,35 +190,35 @@ func TestOnesLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestArangeValuesStepSize1(t *testing.T) {
 	tensor := torch.Arange(0, 5, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 1, 2, 3, 4})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestArangeValuesStepSize2(t *testing.T) {
 	tensor := torch.Arange(0, 5, 2, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 2, 4})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestArangeValuesStepSize3(t *testing.T) {
 	tensor := torch.Arange(0, 5, 3, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 3})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestArangeValuesStepSize5(t *testing.T) {
 	tensor := torch.Arange(0, 5, 5, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestArangeUsesTensorOptions(t *testing.T) {
 	tensor := torch.Arange(0, 1, 1, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -240,35 +240,35 @@ func TestArangeThrowsErrorOnInvalidLargerBound(t *testing.T) {
 
 func TestRangeValuesStepSize1(t *testing.T) {
 	tensor := torch.Range(0, 5, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 1, 2, 3, 4, 5})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestRangeValuesStepSize2(t *testing.T) {
 	tensor := torch.Range(0, 5, 2, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 2, 4})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestRangeValuesStepSize3(t *testing.T) {
 	tensor := torch.Range(0, 5, 3, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 3})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestRangeValuesStepSize5(t *testing.T) {
 	tensor := torch.Range(0, 5, 5, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	expected := torch.NewTensor([]float32{0, 5})
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestRangeUsesTensorOptions(t *testing.T) {
 	tensor := torch.Range(0, 1, 1, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -290,21 +290,21 @@ func TestRangeThrowsErrorOnInvalidLargerBound(t *testing.T) {
 
 func TestLinspaceValues(t *testing.T) {
 	tensor := torch.Linspace(0, 5, 6, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{0, 1, 2, 3, 4, 5}).Equal(tensor))
 
 	tensor = torch.Linspace(0, 5, 3, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{0, 2.5, 5}).Equal(tensor))
 
 	tensor = torch.Linspace(0, 5, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{0}).Equal(tensor))
 }
 
 func TestLinspaceUsesTensorOptions(t *testing.T) {
 	tensor := torch.Linspace(0, 1, 1, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -320,25 +320,25 @@ func TestLinspacePanicsOnInvalidStepSize(t *testing.T) {
 
 func TestLogspaceValues(t *testing.T) {
 	tensor := torch.Logspace(0, 5, 6, 10, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{1, 10, 100, 1000, 10000, 100000}).Equal(tensor))
 
 	tensor = torch.Logspace(0, 5, 3, 10, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.AllClose(torch.NewTensor([]float32{1.0000e+00, 3.1623e+02, 1.0000e+05}), tensor, 1e-5, 1e-3))
 
 	tensor = torch.Logspace(0, 5, 1, 10, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{1}).Equal(tensor))
 
 	tensor = torch.Logspace(0, 5, 6, 2, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{1, 2, 4, 8, 16, 32}).Equal(tensor))
 }
 
 func TestLogspaceUsesTensorOptions(t *testing.T) {
 	tensor := torch.Logspace(0, 5, 6, 10, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -354,25 +354,25 @@ func TestLogspacePanicsErrorOnInvalidSize(t *testing.T) {
 
 func TestEyeValues(t *testing.T) {
 	tensor := torch.Eye(3, 3, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}).Equal(tensor))
 
 	tensor = torch.Eye(3, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{1}, {0}, {0}}).Equal(tensor))
 
 	tensor = torch.Eye(1, 3, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{1, 0, 0}}).Equal(tensor))
 
 	tensor = torch.Eye(3, 2, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([][]float32{{1, 0}, {0, 1}, {0, 0}}).Equal(tensor))
 }
 
 func TestEyeUsesTensorOptions(t *testing.T) {
 	tensor := torch.Eye(3, 3, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -388,25 +388,25 @@ func TestEyeThrowsErrorOnInvalidN(t *testing.T) {
 
 func TestEmptyCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.Empty([]int64{0}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestEmptyCreatesItem(t *testing.T) {
 	tensor := torch.Empty([]int64{1}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{1}, tensor.Shape())
 }
 
 func TestEmptyCreatesMatrix(t *testing.T) {
 	tensor := torch.Empty([]int64{3, 3}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{3, 3}, tensor.Shape())
 }
 
 func TestEmptyUsesTensorOptions(t *testing.T) {
 	tensor := torch.Empty([]int64{1}, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -429,13 +429,13 @@ func TestEmptyPanicsOnInvalidSize(t *testing.T) {
 func TestEmptyLike(t *testing.T) {
 	reference := torch.Rand([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.EmptyLike(reference)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, reference.Shape(), tensor.Shape())
 	assert.False(t, torch.Equal(reference, tensor))
 }
 
 func TestEmptyLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.EmptyLike(tensor)
 	})
@@ -447,13 +447,13 @@ func TestEmptyLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestFullCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.Full([]int64{0}, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestFullCreatesItem(t *testing.T) {
 	tensor := torch.Full([]int64{1}, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{1}, tensor.Shape())
 	expected := torch.Ones([]int64{1}, torch.NewTensorOptions())
 	assert.True(t, torch.Equal(expected, tensor))
@@ -461,7 +461,7 @@ func TestFullCreatesItem(t *testing.T) {
 
 func TestFullCreatesMatrix(t *testing.T) {
 	tensor := torch.Full([]int64{3, 3}, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{3, 3}, tensor.Shape())
 	expected := torch.Ones([]int64{3, 3}, torch.NewTensorOptions())
 	assert.True(t, torch.Equal(expected, tensor))
@@ -469,7 +469,7 @@ func TestFullCreatesMatrix(t *testing.T) {
 
 func TestFullUsesTensorOptions(t *testing.T) {
 	tensor := torch.Full([]int64{1}, 1, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -492,14 +492,14 @@ func TestFullPanicsOnInvalidSize(t *testing.T) {
 func TestFullLike(t *testing.T) {
 	reference := torch.Rand([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.FullLike(reference, 1)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{3, 3}, tensor.Shape())
 	expected := torch.Ones([]int64{3, 3}, torch.NewTensorOptions())
 	assert.True(t, torch.Equal(expected, tensor))
 }
 
 func TestFullLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.FullLike(tensor, 1)
 	})
@@ -511,13 +511,13 @@ func TestFullLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestRandCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.Rand([]int64{0}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestRandValues(t *testing.T) {
 	tensor := torch.Rand([]int64{1, 3, 1024, 1024}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{1, 3, 1024, 1024}, tensor.Shape())
 	// python -c "import torch; print(torch.rand(1, 3, 2**10, 2**10).mean())"
 	mean := float64(tensor.Mean().Item().(float32))
@@ -535,7 +535,7 @@ func TestRandValues(t *testing.T) {
 
 func TestRandUsesTensorOptions(t *testing.T) {
 	tensor := torch.Rand([]int64{1}, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -558,13 +558,13 @@ func TestRandPanicsOnInvalidSize(t *testing.T) {
 func TestRandLike(t *testing.T) {
 	reference := torch.Rand([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.RandLike(reference)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, reference.Shape(), tensor.Shape())
 	assert.False(t, torch.Equal(reference, tensor))
 }
 
 func TestRandLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandLike(tensor)
 	})
@@ -576,13 +576,13 @@ func TestRandLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestRandIntCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.RandInt([]int64{0}, 0, 1, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestRandIntValues(t *testing.T) {
 	tensor := torch.RandInt([]int64{1, 3, 1024, 1024}, 0, 11, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{1, 3, 1024, 1024}, tensor.Shape())
 	// python -c "import torch; print(torch.randint(0, 11, size=(1, 3, 2**10, 2**10)).float().mean())"
 	mean := float64(tensor.Mean().Item().(float32))
@@ -600,7 +600,7 @@ func TestRandIntValues(t *testing.T) {
 
 func TestRandIntUsesTensorOptions(t *testing.T) {
 	tensor := torch.RandInt([]int64{1}, 0, 1, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -623,13 +623,13 @@ func TestRandIntPanicsOnInvalidSize(t *testing.T) {
 func TestRandIntLike(t *testing.T) {
 	reference := torch.Rand([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.RandIntLike(reference, 10, 20)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, reference.Shape(), tensor.Shape())
 	assert.False(t, torch.Equal(reference, tensor))
 }
 
 func TestRandIntLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandIntLike(tensor, 0, 1)
 	})
@@ -641,13 +641,13 @@ func TestRandIntLikePanicsOnUninitializedInput(t *testing.T) {
 
 func TestRandNCreatesEmptyTensor(t *testing.T) {
 	tensor := torch.RandN([]int64{0}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, torch.NewTensor([]float32{}).Equal(tensor))
 }
 
 func TestRandNValues(t *testing.T) {
 	tensor := torch.RandN([]int64{1, 3, 1024, 1024}, torch.NewTensorOptions())
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, []int64{1, 3, 1024, 1024}, tensor.Shape())
 	// python -c "import torch; print(torch.randn(1, 3, 2**10, 2**10).float().mean())"
 	mean := float64(tensor.Mean().Item().(float32))
@@ -665,7 +665,7 @@ func TestRandNValues(t *testing.T) {
 
 func TestRandNUsesTensorOptions(t *testing.T) {
 	tensor := torch.RandN([]int64{1}, torch.NewTensorOptions().RequiresGrad(true))
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.True(t, tensor.RequiresGrad())
 }
 
@@ -688,13 +688,13 @@ func TestRandNPanicsOnInvalidSize(t *testing.T) {
 func TestRandNLike(t *testing.T) {
 	reference := torch.Rand([]int64{3, 3}, torch.NewTensorOptions())
 	tensor := torch.RandNLike(reference)
-	assert.NotNil(t, tensor.T)
+	assert.NotNil(t, tensor.Pointer)
 	assert.Equal(t, reference.Shape(), tensor.Shape())
 	assert.False(t, torch.Equal(reference, tensor))
 }
 
 func TestRandNLikePanicsOnUninitializedInput(t *testing.T) {
-	tensor := torch.Tensor{}
+	tensor := &torch.Tensor{}
 	assert.PanicsWithValue(t, "input tensor is nil", func() {
 		torch.RandNLike(tensor)
 	})
@@ -926,7 +926,7 @@ func TestPow0_5(t *testing.T) {
 func TestTanh(t *testing.T) {
 	a := torch.Rand([]int64{4}, torch.NewTensorOptions())
 	b := torch.Tanh(a)
-	assert.NotNil(t, b.T)
+	assert.NotNil(t, b.Pointer)
 }
 
 func TestPermute(t *testing.T) {
@@ -1087,54 +1087,54 @@ func TestFlatten(t *testing.T) {
 func TestSqueeze(t *testing.T) {
 	tensor := torch.Empty([]int64{2, 1, 2, 1, 2}, torch.NewTensorOptions())
 	y := tensor.Squeeze()
-	assert.NotNil(t, y.T)
+	assert.NotNil(t, y.Pointer)
 	z := tensor.Squeeze(1)
-	assert.NotNil(t, z.T)
+	assert.NotNil(t, z.Pointer)
 	assert.Panics(t, func() { tensor.Squeeze(1, 2) })
 }
 
 func TestUnsqueeze(t *testing.T) {
 	tensor := torch.Empty([]int64{3}, torch.NewTensorOptions())
 	out := tensor.Unsqueeze(0)
-	assert.NotNil(t, out.T)
+	assert.NotNil(t, out.Pointer)
 	assert.Equal(t, []int64{1, 3}, out.Shape())
 	out = tensor.Unsqueeze(1)
-	assert.NotNil(t, out.T)
+	assert.NotNil(t, out.Pointer)
 	assert.Equal(t, []int64{3, 1}, out.Shape())
 }
 
 func TestUnsqueezeAllowsNegativeDim(t *testing.T) {
 	tensor := torch.Empty([]int64{3}, torch.NewTensorOptions())
 	out := tensor.Unsqueeze(-1)
-	assert.NotNil(t, out.T)
+	assert.NotNil(t, out.Pointer)
 	assert.Equal(t, []int64{3, 1}, out.Shape())
 }
 
 func TestStack(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Stack([]torch.Tensor{t1, t2}, 0)
+	out := torch.Stack([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{2, 2, 3}, out.Shape())
 }
 
 func TestCat(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Cat([]torch.Tensor{t1, t2}, 0)
+	out := torch.Cat([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
 func TestConcat(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Concat([]torch.Tensor{t1, t2}, 0)
+	out := torch.Concat([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 
 func TestConcatenate(t *testing.T) {
 	t1 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
 	t2 := torch.Empty([]int64{2, 3}, torch.NewTensorOptions())
-	out := torch.Concatenate([]torch.Tensor{t1, t2}, 0)
+	out := torch.Concatenate([]*torch.Tensor{t1, t2}, 0)
 	assert.Equal(t, []int64{4, 3}, out.Shape())
 }
 

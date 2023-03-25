@@ -93,9 +93,9 @@ func TestFindBoxesInSizeRangeSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{0, 0, 100, 100}})
 	c := torch.NewTensor([][]int64{{0, 0, 200, 200}})
 	d := torch.NewTensor([][]int64{{0, 0,   5,   5}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.FindBoxesInSizeRange(boxes, 10, 10, 100, 100)
 	// Create the expected output tensor.
@@ -103,9 +103,9 @@ func TestFindBoxesInSizeRangeSpatialLayout(t *testing.T) {
 	b = torch.NewTensor([]bool{true})
 	c = torch.NewTensor([]bool{false})
 	d = torch.NewTensor([]bool{false})
-	expected := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	expected := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1).Unsqueeze(0)
 	assert.True(t, output.Equal(expected))
 }
@@ -163,9 +163,9 @@ func TestFindLargeBoxesSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{0, 0, 100, 100}})
 	c := torch.NewTensor([][]int64{{0, 0, 200, 200}})
 	d := torch.NewTensor([][]int64{{0, 0,   5,   5}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.FindLargeBoxes(boxes, 10, 10)
 	// Create the expected output tensor.
@@ -173,9 +173,9 @@ func TestFindLargeBoxesSpatialLayout(t *testing.T) {
 	b = torch.NewTensor([]bool{true})
 	c = torch.NewTensor([]bool{true})
 	d = torch.NewTensor([]bool{false})
-	expected := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	expected := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1).Unsqueeze(0)
 	assert.True(t, output.Equal(expected))
 }
@@ -233,9 +233,9 @@ func TestFindSmallBoxesSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{0, 0, 100, 100}})
 	c := torch.NewTensor([][]int64{{0, 0, 200, 200}})
 	d := torch.NewTensor([][]int64{{0, 0,   5,   5}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.FindSmallBoxes(boxes, 100, 100)
 	// Create the expected output tensor.
@@ -243,9 +243,9 @@ func TestFindSmallBoxesSpatialLayout(t *testing.T) {
 	b = torch.NewTensor([]bool{true})
 	c = torch.NewTensor([]bool{false})
 	d = torch.NewTensor([]bool{true})
-	expected := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	expected := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1).Unsqueeze(0)
 	assert.True(t, output.Equal(expected))
 }

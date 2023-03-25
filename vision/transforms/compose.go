@@ -30,7 +30,7 @@ import (
 
 // An abstract transformer that performs operations on tensors.
 type ITransformer interface {
-	Forward(torch.Tensor) torch.Tensor
+	Forward(*torch.Tensor) *torch.Tensor
 }
 
 // A composition of many transformers in a sequential structure.
@@ -44,7 +44,7 @@ func Compose(transforms ...ITransformer) *ComposeTransformer {
 }
 
 // Pass the tensor through the sequential transformation pipeline.
-func (composition ComposeTransformer) Forward(tensor torch.Tensor) torch.Tensor {
+func (composition ComposeTransformer) Forward(tensor *torch.Tensor) *torch.Tensor {
 	for _, transform := range composition.Transforms {
 		tensor = transform.Forward(tensor)
 	}

@@ -87,7 +87,7 @@ import (
 func TestInterpolateSize(t *testing.T) {
 	tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
 	output := F.InterpolateSize(tensor, []int64{128, 64}, F.InterpolateNearest, false, false)
-	assert.NotNil(t, output.T)
+	assert.NotNil(t, output.Pointer)
 	assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
 	// The input tensor should not be changed
 	assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
@@ -96,7 +96,7 @@ func TestInterpolateSize(t *testing.T) {
 func TestInterpolateScale(t *testing.T) {
 	tensor := torch.Zeros([]int64{1, 3, 256, 256}, torch.NewTensorOptions())
 	output := F.InterpolateScale(tensor, []float64{0.5, 0.25}, F.InterpolateNearest, false, false)
-	assert.NotNil(t, output.T)
+	assert.NotNil(t, output.Pointer)
 	assert.Equal(t, []int64{1, 3, 128, 64}, output.Shape())
 	// The input tensor should not be changed
 	assert.Equal(t, []int64{1, 3, 256, 256}, tensor.Shape())
@@ -169,7 +169,7 @@ func TestNormalize(t *testing.T) {
 func TestPad(t *testing.T) {
 	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
 	output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant)
-	assert.NotNil(t, output.T)
+	assert.NotNil(t, output.Pointer)
 	expected := torch.NewTensor([][]int64{{0, 1, 0}, {2, 3, 0}, {0, 0, 0}})
 	assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
 }
@@ -182,7 +182,7 @@ func TestPad(t *testing.T) {
 func TestPadWithConstantValue(t *testing.T) {
 	tensor := torch.NewTensor([][]int64{{0, 1}, {2, 3}})
 	output := F.Pad(tensor, []int64{0, 1, 0, 1}, F.PadConstant, 1)
-	assert.NotNil(t, output.T)
+	assert.NotNil(t, output.Pointer)
 	expected := torch.NewTensor([][]int64{{0, 1, 1}, {2, 3, 1}, {1, 1, 1}})
 	assert.True(t, torch.AllClose(output, expected, 1e-8, 1e-3), "Got %v, expected %v", output, expected)
 }

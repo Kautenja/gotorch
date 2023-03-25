@@ -31,7 +31,6 @@
 #include "cgotorch/functions.h"
 #include "cgotorch/cuda.h"
 #include "cgotorch/init.h"
-#include "cgotorch/memory.h"
 #include "cgotorch/optim.h"
 #include "cgotorch/byte_buffer.h"
 #include "cgotorch/jit.h"

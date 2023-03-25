@@ -47,17 +47,17 @@ func TestIValuePanicsOnUnknownType(t *testing.T) {
 func TestIValueTensor(t *testing.T) {
 	tensor := torch.NewTensor([]float32{1})
 	data := torch.NewIValue(tensor)
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsTensor())
 	value := data.ToTensor()
 	assert.True(t, torch.Equal(tensor, value))
-	assert.NotEqual(t, tensor.T, value.T)
+	assert.NotEqual(t, tensor.Pointer, value.Pointer)
 }
 
 func TestIValueFloat32(t *testing.T) {
 	data := torch.NewIValue(float32(7))
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsDouble())
@@ -66,7 +66,7 @@ func TestIValueFloat32(t *testing.T) {
 
 func TestIValueFloat64(t *testing.T) {
 	data := torch.NewIValue(float64(7))
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsDouble())
@@ -75,7 +75,7 @@ func TestIValueFloat64(t *testing.T) {
 
 func TestIValueInt(t *testing.T) {
 	data := torch.NewIValue(7)
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsInt())
@@ -84,7 +84,7 @@ func TestIValueInt(t *testing.T) {
 
 func TestIValueInt32(t *testing.T) {
 	data := torch.NewIValue(int32(7))
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsInt())
@@ -93,7 +93,7 @@ func TestIValueInt32(t *testing.T) {
 
 // func TestIValueInt64(t *testing.T) {
 //     data := torch.NewIValue(int64(7))
-//     assert.NotNil(t, data.T)
+//     assert.NotNil(t, data.Pointer)
 //     assert.False(t, data.IsNil())
 //     assert.True(t, data.IsScalar())
 //     assert.True(t, data.IsInt())
@@ -102,7 +102,7 @@ func TestIValueInt32(t *testing.T) {
 
 func TestIValueBool(t *testing.T) {
 	data := torch.NewIValue(true)
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsBool())
@@ -111,7 +111,7 @@ func TestIValueBool(t *testing.T) {
 
 func TestIValueString(t *testing.T) {
 	data := torch.NewIValue("foo")
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsString())
 	assert.Equal(t, "foo", data.ToString())
@@ -119,7 +119,7 @@ func TestIValueString(t *testing.T) {
 
 func TestIValueComplex64(t *testing.T) {
 	data := torch.NewIValue(complex64(complex(0.8, 0.6)))
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsComplexDouble())
@@ -130,7 +130,7 @@ func TestIValueComplex64(t *testing.T) {
 
 func TestIValueComplex128(t *testing.T) {
 	data := torch.NewIValue(complex128(complex(0.8, 0.6)))
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsScalar())
 	assert.True(t, data.IsComplexDouble())
@@ -143,16 +143,16 @@ func TestIValueComplex128(t *testing.T) {
 //     valueA := torch.NewIValue(7)
 //     valueB := torch.NewIValue(2.22)
 //     data := torch.NewIValue([]torch.IValue{valueA, valueB})
-//     assert.NotNil(t, data.T)
+//     assert.NotNil(t, data.Pointer)
 //     assert.False(t, data.IsNil())
 //     assert.True(t, data.IsList())
 // }
 
 func TestIValueBoolList(t *testing.T) {
 	slice := []bool{true, false, false, true, true}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.Equal(t, int64(5), data.LengthList())
 	// ToBoolList API
@@ -174,9 +174,9 @@ func TestIValueBoolList(t *testing.T) {
 
 // func TestIValueInt32List(t *testing.T) {
 //     slice := []int32{1, 0, 0, 1, 1}
-//     var data torch.IValue
+//     var data *torch.IValue
 //     assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
-//     assert.NotNil(t, data.T)
+//     assert.NotNil(t, data.Pointer)
 //     assert.False(t, data.IsNil())
 //     assert.Equal(t, int64(5), data.LengthList())
 //     // ToBoolList API
@@ -198,9 +198,9 @@ func TestIValueBoolList(t *testing.T) {
 
 // func TestIValueIntList(t *testing.T) {
 //     slice := []int{1, 0, 0, 1, 1}
-//     var data torch.IValue
+//     var data *torch.IValue
 //     assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
-//     assert.NotNil(t, data.T)
+//     assert.NotNil(t, data.Pointer)
 //     assert.False(t, data.IsNil())
 //     assert.Equal(t, int64(5), data.LengthList())
 //     // ToBoolList API
@@ -222,9 +222,9 @@ func TestIValueBoolList(t *testing.T) {
 
 func TestIValueFloat32List(t *testing.T) {
 	slice := []float32{1, 0, 0, 1, 1}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.Equal(t, int64(5), data.LengthList())
 	// ToBoolList API
@@ -246,9 +246,9 @@ func TestIValueFloat32List(t *testing.T) {
 
 func TestIValueFloat64List(t *testing.T) {
 	slice := []float64{1, 0, 0, 1, 1}
-	var data torch.IValue
+	var data *torch.IValue
 	assert.NotPanics(t, func() { data = torch.NewIValue(slice) })
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.Equal(t, int64(5), data.LengthList())
 	// ToBoolList API
@@ -271,8 +271,8 @@ func TestIValueFloat64List(t *testing.T) {
 func TestIValueTensorList(t *testing.T) {
 	tensorA := torch.NewTensor([]float32{1})
 	tensorB := torch.NewTensor([]float32{2})
-	data := torch.NewIValue([]torch.Tensor{tensorA, tensorB})
-	assert.NotNil(t, data.T)
+	data := torch.NewIValue([]*torch.Tensor{tensorA, tensorB})
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsTensorList())
 	assert.Equal(t, int64(2), data.LengthList())
@@ -297,7 +297,7 @@ func TestIValueTensorList(t *testing.T) {
 
 func TestIValueNil(t *testing.T) {
 	data := torch.NewIValue(nil)
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsTensor())
 	assert.True(t, data.IsNil())
 	assert.Equal(t, "None", data.ToNone())
@@ -306,7 +306,7 @@ func TestIValueNil(t *testing.T) {
 func TestIValueDevice(t *testing.T) {
 	device := torch.NewDevice("cpu")
 	data := torch.NewIValue(device)
-	assert.NotNil(t, data.T)
+	assert.NotNil(t, data.Pointer)
 	assert.False(t, data.IsNil())
 	assert.True(t, data.IsDevice())
 	assert.NotEqual(t, device, data.ToDevice())

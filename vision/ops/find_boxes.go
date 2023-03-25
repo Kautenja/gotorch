@@ -31,9 +31,9 @@ import (
 // Find boxes within a particular inclusive minimum and maximum bound. Boxes
 // are expected to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
 func FindBoxesInSizeRange(
-	boxes torch.Tensor,
+	boxes *torch.Tensor,
 	widthMin, heightMin, widthMax, heightMax int64,
-) torch.Tensor {
+) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
@@ -53,7 +53,7 @@ func FindBoxesInSizeRange(
 
 // Find boxes that are larger than or equal to a given size. Boxes are expected
 // to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
-func FindLargeBoxes(boxes torch.Tensor, widthMin, heightMin int64) torch.Tensor {
+func FindLargeBoxes(boxes *torch.Tensor, widthMin, heightMin int64) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
@@ -71,7 +71,7 @@ func FindLargeBoxes(boxes torch.Tensor, widthMin, heightMin int64) torch.Tensor 
 
 // Find boxes that are smaller than or equal to a given size. Boxes are
 // expected to be shaped as  (N, 4, ...) in (xmin, ymin, xmax, ymax) format.
-func FindSmallBoxes(boxes torch.Tensor, widthMax, heightMax int64) torch.Tensor {
+func FindSmallBoxes(boxes *torch.Tensor, widthMax, heightMax int64) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))

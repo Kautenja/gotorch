@@ -35,11 +35,11 @@ import (
 // use the given mode, corner alignment setting, and optional anti-aliasing.
 // Returns the resized tensor and the scale factor used to resize the tensor.
 func LongestMaxSize(
-	tensor torch.Tensor,
+	tensor *torch.Tensor,
 	size int64,
 	interpolation F.InterpolateMode,
 	alignCorners, antialias bool,
-) (torch.Tensor, float64) {
+) (*torch.Tensor, float64) {
 	shape := tensor.Shape()
 	dim := len(shape)
 	if dim < 3 {

@@ -52,7 +52,6 @@ add_library(cgotorch SHARED
   cgotorch/init.h
   cgotorch/ivalue.h
   cgotorch/jit.h
-  cgotorch/memory.h
   cgotorch/optim.h
   cgotorch/tensor.h
   cgotorch/tensor_options.h
@@ -69,7 +68,6 @@ add_library(cgotorch SHARED
   cgotorch/init.cc
   cgotorch/ivalue.cc
   cgotorch/jit.cc
-  cgotorch/memory.cc
   cgotorch/optim.cc
   cgotorch/tensor.cc
   cgotorch/tensor_options.cpp
@@ -105,7 +103,6 @@ install(FILES
     cgotorch/init.h
     cgotorch/ivalue.h
     cgotorch/jit.h
-    cgotorch/memory.h
     cgotorch/optim.h
     cgotorch/tensor.h
     cgotorch/tensor_options.h

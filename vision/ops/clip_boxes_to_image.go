@@ -31,7 +31,7 @@ import (
 // Clip boxes so that they lie inside an image of size size. Boxes are
 // expected to have shape (N, 4, ...) and be in (xmin, ymin, xmax, ymax)
 // format.
-func ClipBoxesToImage(boxes torch.Tensor, height, width int64) torch.Tensor {
+func ClipBoxesToImage(boxes *torch.Tensor, height, width int64) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
@@ -45,12 +45,12 @@ func ClipBoxesToImage(boxes torch.Tensor, height, width int64) torch.Tensor {
 	x := boxes.Slice(1, 0, shape[1], 2).Clamp(min, xmax)
 	y := boxes.Slice(1, 1, shape[1], 2).Clamp(min, ymax)
 	// Stack the boxes back together and flatten them back to interlaced format.
-	boxes = torch.Stack([]torch.Tensor{x, y}, 2).Flatten(1, 2)
+	boxes = torch.Stack([]*torch.Tensor{x, y}, 2).Flatten(1, 2)
 	return boxes
 }
 
 // In-place version of ClipBoxesToImage.
-func ClipBoxesToImage_(boxes torch.Tensor, height, width int64) torch.Tensor {
+func ClipBoxesToImage_(boxes *torch.Tensor, height, width int64) *torch.Tensor {
 	shape := boxes.Shape()
 	if len(shape) < 2 || shape[1] != 4 {
 		panic(fmt.Sprintf("Expected inputs to be in (N, 4, ...) format, but received tensor with shape %v", shape))
