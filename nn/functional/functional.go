@@ -33,9 +33,18 @@ package nn_functional
 import "C"
 import (
 	"unsafe"
+	"runtime"
 	"github.com/Kautenja/gotorch"
 	internal "github.com/Kautenja/gotorch/internal"
 )
+
+func freeTensor(tensor *torch.Tensor) {
+	if tensor.Pointer == nil {
+		panic("Attempting to free a tensor that has already been freed!")
+	}
+	C.Torch_Tensor_Close((C.Tensor)(tensor.Pointer))
+	tensor.Pointer = nil
+}
 
 // MARK: torch::nn::functional::adaptive_avg_pool1d
 // MARK: torch::nn::functional::adaptive_avg_pool2d
@@ -104,14 +113,15 @@ const (
 
 // Interpolate a tensor by size.
 func InterpolateSize(
-	input torch.Tensor,
+	input *torch.Tensor,
 	size []int64,
 	mode InterpolateMode,
 	alignCorners bool,
 	antialias bool,
-) torch.Tensor {
-	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_InterpolateSize(&output,
+) (output *torch.Tensor) {
+	output = &torch.Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_InterpolateSize(
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(input.Pointer),
 		(*C.int64_t)(unsafe.Pointer(&size[0])),
 		C.int64_t(len(size)),
@@ -119,19 +129,21 @@ func InterpolateSize(
 		C.bool(alignCorners),
 		C.bool(antialias),
 	)))
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // Interpolate a tensor by scale.
 func InterpolateScale(
-	input torch.Tensor,
+	input *torch.Tensor,
 	scale []float64,
 	mode InterpolateMode,
 	alignCorners bool,
 	antialias bool,
-) torch.Tensor {
-	var output C.Tensor
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_InterpolateScale(&output,
+) (output *torch.Tensor) {
+	output = &torch.Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_InterpolateScale(
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(input.Pointer),
 		(*C.double)(unsafe.Pointer(&scale[0])),
 		C.int64_t(len(scale)),
@@ -139,26 +151,28 @@ func InterpolateScale(
 		C.bool(alignCorners),
 		C.bool(antialias),
 	)))
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // MARK: torch::nn::functional::kl_div
 // MARK: torch::nn::functional::l1_loss
 // MARK: torch::nn::functional::layer_norm
 
-// func LeakyRelu(tensor torch.Tensor, negativeSlope float64) torch.Tensor {
-//     var output C.Tensor
-//     internal.PanicOnCException(unsafe.Pointer(C.LeakyRelu((C.Tensor)(tensor.Pointer), C.double(negativeSlope), &output)))
-//     return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+// func LeakyRelu(tensor *torch.Tensor, negativeSlope float64) (output *torch.Tensor) {
+// 	output = &torch.Tensor{}
+// 	internal.PanicOnCException(unsafe.Pointer(C.LeakyRelu((C.Tensor)(tensor.Pointer), C.double(negativeSlope), (*C.Tensor)(&output.Pointer))))
+// 	runtime.SetFinalizer(output, freeTensor)
+// 	return
 // }
 
 // MARK: torch::nn::functional::linear
 // MARK: torch::nn::functional::local_response_norm
 
-// func LogSoftmax(tensor torch.Tensor, dim int64) torch.Tensor {
-//     var output C.Tensor
-//     internal.PanicOnCException(unsafe.Pointer(C.LogSoftmax((C.Tensor)(tensor.Pointer), C.int64_t(dim), &output)))
-//     return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+// func LogSoftmax(tensor *torch.Tensor, dim int64) (output *torch.Tensor) {
+//     output = &torch.Tensor{}
+//     internal.PanicOnCException(unsafe.Pointer(C.LogSoftmax((C.Tensor)(tensor.Pointer), C.int64_t(dim), (*C.Tensor)(&output.Pointer))))
+//     return
 // }
 
 // MARK: torch::nn::functional::logsigmoid
@@ -184,16 +198,17 @@ func InterpolateScale(
 
 // MARK: torch::nn::functional::normalize
 
-func Normalize(input torch.Tensor, p float64, dim int, eps float64) torch.Tensor {
-	var output C.Tensor
+func Normalize(input *torch.Tensor, p float64, dim int, eps float64) (output *torch.Tensor) {
+	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Normalize(
-		&output,
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(input.Pointer),
 		C.double(p),
 		C.int64_t(dim),
-		C.double(eps))))
-	// runtime.KeepAlive(input.Pointer)
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+		C.double(eps),
+	)))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // MARK: torch::nn::functional::one_hot
@@ -210,26 +225,28 @@ const (
 
 // Pad a tensor.
 func Pad(
-	input torch.Tensor,
+	input *torch.Tensor,
 	padding []int64,
 	mode PadMode,
 	value ...float64,
-) torch.Tensor {
-	var output C.Tensor
+) (output *torch.Tensor) {
+	output = &torch.Tensor{}
 	var value_ float64 = 0
 	if len(value) == 1 {
 		value_ = value[0]
 	} else if len(value) > 1 {
 		panic("value should contain 0 or 1 values")
 	}
-	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Pad(&output,
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Pad(
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(input.Pointer),
 		(*C.int64_t)(unsafe.Pointer(&padding[0])),
 		C.int64_t(len(padding)),
 		C.int64_t(mode),
 		C.double(value_),
 	)))
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // MARK: torch::nn::functional::pairwise_distance
@@ -239,14 +256,15 @@ func Pad(
 // MARK: torch::nn::functional::poisson_nll_loss
 // MARK: torch::nn::functional::prelu
 
-func Relu(tensor torch.Tensor, inplace bool) torch.Tensor {
-	var output C.Tensor
+func Relu(tensor *torch.Tensor, inplace bool) (output *torch.Tensor) {
+	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Relu(
-		&output,
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(tensor.Pointer),
 		C.bool(inplace),
 	)))
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // MARK: torch::nn::functional::relu6
@@ -256,14 +274,15 @@ func Relu(tensor torch.Tensor, inplace bool) torch.Tensor {
 // MARK: torch::nn::functional::smooth_l1_loss
 // MARK: torch::nn::functional::soft_margin_loss
 
-func Softmax(tensor torch.Tensor, dim int64) torch.Tensor {
-	var output C.Tensor
+func Softmax(tensor *torch.Tensor, dim int64) (output *torch.Tensor) {
+	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Softmax(
-		&output,
+		(*C.Tensor)(&output.Pointer),
 		(C.Tensor)(tensor.Pointer),
 		C.int64_t(dim),
 	)))
-	return torch.NewTorchTensor((*unsafe.Pointer)(&output))
+	runtime.SetFinalizer(output, freeTensor)
+	return
 }
 
 // MARK: torch::nn::functional::softmin
