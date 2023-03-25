@@ -64,9 +64,9 @@ func TestBoxAreaComputesAreaOfBoxesInSpatialLayout(t *testing.T) {
 	b := torch.NewTensor([][]int64{{5, 5, 10, 10}})
 	c := torch.NewTensor([][]int64{{10, 20, 12, 25}})
 	d := torch.NewTensor([][]int64{{3, 7, 8, 10}})
-	boxes := torch.Stack([]torch.Tensor{
-		torch.Stack([]torch.Tensor{a, b}, -1),
-		torch.Stack([]torch.Tensor{c, d}, -1),
+	boxes := torch.Stack([]*torch.Tensor{
+		torch.Stack([]*torch.Tensor{a, b}, -1),
+		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	area := ops.BoxArea(boxes)
 	assert.Equal(t, []int64{1, 1, 2, 2}, area.Shape())
