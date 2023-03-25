@@ -33,7 +33,7 @@ import "C"
 import (
 	"unsafe"
 	"runtime"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // TensorOptions wraps a C.TensorOptions.

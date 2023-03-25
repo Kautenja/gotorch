@@ -35,7 +35,7 @@ import (
 	"unsafe"
 	"runtime"
 	"github.com/Kautenja/gotorch"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 func freeTensor(tensor *torch.Tensor) {

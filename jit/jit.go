@@ -34,7 +34,7 @@ import (
 	"runtime"
 	"unsafe"
 	"github.com/Kautenja/gotorch"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // A container for a torch script module in C++.

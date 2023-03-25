@@ -34,7 +34,7 @@ import "C"
 import (
 	// "unsafe"
 	// torch "github.com/Kautenja/gotorch"
-	// internal "github.com/Kautenja/gotorch/internal"
+	// "github.com/Kautenja/gotorch/internal"
 )
 
 // Return true if CUDA is available

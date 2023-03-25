@@ -34,7 +34,7 @@ import "C"
 import (
 	"runtime"
 	"unsafe"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // Device wrapper a pointer to C.Device

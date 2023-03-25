@@ -36,7 +36,7 @@ import (
 	"reflect"
 	"fmt"
 	"runtime"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // IValue wraps a C.IValue.

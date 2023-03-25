@@ -32,7 +32,7 @@ import "C"
 import (
 	"unsafe"
 	"runtime"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // A representation of the return type for a paired value/index selection call.

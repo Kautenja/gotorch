@@ -36,7 +36,7 @@ import (
 	"unsafe"
 	"reflect"
 	"runtime"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 // Tensor wraps a pointer to a C.Tensor as an unsafe Pointer.
