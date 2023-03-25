@@ -41,7 +41,7 @@ func CenterCrop(height, width int64) *CenterCropTransformer {
 }
 
 // Forward pass an image through the transformer to center crop it.
-func (t CenterCropTransformer) Forward(tensor torch.Tensor) torch.Tensor {
+func (t CenterCropTransformer) Forward(tensor *torch.Tensor) *torch.Tensor {
 	shape := tensor.Shape()
 	if len(shape) < 2 {
 		panic("CenterCrop only supports tensors with 2 or more dimensions")
