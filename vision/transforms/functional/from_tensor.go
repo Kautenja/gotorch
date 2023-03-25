@@ -31,8 +31,8 @@ import (
 	"github.com/Kautenja/gotorch"
 )
 
-// Convert `torch.Tensor` to `image.Image`.
-func FromTensor(tensor torch.Tensor) image.Image {
+// Convert a torch tensor to an image.Image.
+func FromTensor(tensor *torch.Tensor) image.Image {
 	// Images are expected in HWC format.
 	shape := tensor.Shape()
 	if len(shape) != 3 {
@@ -46,12 +46,12 @@ func FromTensor(tensor torch.Tensor) image.Image {
 		// Create a mock alpha channel using "like" semantics to convey type.
 		alpha := torch.OnesLike(tensor.Slice(0, 0, 1, 1))
 		// 1HW -> 4HW
-		tensor = torch.Cat([]torch.Tensor{tensor, tensor, tensor, alpha}, 0)
+		tensor = torch.Cat([]*torch.Tensor{tensor, tensor, tensor, alpha}, 0)
 	} else if channels == 3 {
 		// Create a mock alpha channel using "like" semantics to convey type.
 		alpha := torch.OnesLike(tensor.Slice(0, 0, 1, 1))
 		// 3HW -> 4HW
-		tensor = torch.Cat([]torch.Tensor{tensor, alpha}, 0)
+		tensor = torch.Cat([]*torch.Tensor{tensor, alpha}, 0)
 	} else if channels != 4 {
 		panic(fmt.Sprintf("Expected tensor to have 1, 3, or 4 channels, but found %v", channels))
 	}
@@ -60,7 +60,7 @@ func FromTensor(tensor torch.Tensor) image.Image {
 	// image.Image are assumed to be in HWC format, this is the expected pixel
 	// layout for RGBA image buffers in the GoLang image processing library.
 	frame := image.NewRGBA(image.Rect(0, 0, int(width), int(height)))
-	target := torch.TensorFromBlob(unsafe.Pointer(
+	target := *torch.TensorFromBlob(unsafe.Pointer(
 		&frame.Pix[0]), torch.Byte, []int64{height, width, 4})
 	target.Copy_(tensor)
 	return frame

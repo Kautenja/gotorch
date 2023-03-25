@@ -32,12 +32,12 @@ import (
 	"github.com/Kautenja/gotorch"
 )
 
-// Convert `image.Image` to `torch.Tensor`.
-func ToTensor(frame image.Image) torch.Tensor {
+// Convert an image.Image to a torch Tensor.
+func ToTensor(frame image.Image) *torch.Tensor {
 	window := frame.Bounds()
 	height := int64(window.Dy())
 	width := int64(window.Dx())
-	var tensor torch.Tensor
+	var tensor *torch.Tensor
 	switch typedImage := frame.(type) {
 	case *image.Uniform:
 		panic(fmt.Sprintf("ToTensor not implemented for image of type Uniform"))
