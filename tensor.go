@@ -83,6 +83,7 @@ func NewTensorFromBlob(data unsafe.Pointer, dtype Dtype, sizes []int64) (output 
 		(*C.int64_t)(unsafe.Pointer(&sizes[0])),
 		C.int64_t(len(sizes)),
 	)))
+	runtime.KeepAlive(data)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return
 }
@@ -130,6 +131,7 @@ func (tensor *Tensor) Clone() (output *Tensor) {
 		&output.Pointer,
 		tensor.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return
 }
@@ -137,6 +139,7 @@ func (tensor *Tensor) Clone() (output *Tensor) {
 // Convert the tensor to a readable string representation.
 func (tensor *Tensor) String() string {
 	cstring := C.Torch_Tensor_String(tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	defer C.free(unsafe.Pointer(cstring))
 	output := C.GoString(cstring)
 	return output
@@ -151,6 +154,7 @@ func (tensor *Tensor) Save(path string) error {
 	if err := unsafe.Pointer(C.Torch_Tensor_Save(path_cstring, tensor.Pointer)); err != nil {
 		return internal.NewTorchError(err)
 	}
+	runtime.KeepAlive(tensor)
 	return nil
 }
 
@@ -174,6 +178,7 @@ func Load(path string) (*Tensor, error) {
 func (tensor *Tensor) Encode() ([]byte, error) {
 	var buffer C.ByteBuffer
 	err := unsafe.Pointer(C.Torch_Tensor_Encode((*C.ByteBuffer)(unsafe.Pointer(&buffer)), tensor.Pointer))
+	runtime.KeepAlive(tensor)
 	if err != nil {
 		return nil, internal.NewTorchError(err)
 	}
@@ -201,6 +206,7 @@ func (tensor *Tensor) Dtype() Dtype {
 	internal.PanicOnCException(unsafe.Pointer(
 		C.Torch_Tensor_Dtype((*C.int8_t)(unsafe.Pointer(&dtype)), tensor.Pointer),
 	))
+	runtime.KeepAlive(tensor)
 	return dtype
 }
 
@@ -210,6 +216,7 @@ func (tensor *Tensor) Dim() int64 {
 	internal.PanicOnCException(unsafe.Pointer(
 		C.Torch_Tensor_Dim((*C.int64_t)(&dim), tensor.Pointer),
 	))
+	runtime.KeepAlive(tensor)
 	return dim
 }
 
@@ -222,6 +229,7 @@ func (tensor *Tensor) Shape() []int64 {
 	internal.PanicOnCException(unsafe.Pointer(
 		C.Torch_Tensor_Shape((*C.int64_t)(unsafe.Pointer(&shape[0])), tensor.Pointer),
 	))
+	runtime.KeepAlive(tensor)
 	return shape
 }
 
@@ -234,6 +242,7 @@ func (tensor *Tensor) View(shape ...int64) *Tensor {
 		(*C.int64_t)(unsafe.Pointer(&shape[0])),
 		C.int64_t(len(shape)),
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -247,6 +256,8 @@ func (tensor *Tensor) ViewAs(other *Tensor) *Tensor {
 		tensor.Pointer,
 		other.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -260,6 +271,7 @@ func (tensor *Tensor) Reshape(shape ...int64) *Tensor {
 		(*C.int64_t)(unsafe.Pointer(&shape[0])),
 		C.int64_t(len(shape)),
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -277,6 +289,8 @@ func (tensor *Tensor) ReshapeAs(other *Tensor) *Tensor {
 		tensor.Pointer,
 		other.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -290,6 +304,7 @@ func (tensor *Tensor) Expand(shape ...int64) *Tensor {
 		(*C.int64_t)(unsafe.Pointer(&shape[0])),
 		C.int64_t(len(shape)),
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -302,6 +317,8 @@ func (tensor *Tensor) ExpandAs(other *Tensor) *Tensor {
 		tensor.Pointer,
 		other.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -309,11 +326,15 @@ func (tensor *Tensor) ExpandAs(other *Tensor) *Tensor {
 // Sets the tensor data to that of a separate reference tensor.
 func (tensor *Tensor) SetData(other *Tensor) {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_SetData(tensor.Pointer, other.Pointer)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
 }
 
 // SetData sets the tensor data held by b to a
 func (tensor *Tensor) Copy_(other *Tensor) {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Copy_(tensor.Pointer, other.Pointer)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
 }
 
 // Create a new tensor with data cast to given type.
@@ -324,6 +345,7 @@ func (tensor *Tensor) CastTo(dtype Dtype) *Tensor {
 		tensor.Pointer,
 		C.int8_t(dtype),
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -336,6 +358,8 @@ func (tensor *Tensor) CopyTo(device *Device) *Tensor {
 		tensor.Pointer,
 		device.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(device)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -349,45 +373,52 @@ func (tensor *Tensor) To(device *Device, dtype Dtype) *Tensor {
 		device.Pointer,
 		C.int8_t(dtype),
 	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(device)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
 
 // // Return a tensor in pinned memory. Pinned memory requires CUDA.
 // func (tensor *Tensor) PinMemory() *Tensor {
-//     if !cuda.IsAvailable() {
-//         return tensor
-//     }
+// 	if !cuda.IsAvailable() {
+// 		return tensor
+// 	}
 // 	output := &Tensor{}
-//     internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_PinMemory(
-//     	&output.Pointer,
-//     	tensor.Pointer,
-//     )))
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_PinMemory(
+// 		&output.Pointer,
+// 		tensor.Pointer,
+// 	)))
+// 	runtime.KeepAlive(tensor)
 // 	runtime.SetFinalizer(output, (*Tensor).free)
-//     return output
+// 	return output
 // }
 
 // Return true if the tensor is taping gradients.
 func (tensor *Tensor) RequiresGrad() bool {
 	var requiresGrad C.bool
 	C.Torch_Tensor_RequiresGrad(&requiresGrad, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return bool(requiresGrad)
 }
 
 // Set the gradient taping state of the tensor to a new value.
 func (tensor *Tensor) SetRequiresGrad(requiresGrad bool) {
 	C.Torch_Tensor_SetRequiresGrad(tensor.Pointer, C.bool(requiresGrad))
+	runtime.KeepAlive(tensor)
 }
 
 // Compute gradients based on the results of a forward pass through the tensor.
 func (tensor *Tensor) Backward() {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Backward(tensor.Pointer)))
+	runtime.KeepAlive(tensor)
 }
 
 // Access the underlying gradients of the tensor.
 func (tensor *Tensor) Grad() *Tensor {
 	output := &Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Grad(&output.Pointer, tensor.Pointer)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -396,6 +427,7 @@ func (tensor *Tensor) Grad() *Tensor {
 func (tensor *Tensor) Detach() *Tensor {
 	output := &Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_Detach(&output.Pointer, tensor.Pointer)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -408,6 +440,7 @@ func (tensor *Tensor) Index(index *Tensor) *Tensor {
 		tensor.Pointer,
 		index.Pointer,
 	)))
+	runtime.KeepAlive(tensor)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -431,30 +464,37 @@ func (tensor *Tensor) Item() interface{} {
 	case Byte:
 		var output byte
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemUint8((*C.uint8_t)(unsafe.Pointer(&output)), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Char:
 		var output int8
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemInt8((*C.int8_t)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Short:
 		var output int16
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemInt16((*C.int16_t)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Int:
 		var output int32
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemInt32((*C.int32_t)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Long:
 		var output int64
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemInt64((*C.int64_t)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Half, Float:
 		var output float32
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemFloat32((*C.float)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	case Double:
 		var output float64
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemFloat64((*C.double)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	// case ComplexHalf: TODO
 	// case ComplexFloat: TODO
@@ -462,6 +502,7 @@ func (tensor *Tensor) Item() interface{} {
 	case Bool:
 		var output bool
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ItemBool((*C.bool)(&output), tensor.Pointer)))
+		runtime.KeepAlive(tensor)
 		return output
 	// case QInt8: TODO
 	// case QUInt8: TODO
