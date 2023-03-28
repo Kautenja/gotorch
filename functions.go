@@ -48,6 +48,7 @@ type ValueIndexPair struct {
 func Numel(tensor *Tensor) int64 {
 	var output C.int64_t
 	C.Torch_Tensor_Numel(&output, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return int64(output)
 }
 
@@ -60,6 +61,7 @@ func (tensor *Tensor) Numel() int64 {
 func IsComplex(tensor *Tensor) bool {
 	var output C.bool
 	C.Torch_Tensor_Is_Complex(&output, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return bool(output)
 }
 
@@ -72,6 +74,7 @@ func (tensor *Tensor) IsComplex() bool {
 func IsConj(tensor *Tensor) bool {
 	var output C.bool
 	C.Torch_Tensor_Is_Conj(&output, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return bool(output)
 }
 
@@ -84,6 +87,7 @@ func (tensor *Tensor) IsConj() bool {
 func IsFloatingPoint(tensor *Tensor) bool {
 	var output C.bool
 	C.Torch_Tensor_Is_Floating_Point(&output, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return bool(output)
 }
 
@@ -96,6 +100,7 @@ func (tensor *Tensor) IsFloatingPoint() bool {
 func IsNonzero(tensor *Tensor) bool {
 	var output C.bool
 	C.Torch_Tensor_Is_Nonzero(&output, tensor.Pointer)
+	runtime.KeepAlive(tensor)
 	return bool(output)
 }
 
@@ -110,264 +115,283 @@ func (tensor *Tensor) IsNonzero() bool {
 
 // Create a new tensor of given size filled with zeros.
 func Zeros(size []int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Zeros(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Zeros(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with zeros in the shape of a reference.
 func ZerosLike(reference *Tensor) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ZerosLike(
-        &tensor.Pointer,
-        reference.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ZerosLike(
+		&tensor.Pointer,
+		reference.Pointer,
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with ones.
 func Ones(size []int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Ones(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Ones(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with ones in the shape of a reference.
 func OnesLike(reference *Tensor) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_OnesLike(
-        &tensor.Pointer,
-        reference.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_OnesLike(
+		&tensor.Pointer,
+		reference.Pointer,
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create an inclusive range tensor from begin position to end position along
 // integer step size.
 func Arange(begin, end, step float32, options *TensorOptions) *Tensor {
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Arange(
-        &tensor.Pointer,
-        C.float(begin),
-        C.float(end),
-        C.float(step),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Arange(
+		&tensor.Pointer,
+		C.float(begin),
+		C.float(end),
+		C.float(step),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create an exclusive range tensor from begin position to end position along
 // integer step size.
 func Range(begin, end, step float32, options *TensorOptions) *Tensor {
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Range(
-        &tensor.Pointer,
-        C.float(begin),
-        C.float(end),
-        C.float(step),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Range(
+		&tensor.Pointer,
+		C.float(begin),
+		C.float(end),
+		C.float(step),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create an linear space tensor from begin to end with given number of total
 // steps.
 func Linspace(begin, end float32, steps int64, options *TensorOptions) *Tensor {
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Linspace(
-        &tensor.Pointer,
-        C.float(begin),
-        C.float(end),
-        C.int64_t(steps),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Linspace(
+		&tensor.Pointer,
+		C.float(begin),
+		C.float(end),
+		C.int64_t(steps),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create an logarithmic space tensor from begin to end with given number of
 // total steps.
 func Logspace(begin, end float32, steps int64, base float64, options *TensorOptions) *Tensor {
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Logspace(
-        &tensor.Pointer,
-        C.float(begin),
-        C.float(end),
-        C.int64_t(steps),
-        C.double(base),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Logspace(
+		&tensor.Pointer,
+		C.float(begin),
+		C.float(end),
+		C.int64_t(steps),
+		C.double(base),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create an NxM identity matrix.
 func Eye(n, m int64, options *TensorOptions) *Tensor {
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Eye(
-        &tensor.Pointer,
-        C.int64_t(n),
-        C.int64_t(m),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Eye(
+		&tensor.Pointer,
+		C.int64_t(n),
+		C.int64_t(m),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with empty values.
 func Empty(size []int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Empty(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Empty(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with empty values in the shape of a reference.
 func EmptyLike(reference *Tensor) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_EmptyLike(
-        &tensor.Pointer,
-        reference.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_EmptyLike(
+		&tensor.Pointer,
+		reference.Pointer,
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with static values.
 func Full(size []int64, value float32, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Full(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)), C.float(value),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Full(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)), C.float(value),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with static values in the shape of a reference.
 func FullLike(reference *Tensor, value float32) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_FullLike(
-        &tensor.Pointer,
-        reference.Pointer,
-        C.float(value),
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_FullLike(
+		&tensor.Pointer,
+		reference.Pointer,
+		C.float(value),
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with uniform random values.
 func Rand(size []int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Rand(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Rand(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with uniform random values in the shape of a reference.
 func RandLike(reference *Tensor) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_RandLike(
-        &tensor.Pointer, reference.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandLike(
+		&tensor.Pointer, reference.Pointer,
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with random integers in [low, high).
 func RandInt(size []int64, low int64, high int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_RandInt(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        C.int64_t(low),
-        C.int64_t(high),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandInt(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		C.int64_t(low),
+		C.int64_t(high),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with random integers in [low, high) in the shape of
 // a reference.
 func RandIntLike(reference *Tensor, low int64, high int64) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_RandIntLike(
-        &tensor.Pointer,
-        reference.Pointer,
-        C.int64_t(low),
-        C.int64_t(high),
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandIntLike(
+		&tensor.Pointer,
+		reference.Pointer,
+		C.int64_t(low),
+		C.int64_t(high),
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a new tensor of given size filled with Gaussian random values.
 func RandN(size []int64, options *TensorOptions) *Tensor {
-    if len(size) == 0 { panic("size is empty") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_RandN(
-        &tensor.Pointer,
-        (*C.int64_t)(unsafe.Pointer(&size[0])),
-        C.int64_t(len(size)),
-        options.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if len(size) == 0 { panic("size is empty") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandN(
+		&tensor.Pointer,
+		(*C.int64_t)(unsafe.Pointer(&size[0])),
+		C.int64_t(len(size)),
+		options.Pointer,
+	)))
+	runtime.KeepAlive(options)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // Create a tensor filled with Gaussian random values in the shape of a
 // reference.
 func RandNLike(reference *Tensor) *Tensor {
-    if reference.Pointer == nil { panic("input tensor is nil") }
-    tensor := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_RandNLike(
-        &tensor.Pointer,
-        reference.Pointer,
-    )))
-    runtime.SetFinalizer(tensor, (*Tensor).free)
-    return tensor
+	if reference.Pointer == nil { panic("input tensor is nil") }
+	tensor := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_RandNLike(
+		&tensor.Pointer,
+		reference.Pointer,
+	)))
+	runtime.KeepAlive(reference)
+	runtime.SetFinalizer(tensor, (*Tensor).free)
+	return tensor
 }
 
 // ---------------------------------------------------------------------------
@@ -462,30 +486,34 @@ func (tensor *Tensor) ToSlice() interface{} {
 
 // Adds other, scaled by alpha, to input.
 func Add(tensor, other *Tensor, alpha float32) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Add(
-        tensor.Pointer,
-        other.Pointer,
-        C.float(alpha),
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Add(
+		tensor.Pointer,
+		other.Pointer,
+		C.float(alpha),
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Adds other, scaled by alpha, to input.
 func (tensor *Tensor) Add(other *Tensor, alpha float32) *Tensor {
-    return Add(tensor, other, alpha)
+	return Add(tensor, other, alpha)
 }
 
 // In-place version of Add().
 func (tensor *Tensor) Add_(other *Tensor, alpha float32) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Add_(
-        tensor.Pointer,
-        other.Pointer,
-        C.float(alpha),
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Add_(
+		tensor.Pointer,
+		other.Pointer,
+		C.float(alpha),
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	return tensor
 }
 
 // TODO: func AddScalar(tensor *Tensor, scalar interface{}) *Tensor { }
@@ -493,30 +521,34 @@ func (tensor *Tensor) Add_(other *Tensor, alpha float32) *Tensor {
 
 // Subtracts other, scaled by alpha, from input.
 func Sub(tensor, other *Tensor, alpha float32) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub(
-        tensor.Pointer,
-        other.Pointer,
-        C.float(alpha),
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub(
+		tensor.Pointer,
+		other.Pointer,
+		C.float(alpha),
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Subtracts other, scaled by alpha, from input.
 func (tensor *Tensor) Sub(other *Tensor, alpha float32) *Tensor {
-    return Sub(tensor, other, alpha)
+	return Sub(tensor, other, alpha)
 }
 
 // In-place version of Sub().
 func (tensor *Tensor) Sub_(other *Tensor, alpha float32) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub_(
-        tensor.Pointer,
-        other.Pointer,
-        C.float(alpha),
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sub_(
+		tensor.Pointer,
+		other.Pointer,
+		C.float(alpha),
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	return tensor
 }
 
 // TODO: func SubScalar(tensor *Tensor, scalar interface{}) *Tensor { }
@@ -524,28 +556,32 @@ func (tensor *Tensor) Sub_(other *Tensor, alpha float32) *Tensor {
 
 // Multiplies input by other.
 func Mul(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul(
-        tensor.Pointer,
-        other.Pointer,
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul(
+		tensor.Pointer,
+		other.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Multiplies input by other.
 func (tensor *Tensor) Mul(other *Tensor) *Tensor {
-    return Mul(tensor, other)
+	return Mul(tensor, other)
 }
 
 // In-place version of Mul().
 func (tensor *Tensor) Mul_(other *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul_(
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mul_(
+		tensor.Pointer,
+		other.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	return tensor
 }
 
 // TODO: func MulScalar(tensor *Tensor, scalar interface{}) *Tensor { }
@@ -553,28 +589,32 @@ func (tensor *Tensor) Mul_(other *Tensor) *Tensor {
 
 // Divides input by other.
 func Div(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Div(
-        tensor.Pointer,
-        other.Pointer,
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Div(
+		tensor.Pointer,
+		other.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Divides input by other.
 func (tensor *Tensor) Div(other *Tensor) *Tensor {
-    return Div(tensor, other)
+	return Div(tensor, other)
 }
 
 // In-place version of Div().
 func (tensor *Tensor) Div_(other *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Div_(
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Div_(
+		tensor.Pointer,
+		other.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	return tensor
 }
 
 // TODO: func DivScalar(tensor *Tensor, scalar interface{}) *Tensor { }
@@ -582,134 +622,143 @@ func (tensor *Tensor) Div_(other *Tensor) *Tensor {
 
 // Take the absolute value of input.
 func Abs(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs(
-    	tensor.Pointer,
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs(
+		tensor.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Take the absolute value of input.
 func (tensor *Tensor) Abs() *Tensor {
-    return Abs(tensor)
+	return Abs(tensor)
 }
 
 // In-place version of Abs().
 func Abs_(tensor *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs_(tensor.Pointer)))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Abs_(tensor.Pointer)))
+	runtime.KeepAlive(tensor)
+	return tensor
 }
 
 // In-place version of Abs().
 func (tensor *Tensor) Abs_() *Tensor {
-    return Abs_(tensor)
+	return Abs_(tensor)
 }
 
 // Take the square of input.
 func Square(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Square(
-    	tensor.Pointer,
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square(
+		tensor.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Take the square of input.
 func (tensor *Tensor) Square() *Tensor {
-    return Square(tensor)
+	return Square(tensor)
 }
 
 // In-place version of Square().
 func Square_(tensor *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Square_(tensor.Pointer)))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Square_(tensor.Pointer)))
+	runtime.KeepAlive(tensor)
+	return tensor
 }
 
 // In-place version of Square().
 func (tensor *Tensor) Square_() *Tensor {
-    return Square_(tensor)
+	return Square_(tensor)
 }
 
 // Take the square-root of input.
 func Sqrt(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt(
-    	tensor.Pointer,
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt(
+		tensor.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Take the square-root of input.
 func (tensor *Tensor) Sqrt() *Tensor {
-    return Sqrt(tensor)
+	return Sqrt(tensor)
 }
 
 // In-place version of Sqrt().
 func Sqrt_(tensor *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt_(tensor.Pointer)))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sqrt_(tensor.Pointer)))
+	runtime.KeepAlive(tensor)
+	return tensor
 }
 
 // In-place version of Sqrt().
 func (tensor *Tensor) Sqrt_() *Tensor {
-    return Sqrt_(tensor)
+	return Sqrt_(tensor)
 }
 
 // Take the power of each element in input with exponent and returns a tensor with the result.
 func Pow(tensor *Tensor, exponent float64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Pow(
-    	tensor.Pointer,
-    	C.double(exponent),
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Pow(
+		tensor.Pointer,
+		C.double(exponent),
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Take the power of each element in input with exponent and returns a tensor with the result.
 func (tensor *Tensor) Pow(exponent float64) *Tensor {
-    return Pow(tensor, exponent)
+	return Pow(tensor, exponent)
 }
 
 // Return a new tensor with the hyperbolic tangent of the elements of input.
 func Tanh(tensor *Tensor) *Tensor {
-    return tensor.Tanh()
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(
+		tensor.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a new tensor with the hyperbolic tangent of the elements of input.
 func (tensor *Tensor) Tanh() *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Tanh(
-    	tensor.Pointer,
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	return Tanh(tensor)
 }
 
 // Computes the expit (also known as the logistic sigmoid function) of the
 // elements of input.
 func Sigmoid(tensor *Tensor) *Tensor {
-    return tensor.Sigmoid()
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(
+		tensor.Pointer,
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Computes the expit (also known as the logistic sigmoid function) of the
 // elements of input.
 func (tensor *Tensor) Sigmoid() *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sigmoid(
-    	tensor.Pointer,
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	return Sigmoid(tensor)
 }
 
 // Apply a softmax followed by a logarithm.
@@ -718,7 +767,15 @@ func (tensor *Tensor) Sigmoid() *Tensor {
 // operations separately is slower and numerically unstable. This function uses
 // an alternative formulation to compute the output and gradient correctly.
 func LogSoftmax(tensor *Tensor, dim int64) *Tensor {
-    return tensor.LogSoftmax(dim)
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(
+		tensor.Pointer,
+		C.int64_t(dim),
+		&output.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Apply a softmax followed by a logarithm.
@@ -727,186 +784,200 @@ func LogSoftmax(tensor *Tensor, dim int64) *Tensor {
 // operations separately is slower and numerically unstable. This function uses
 // an alternative formulation to compute the output and gradient correctly.
 func (tensor *Tensor) LogSoftmax(dim int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogSoftmax(
-    	tensor.Pointer,
-    	C.int64_t(dim),
-    	&output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	return LogSoftmax(tensor, dim)
 }
 
 // Compute the element-wise logical AND of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func LogicalAnd(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalAnd(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalAnd(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute the element-wise logical AND of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func (tensor *Tensor) LogicalAnd(other *Tensor) *Tensor {
-    return LogicalAnd(tensor, other)
+	return LogicalAnd(tensor, other)
 }
 
 // Computes the element-wise logical NOT of the given input tensor. If the
 // input tensor is not a bool tensor, zeros are treated as False and non-zeros
 // are treated as True.
 func LogicalNot(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalNot(
-        &output.Pointer,
-        tensor.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalNot(
+		&output.Pointer,
+		tensor.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Computes the element-wise logical NOT of the given input tensor. If the
 // input tensor is not a bool tensor, zeros are treated as False and non-zeros
 // are treated as True.
 func (tensor *Tensor) LogicalNot() *Tensor {
-    return LogicalNot(tensor)
+	return LogicalNot(tensor)
 }
 
 // Compute the element-wise logical OR of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func LogicalOr(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalOr(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalOr(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute the element-wise logical OR of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func (tensor *Tensor) LogicalOr(other *Tensor) *Tensor {
-    return LogicalOr(tensor, other)
+	return LogicalOr(tensor, other)
 }
 
 // Compute the element-wise logical XOR of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func LogicalXor(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalXor(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LogicalXor(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute the element-wise logical XOR of the given input tensors. Zeros are
 // treated as False and non-zeros are treated as True.
 func (tensor *Tensor) LogicalXor(other *Tensor) *Tensor {
-    return LogicalXor(tensor, other)
+	return LogicalXor(tensor, other)
 }
 
 // Clamps all elements in input into the range [min, max].
 func Clamp(tensor, minimum, maximum *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp(
-        &output.Pointer,
-        tensor.Pointer,
-        minimum.Pointer,
-        maximum.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp(
+		&output.Pointer,
+		tensor.Pointer,
+		minimum.Pointer,
+		maximum.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+    runtime.KeepAlive(minimum)
+    runtime.KeepAlive(maximum)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Clamps all elements in input into the range [min, max].
 func (tensor *Tensor) Clamp(minimum, maximum *Tensor) *Tensor {
-    return Clamp(tensor, minimum, maximum)
+	return Clamp(tensor, minimum, maximum)
 }
 
 // In-place version of torch.Clamp()
 func Clamp_(tensor, minimum, maximum *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp_(
-        tensor.Pointer,
-        minimum.Pointer,
-        maximum.Pointer,
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Clamp_(
+		tensor.Pointer,
+		minimum.Pointer,
+		maximum.Pointer,
+	)))
+	runtime.KeepAlive(tensor)
+	runtime.KeepAlive(minimum)
+	runtime.KeepAlive(maximum)
+	return tensor
 }
 
 // In-place version of torch.Clamp()
 func (tensor *Tensor) Clamp_(minimum, maximum *Tensor) *Tensor {
-    return Clamp_(tensor, minimum, maximum)
+	return Clamp_(tensor, minimum, maximum)
 }
 
 // Clamps all elements in input to have maximum value of input tensor.
 func ClampMax(tensor, maximum *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax(
-        &output.Pointer,
-        tensor.Pointer,
-        maximum.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax(
+		&output.Pointer,
+		tensor.Pointer,
+		maximum.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(maximum)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Clamps all elements in input to have maximum value of input tensor.
 func (tensor *Tensor) ClampMax(maximum *Tensor) *Tensor {
-    return ClampMax(tensor, maximum)
+	return ClampMax(tensor, maximum)
 }
 
 // In-place version of torch.ClampMax()
 func ClampMax_(tensor, maximum *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax_(
-        tensor.Pointer,
-        maximum.Pointer,
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMax_(
+		tensor.Pointer,
+		maximum.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(maximum)
+	return tensor
 }
 
 // In-place version of torch.ClampMax()
 func (tensor *Tensor) ClampMax_(maximum *Tensor) *Tensor {
-    return ClampMax_(tensor, maximum)
+	return ClampMax_(tensor, maximum)
 }
 
 // Clamps all elements in input to have minimum value of input tensor.
 func ClampMin(tensor, minimum *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin(
-        &output.Pointer,
-        tensor.Pointer,
-        minimum.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin(
+		&output.Pointer,
+		tensor.Pointer,
+		minimum.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(minimum)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Clamps all elements in input to have minimum value of input tensor.
 func (tensor *Tensor) ClampMin(minimum *Tensor) *Tensor {
-    return ClampMin(tensor, minimum)
+	return ClampMin(tensor, minimum)
 }
 
 // In-place version of torch.ClampMin()
 func ClampMin_(tensor, minimum *Tensor) *Tensor {
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin_(
-        tensor.Pointer,
-        minimum.Pointer,
-    )))
-    return tensor
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ClampMin_(
+		tensor.Pointer,
+		minimum.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(minimum)
+	return tensor
 }
 
 // In-place version of torch.ClampMin()
 func (tensor *Tensor) ClampMin_(minimum *Tensor) *Tensor {
-    return ClampMin_(tensor, minimum)
+	return ClampMin_(tensor, minimum)
 }
 
 // ---------------------------------------------------------------------------
@@ -915,20 +986,21 @@ func (tensor *Tensor) ClampMin_(minimum *Tensor) *Tensor {
 
 // Return a view of the original tensor input with its dimensions permuted.
 func Permute(tensor *Tensor, dims ...int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Permute(
-        tensor.Pointer,
-        (*C.int64_t)(&dims[0]),
-        C.int64_t(len(dims)),
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Permute(
+		tensor.Pointer,
+		(*C.int64_t)(&dims[0]),
+		C.int64_t(len(dims)),
+		&output.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a view of the original tensor input with its dimensions permuted.
 func (tensor *Tensor) Permute(dims ...int64) *Tensor {
-    return Permute(tensor, dims...)
+	return Permute(tensor, dims...)
 }
 
 // Return a tensor that is a transposed version of input. The given dimensions
@@ -946,15 +1018,16 @@ func (tensor *Tensor) Permute(dims ...int64) *Tensor {
 // dimensions, or must both be sparse dimensions. The batch dimensions of a
 // sparse tensor are the dimensions preceding the sparse dimensions.
 func Transpose(tensor *Tensor, dim0, dim1 int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Transpose(
-        tensor.Pointer,
-        C.int64_t(dim0),
-        C.int64_t(dim1),
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Transpose(
+		tensor.Pointer,
+		C.int64_t(dim0),
+		C.int64_t(dim1),
+		&output.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a tensor that is a transposed version of input. The given dimensions
@@ -972,7 +1045,7 @@ func Transpose(tensor *Tensor, dim0, dim1 int64) *Tensor {
 // dimensions, or must both be sparse dimensions. The batch dimensions of a
 // sparse tensor are the dimensions preceding the sparse dimensions.
 func (tensor *Tensor) Transpose(dim0, dim1 int64) *Tensor {
-    return Transpose(tensor, dim0, dim1)
+	return Transpose(tensor, dim0, dim1)
 }
 
 // Flattens input dimensions by reshaping them into a one-dimensional tensor.
@@ -986,15 +1059,16 @@ func (tensor *Tensor) Transpose(dim0, dim1 int64) *Tensor {
 // the input cannot be viewed as the flattened shape is input’s data copied.
 // See (torch.Tensor).View() for details on when a view will be returned.
 func Flatten(tensor *Tensor, startDim, endDim int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Flatten(
-        tensor.Pointer,
-        C.int64_t(startDim),
-        C.int64_t(endDim),
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Flatten(
+		tensor.Pointer,
+		C.int64_t(startDim),
+		C.int64_t(endDim),
+		&output.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Flattens input dimensions by reshaping them into a one-dimensional tensor.
@@ -1008,7 +1082,7 @@ func Flatten(tensor *Tensor, startDim, endDim int64) *Tensor {
 // the input cannot be viewed as the flattened shape is input’s data copied.
 // See (torch.Tensor).View() for details on when a view will be returned.
 func (tensor *Tensor) Flatten(startDim, endDim int64) *Tensor {
-    return Flatten(tensor, startDim, endDim)
+	return Flatten(tensor, startDim, endDim)
 }
 
 // Return a tensor with all the dimensions of input of size 1 removed. For
@@ -1018,24 +1092,25 @@ func (tensor *Tensor) Flatten(startDim, endDim int64) *Tensor {
 // the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the
 // shape (A×B).
 func Squeeze(tensor *Tensor, dim ...int64) *Tensor {
-    output := &Tensor{}
-    switch len(dim) {
-    case 0:
-        internal.PanicOnCException(unsafe.Pointer(C.Torch_Squeeze(
-            tensor.Pointer,
-            &output.Pointer,
-        )))
-    case 1:
-        internal.PanicOnCException(unsafe.Pointer(C.Torch_SqueezeWithDim(
-            tensor.Pointer,
-            C.int64_t(dim[0]),
-            &output.Pointer,
-        )))
-    default:
-        panic("Squeeze only accepts 0-1 dim as input")
-    }
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	switch len(dim) {
+	case 0:
+		internal.PanicOnCException(unsafe.Pointer(C.Torch_Squeeze(
+			tensor.Pointer,
+			&output.Pointer,
+		)))
+	case 1:
+		internal.PanicOnCException(unsafe.Pointer(C.Torch_SqueezeWithDim(
+			tensor.Pointer,
+			C.int64_t(dim[0]),
+			&output.Pointer,
+		)))
+	default:
+		panic("Squeeze only accepts 0-1 dim as input")
+	}
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a tensor with all the dimensions of input of size 1 removed. For
@@ -1045,7 +1120,7 @@ func Squeeze(tensor *Tensor, dim ...int64) *Tensor {
 // the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the
 // shape (A×B).
 func (tensor *Tensor) Squeeze(dim ...int64) *Tensor {
-    return Squeeze(tensor, dim...)
+	return Squeeze(tensor, dim...)
 }
 
 // Return a new tensor with a dimension of size one inserted at the specified
@@ -1054,14 +1129,15 @@ func (tensor *Tensor) Squeeze(dim ...int64) *Tensor {
 // be used. Negative dim will correspond to unsqueeze() applied at
 // dim = dim + input.dim() + 1.
 func Unsqueeze(tensor *Tensor, dim int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Unsqueeze(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Unsqueeze(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a new tensor with a dimension of size one inserted at the specified
@@ -1070,54 +1146,56 @@ func Unsqueeze(tensor *Tensor, dim int64) *Tensor {
 // be used. Negative dim will correspond to unsqueeze() applied at
 // dim = dim + input.dim() + 1.
 func (tensor *Tensor) Unsqueeze(dim int64) *Tensor {
-    return Unsqueeze(tensor, dim)
+	return Unsqueeze(tensor, dim)
 }
 
 // Concatenate a sequence of tensors along a new dimension. All tensors need to
 // be of the same size.
 func Stack(tensors []*Tensor, dim int64) *Tensor {
-    pointers := []C.Tensor{}
-    for _, tensor := range tensors {
-        pointers = append(pointers, tensor.Pointer)
-    }
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Stack(
-        &output.Pointer,
-        &pointers[0],
-        C.int64_t(len(pointers)),
-        C.int64_t(dim),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	pointers := []C.Tensor{}
+	for _, tensor := range tensors {
+		pointers = append(pointers, tensor.Pointer)
+	}
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Stack(
+		&output.Pointer,
+		&pointers[0],
+		C.int64_t(len(pointers)),
+		C.int64_t(dim),
+	)))
+    runtime.KeepAlive(tensors)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Concatenate the given sequence of tensors in the given dimension. All
 // tensors must either have the same shape (except in the concatenating
 // dimension) or be empty.
 func Cat(tensors []*Tensor, dim int64) *Tensor {
-    pointers := []C.Tensor{}
-    for _, tensor := range tensors {
-        pointers = append(pointers, tensor.Pointer)
-    }
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Cat(
-        &output.Pointer,
-        &pointers[0],
-        C.int64_t(len(pointers)),
-        C.int64_t(dim),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	pointers := []C.Tensor{}
+	for _, tensor := range tensors {
+		pointers = append(pointers, tensor.Pointer)
+	}
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Cat(
+		&output.Pointer,
+		&pointers[0],
+		C.int64_t(len(pointers)),
+		C.int64_t(dim),
+	)))
+    runtime.KeepAlive(tensors)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Alias of torch.Cat.
 func Concat(tensors []*Tensor, dim int64) *Tensor {
-    return Cat(tensors, dim)
+	return Cat(tensors, dim)
 }
 
 // Alias of torch.Cat.
 func Concatenate(tensors []*Tensor, dim int64) *Tensor {
-    return Cat(tensors, dim)
+	return Cat(tensors, dim)
 }
 
 // ---------------------------------------------------------------------------
@@ -1128,24 +1206,25 @@ func Concatenate(tensors []*Tensor, dim int64) *Tensor {
 // start and stop determine the [start, stop) bounds of the index, and step
 // describes the spacing between elements in the slice.
 func Slice(tensor *Tensor, dim, start, stop, step int64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Slice(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.int64_t(start),
-        C.int64_t(stop),
-        C.int64_t(step),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Slice(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.int64_t(start),
+		C.int64_t(stop),
+		C.int64_t(step),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Perform NumPy-like tensor slicing where dim is the dimension to slice along,
 // start and stop determine the [start, stop) bounds of the index, and step
 // describes the spacing between elements in the slice.
 func (tensor *Tensor) Slice(dim, start, stop, step int64) *Tensor {
-    return Slice(tensor, dim, start, stop, step)
+	return Slice(tensor, dim, start, stop, step)
 }
 
 // Return a new tensor which indexes the input tensor along dimension dim using
@@ -1154,15 +1233,16 @@ func (tensor *Tensor) Slice(dim, start, stop, step int64) *Tensor {
 // the same size as the length of index; other dimensions have the same size as
 // in the original tensor.
 func IndexSelect(tensor *Tensor, dim int64, index *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IndexSelect(
-        tensor.Pointer,
-        C.int64_t(dim),
-        index.Pointer,
-        &output.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IndexSelect(
+		tensor.Pointer,
+		C.int64_t(dim),
+		index.Pointer,
+		&output.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a new tensor which indexes the input tensor along dimension dim using
@@ -1171,7 +1251,7 @@ func IndexSelect(tensor *Tensor, dim int64, index *Tensor) *Tensor {
 // the same size as the length of index; other dimensions have the same size as
 // in the original tensor.
 func (tensor *Tensor) IndexSelect(dim int64, index *Tensor) *Tensor {
-    return IndexSelect(tensor, dim, index)
+	return IndexSelect(tensor, dim, index)
 }
 
 // ---------------------------------------------------------------------------
@@ -1180,64 +1260,68 @@ func (tensor *Tensor) IndexSelect(dim int64, index *Tensor) *Tensor {
 
 // Reduce a tensor to its minimum index.
 func Argmin(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmin(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmin(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its minimum index.
 func (tensor *Tensor) Argmin() *Tensor {
-    return Argmin(tensor)
+	return Argmin(tensor)
 }
 
 // Reduce a tensor to its minimum index along the given dimension.
 func ArgminByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgminByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgminByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its minimum index along the given dimension.
 func (tensor *Tensor) ArgminByDim(dim int, keep_dims bool) *Tensor {
-    return ArgminByDim(tensor, dim, keep_dims)
+	return ArgminByDim(tensor, dim, keep_dims)
 }
 
 // Reduce a tensor to its maximum index.
 func Argmax(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmax(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Argmax(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its maximum index.
 func (tensor *Tensor) Argmax() *Tensor {
-    return Argmax(tensor)
+	return Argmax(tensor)
 }
 
 // Reduce a tensor to its maximum index along the given dimension.
 func ArgmaxByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgmaxByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_ArgmaxByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its maximum index along the given dimension.
 func (tensor *Tensor) ArgmaxByDim(dim int, keep_dims bool) *Tensor {
-    return ArgmaxByDim(tensor, dim, keep_dims)
+	return ArgmaxByDim(tensor, dim, keep_dims)
 }
 
 // TODO: amax
@@ -1246,64 +1330,68 @@ func (tensor *Tensor) ArgmaxByDim(dim int, keep_dims bool) *Tensor {
 
 // Check if all values in the tensor evaluate to true.
 func All(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_All(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_All(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Check if all values in the tensor evaluate to true.
 func (tensor *Tensor) All() *Tensor {
-    return All(tensor)
+	return All(tensor)
 }
 
 // Check if all values in the tensor evaluate to true along the given dimension.
 func AllByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_AllByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_AllByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Check if all values in the tensor evaluate to true along the given dimension.
 func (tensor *Tensor) AllByDim(dim int, keep_dims bool) *Tensor {
-    return AllByDim(tensor, dim, keep_dims)
+	return AllByDim(tensor, dim, keep_dims)
 }
 
 // Check if any values in the tensor evaluate to true.
 func Any(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Any(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Any(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Check if any values in the tensor evaluate to true.
 func (tensor *Tensor) Any() *Tensor {
-    return Any(tensor)
+	return Any(tensor)
 }
 
 // Check if any values in the tensor evaluate to true along the given dimension.
 func AnyByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_AnyByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_AnyByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Check if any values in the tensor evaluate to true along the given dimension.
 func (tensor *Tensor) AnyByDim(dim int, keep_dims bool) *Tensor {
-    return AnyByDim(tensor, dim, keep_dims)
+	return AnyByDim(tensor, dim, keep_dims)
 }
 
 // TODO: dist
@@ -1311,137 +1399,145 @@ func (tensor *Tensor) AnyByDim(dim int, keep_dims bool) *Tensor {
 
 // Reduce a tensor to its maximum value.
 func Max(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Max(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Max(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its maximum value.
 func (tensor *Tensor) Max() *Tensor {
-    return Max(tensor)
+	return Max(tensor)
 }
 
 // Reduce a tensor to its maximum value along the given dimension.
 func MaxByDim(tensor *Tensor, dim int, keep_dims bool) ValueIndexPair {
-    values := &Tensor{}
-    indices := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_MaxByDim(
-        &values.Pointer,
-        &indices.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(values, (*Tensor).free)
-    runtime.SetFinalizer(indices, (*Tensor).free)
-    return ValueIndexPair{values, indices}
+	values := &Tensor{}
+	indices := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MaxByDim(
+		&values.Pointer,
+		&indices.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(values, (*Tensor).free)
+	runtime.SetFinalizer(indices, (*Tensor).free)
+	return ValueIndexPair{values, indices}
 }
 
 // Reduce a tensor to its maximum value along the given dimension.
 func (tensor *Tensor) MaxByDim(dim int, keep_dims bool) ValueIndexPair {
-    return MaxByDim(tensor, dim, keep_dims)
+	return MaxByDim(tensor, dim, keep_dims)
 }
 
 // Reduce a tensor to its minimum value.
 func Min(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Min(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Min(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its minimum value.
 func (tensor *Tensor) Min() *Tensor {
-    return Min(tensor)
+	return Min(tensor)
 }
 
 // Reduce a tensor to its minimum value along the given dimension.
 func MinByDim(tensor *Tensor, dim int, keep_dims bool) ValueIndexPair {
-    values := &Tensor{}
-    indices := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_MinByDim(
-        &values.Pointer,
-        &indices.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(values, (*Tensor).free)
-    runtime.SetFinalizer(indices, (*Tensor).free)
-    return ValueIndexPair{values, indices}
+	values := &Tensor{}
+	indices := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MinByDim(
+		&values.Pointer,
+		&indices.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(values, (*Tensor).free)
+	runtime.SetFinalizer(indices, (*Tensor).free)
+	return ValueIndexPair{values, indices}
 }
 
 // Reduce a tensor to its minimum value along the given dimension.
 func (tensor *Tensor) MinByDim(dim int, keep_dims bool) ValueIndexPair {
-    return MinByDim(tensor, dim, keep_dims)
+	return MinByDim(tensor, dim, keep_dims)
 }
 
 // Reduce a tensor to its mean value.
 func Mean(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Mean(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Mean(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its mean value.
 func (tensor *Tensor) Mean() *Tensor {
-    return Mean(tensor)
+	return Mean(tensor)
 }
 
 // Reduce a tensor to its mean value along the given dimension.
 func MeanByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_MeanByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MeanByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its mean value along the given dimension.
 func (tensor *Tensor) MeanByDim(dim int, keep_dims bool) *Tensor {
-    return MeanByDim(tensor, dim, keep_dims)
+	return MeanByDim(tensor, dim, keep_dims)
 }
 
 // TODO: nanmean
 
 // Reduce a tensor to its median value.
 func Median(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Median(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Median(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its median value.
 func (tensor *Tensor) Median() *Tensor {
-    return Median(tensor)
+	return Median(tensor)
 }
 
 // Reduce a tensor to its median value along the given dimension.
 func MedianByDim(tensor *Tensor, dim int, keep_dims bool) ValueIndexPair {
-    values := &Tensor{}
-    indices := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_MedianByDim(
-        &values.Pointer,
-        &indices.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(values, (*Tensor).free)
-    runtime.SetFinalizer(indices, (*Tensor).free)
-    return ValueIndexPair{values, indices}
+	values := &Tensor{}
+	indices := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MedianByDim(
+		&values.Pointer,
+		&indices.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(values, (*Tensor).free)
+	runtime.SetFinalizer(indices, (*Tensor).free)
+	return ValueIndexPair{values, indices}
 }
 
 // Reduce a tensor to its median value along the given dimension.
 func (tensor *Tensor) MedianByDim(dim int, keep_dims bool) ValueIndexPair {
-    return MedianByDim(tensor, dim, keep_dims)
+	return MedianByDim(tensor, dim, keep_dims)
 }
 
 // TODO: nanmedian
@@ -1454,106 +1550,112 @@ func (tensor *Tensor) MedianByDim(dim int, keep_dims bool) ValueIndexPair {
 
 // Reduce a tensor to its standard deviation.
 func Std(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Std(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Std(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its standard deviation.
 func (tensor *Tensor) Std() *Tensor {
-    return Std(tensor)
+	return Std(tensor)
 }
 
 // Reduce a tensor to its standard deviation along the given dimension.
 func StdByDim(tensor *Tensor, dim int, unbiased bool, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_StdByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(unbiased),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(unbiased),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its standard deviation along the given dimension.
 func (tensor *Tensor) StdByDim(dim int, unbiased bool, keep_dims bool) *Tensor {
-    return StdByDim(tensor, dim, unbiased, keep_dims)
+	return StdByDim(tensor, dim, unbiased, keep_dims)
 }
 
 // Reduce a tensor to its mean value and standard deviation.
 func StdMean(tensor *Tensor) (*Tensor, *Tensor) {
-    std := &Tensor{}
-    mean := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMean(
-        &std.Pointer,
-        &mean.Pointer,
-        tensor.Pointer,
-    )))
-    runtime.SetFinalizer(std, (*Tensor).free)
-    runtime.SetFinalizer(mean, (*Tensor).free)
-    return std, mean
+	std := &Tensor{}
+	mean := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMean(
+		&std.Pointer,
+		&mean.Pointer,
+		tensor.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(std, (*Tensor).free)
+	runtime.SetFinalizer(mean, (*Tensor).free)
+	return std, mean
 }
 
 // Reduce a tensor to its mean value and standard deviation.
 func (tensor *Tensor) StdMean() (*Tensor, *Tensor) {
-    return StdMean(tensor)
+	return StdMean(tensor)
 }
 
 // Reduce a tensor to its mean value and standard deviation along given dimension.
 func StdMeanByDim(tensor *Tensor, dim int, unbiased, keep_dims bool) (*Tensor, *Tensor) {
-    std := &Tensor{}
-    mean := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMeanByDim(
-        &std.Pointer,
-        &mean.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(unbiased),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(std, (*Tensor).free)
-    runtime.SetFinalizer(mean, (*Tensor).free)
-    return std, mean
+	std := &Tensor{}
+	mean := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_StdMeanByDim(
+		&std.Pointer,
+		&mean.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(unbiased),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(std, (*Tensor).free)
+	runtime.SetFinalizer(mean, (*Tensor).free)
+	return std, mean
 }
 
 // Reduce a tensor to its mean value and standard deviation along given dimension.
 func (tensor *Tensor) StdMeanByDim(dim int, unbiased, keep_dims bool) (*Tensor, *Tensor) {
-    return StdMeanByDim(tensor, dim, unbiased, keep_dims)
+	return StdMeanByDim(tensor, dim, unbiased, keep_dims)
 }
 
 // Reduce a tensor to its sum.
 func Sum(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sum(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sum(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its sum.
 func (tensor *Tensor) Sum() *Tensor {
-    return Sum(tensor)
+	return Sum(tensor)
 }
 
 // Reduce a tensor to its sum along the given dimension.
 func SumByDim(tensor *Tensor, dim int, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_SumByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_SumByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its sum along the given dimension.
 func (tensor *Tensor) SumByDim(dim int, keep_dims bool) *Tensor {
-    return SumByDim(tensor, dim, keep_dims)
+	return SumByDim(tensor, dim, keep_dims)
 }
 
 // TODO: unique
@@ -1561,75 +1663,79 @@ func (tensor *Tensor) SumByDim(dim int, keep_dims bool) *Tensor {
 
 // Reduce a tensor to its variance.
 func Var(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Var(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Var(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its variance.
 func (tensor *Tensor) Var() *Tensor {
-    return Var(tensor)
+	return Var(tensor)
 }
 
 // Reduce a tensor to its variance along the given dimension.
 func VarByDim(tensor *Tensor, dim int, unbiased, keep_dims bool) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_VarByDim(
-        &output.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(unbiased),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarByDim(
+		&output.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(unbiased),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Reduce a tensor to its variance along the given dimension.
 func (tensor *Tensor) VarByDim(dim int, unbiased, keep_dims bool) *Tensor {
-    return VarByDim(tensor, dim, unbiased, keep_dims)
+	return VarByDim(tensor, dim, unbiased, keep_dims)
 }
 
 // Reduce a tensor to its mean value and variance.
 func VarMean(tensor *Tensor) (*Tensor, *Tensor) {
-    variance := &Tensor{}
-    mean := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMean(
-        &variance.Pointer,
-        &mean.Pointer,
-        tensor.Pointer,
-    )))
-    runtime.SetFinalizer(variance, (*Tensor).free)
-    runtime.SetFinalizer(mean, (*Tensor).free)
-    return variance, mean
+	variance := &Tensor{}
+	mean := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMean(
+		&variance.Pointer,
+		&mean.Pointer,
+		tensor.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(variance, (*Tensor).free)
+	runtime.SetFinalizer(mean, (*Tensor).free)
+	return variance, mean
 }
 
 // Reduce a tensor to its mean value and variance.
 func (tensor *Tensor) VarMean() (*Tensor, *Tensor) {
-    return VarMean(tensor)
+	return VarMean(tensor)
 }
 
 // Reduce a tensor to its mean value and variance along given dimension.
 func VarMeanByDim(tensor *Tensor, dim int, unbiased, keep_dims bool) (*Tensor, *Tensor) {
-    variance := &Tensor{}
-    mean := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMeanByDim(
-        &variance.Pointer,
-        &mean.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(unbiased),
-        C.bool(keep_dims),
-    )))
-    runtime.SetFinalizer(variance, (*Tensor).free)
-    runtime.SetFinalizer(mean, (*Tensor).free)
-    return variance, mean
+	variance := &Tensor{}
+	mean := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_VarMeanByDim(
+		&variance.Pointer,
+		&mean.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(unbiased),
+		C.bool(keep_dims),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(variance, (*Tensor).free)
+	runtime.SetFinalizer(mean, (*Tensor).free)
+	return variance, mean
 }
 
 // Reduce a tensor to its mean value and variance along given dimension.
 func (tensor *Tensor) VarMeanByDim(dim int, unbiased, keep_dims bool) (*Tensor, *Tensor) {
-    return VarMeanByDim(tensor, dim, unbiased, keep_dims)
+	return VarMeanByDim(tensor, dim, unbiased, keep_dims)
 }
 
 // ---------------------------------------------------------------------------
@@ -1644,15 +1750,17 @@ func (tensor *Tensor) VarMeanByDim(dim int, unbiased, keep_dims bool) (*Tensor, 
 // |tensor − other| <= atol + rtol * |other|
 //
 func AllClose(tensor, other *Tensor, rtol, atol float64) bool {
-    var output C.bool
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_AllClose(
-        &output,
-        tensor.Pointer,
-        other.Pointer,
-        C.double(rtol),
-        C.double(atol),
-    )))
-    return bool(output)
+	var output C.bool
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_AllClose(
+		&output,
+		tensor.Pointer,
+		other.Pointer,
+		C.double(rtol),
+		C.double(atol),
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	return bool(output)
 }
 
 // Return true if the tensor is approximately equal to another with given
@@ -1663,7 +1771,7 @@ func AllClose(tensor, other *Tensor, rtol, atol float64) bool {
 // |tensor − other| <= atol + rtol * |other|
 //
 func (tensor *Tensor) AllClose(other *Tensor, rtol, atol float64) bool {
-    return AllClose(tensor, other, rtol, atol)
+	return AllClose(tensor, other, rtol, atol)
 }
 
 // Create a new tensor describing the element-wise approximate equality of two
@@ -1674,16 +1782,18 @@ func (tensor *Tensor) AllClose(other *Tensor, rtol, atol float64) bool {
 // |tensor − other| <= atol + rtol * |other|
 //
 func IsClose(tensor, other *Tensor, rtol, atol float64) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsClose(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-        C.double(rtol),
-        C.double(atol),
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsClose(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+		C.double(rtol),
+		C.double(atol),
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Create a new tensor describing the element-wise approximate equality of the
@@ -1694,267 +1804,293 @@ func IsClose(tensor, other *Tensor, rtol, atol float64) *Tensor {
 // |tensor − other| <= atol + rtol * |other|
 //
 func (tensor *Tensor) IsClose(other *Tensor, rtol, atol float64) *Tensor {
-    return IsClose(tensor, other, rtol, atol)
+	return IsClose(tensor, other, rtol, atol)
 }
 
 // TODO: Argsort
 
 // Create a new tensor comparing the element-wise equality of two tensors.
 func Eq(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Eq(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Eq(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Create a new tensor comparing element-wise equality of the tensor to another.
 func (tensor *Tensor) Eq(other *Tensor) *Tensor {
-    return Eq(tensor, other)
+	return Eq(tensor, other)
 }
 
 // Return true if the two tensors are precisely equal element-wise.
 func Equal(tensor, other *Tensor) bool {
-    var output bool
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Equal(
-        (*C.bool)(&output),
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    return output
+	var output bool
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Equal(
+		(*C.bool)(&output),
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	return output
 }
 
 // Return true if the tensor is precisely equal to other element-wise.
 func (tensor *Tensor) Equal(other *Tensor) bool {
-    return Equal(tensor, other)
+	return Equal(tensor, other)
 }
 
 
 // Compute tensor >= other element-wise.
 func GreaterEqual(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_GreaterEqual(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_GreaterEqual(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute tensor >= other element-wise.
 func (tensor *Tensor) GreaterEqual(other *Tensor) *Tensor {
-    return GreaterEqual(tensor, other)
+	return GreaterEqual(tensor, other)
 }
 
 // Compute tensor > other element-wise.
 func Greater(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Greater(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Greater(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute tensor > other element-wise.
 func (tensor *Tensor) Greater(other *Tensor) *Tensor {
-    return Greater(tensor, other)
+	return Greater(tensor, other)
 }
 
 // Compute tensor <= other element-wise.
 func LessEqual(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_LessEqual(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_LessEqual(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute tensor <= other element-wise.
 func (tensor *Tensor) LessEqual(other *Tensor) *Tensor {
-    return LessEqual(tensor, other)
+	return LessEqual(tensor, other)
 }
 
 // Compute tensor < other element-wise.
 func Less(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Less(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Less(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute tensor < other element-wise.
 func (tensor *Tensor) Less(other *Tensor) *Tensor {
-    return Less(tensor, other)
+	return Less(tensor, other)
 }
 
 // Computes the element-wise maximum of input and other.
 func Maximum(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Maximum(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Maximum(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Computes the element-wise maximum of input and other.
 func (tensor *Tensor) Maximum(other *Tensor) *Tensor {
-    return Maximum(tensor, other)
+	return Maximum(tensor, other)
 }
 
 // Computes the element-wise minimum of input and other.
 func Minimum(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Minimum(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Minimum(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Computes the element-wise minimum of input and other.
 func (tensor *Tensor) Minimum(other *Tensor) *Tensor {
-    return Minimum(tensor, other)
+	return Minimum(tensor, other)
 }
 
 // Compute tensor != other element-wise.
 func NotEqual(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_NotEqual(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_NotEqual(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Compute tensor != other element-wise.
 func (tensor *Tensor) NotEqual(other *Tensor) *Tensor {
-    return NotEqual(tensor, other)
+	return NotEqual(tensor, other)
 }
 
 // Test if each element of tensor is in other. Returns a boolean tensor of the
 // same shape as tensor that is True for elements in other and False otherwise.
 func IsIn(tensor, other *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsIn(
-        &output.Pointer,
-        tensor.Pointer,
-        other.Pointer,
-    )))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsIn(
+		&output.Pointer,
+		tensor.Pointer,
+		other.Pointer,
+	)))
+    runtime.KeepAlive(tensor)
+    runtime.KeepAlive(other)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Test if each element of tensor is in other. Returns a boolean tensor of the
 // same shape as tensor that is True for elements in other and False otherwise.
 func (tensor *Tensor) IsIn(other *Tensor) *Tensor {
-    return IsIn(tensor, other)
+	return IsIn(tensor, other)
 }
 
 // Test if each element of the tensor is finite or not.
 func IsFinite(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsFinite(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsFinite(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Test if each element of the tensor is finite or not.
 func (tensor *Tensor) IsFinite() *Tensor {
-    return IsFinite(tensor)
+	return IsFinite(tensor)
 }
 
 // Test if each element of the tensor is infinite (positive or negative) or not.
 func IsInf(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsInf(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsInf(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Test if each element of the tensor is infinite (positive or negative) or not.
 func (tensor *Tensor) IsInf() *Tensor {
-    return IsInf(tensor)
+	return IsInf(tensor)
 }
 
 // Test if each element of the tensor is positive infinity or not.
 func IsPosInf(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsPosInf(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsPosInf(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Test if each element of the tensor is positive infinity or not.
 func (tensor *Tensor) IsPosInf() *Tensor {
-    return IsPosInf(tensor)
+	return IsPosInf(tensor)
 }
 
 // Test if each element of the tensor is negative infinity or not.
 func IsNegInf(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNegInf(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNegInf(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Test if each element of the tensor is negative infinity or not.
 func (tensor *Tensor) IsNegInf() *Tensor {
-    return IsNegInf(tensor)
+	return IsNegInf(tensor)
 }
 
 // Returns a new tensor with boolean elements representing if each element of
 // input is NaN or not. Complex values are considered NaN when either their
 // real and/or imaginary part is NaN.
 func IsNaN(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNan(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsNan(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Returns a new tensor with boolean elements representing if each element of
 // input is NaN or not. Complex values are considered NaN when either their
 // real and/or imaginary part is NaN.
 func (tensor *Tensor) IsNaN() *Tensor {
-    return IsNaN(tensor)
+	return IsNaN(tensor)
 }
 
 // Return a new tensor with boolean elements representing if each element of
 // input is real-valued or not. All real-valued types are considered real.
 // Complex values are considered real when their imaginary part is 0.
 func IsReal(tensor *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_IsReal(&output.Pointer, tensor.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_IsReal(&output.Pointer, tensor.Pointer)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Return a new tensor with boolean elements representing if each element of
 // input is real-valued or not. All real-valued types are considered real.
 // Complex values are considered real when their imaginary part is 0.
 func (tensor *Tensor) IsReal() *Tensor {
-    return IsReal(tensor)
+	return IsReal(tensor)
 }
 
 // TODO: KthValue
@@ -1966,28 +2102,29 @@ func (tensor *Tensor) IsReal() *Tensor {
 // dimension dim. The boolean option sorted if True, will make sure that the
 // returned k elements are themselves sorted.
 func TopK(tensor *Tensor, k, dim int64, largest, sorted bool) ValueIndexPair {
-    values := &Tensor{}
-    indices := &Tensor{}
-    l := 0
-    if largest {
-        l = 1
-    }
-    s := 0
-    if sorted {
-        s = 1
-    }
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_TopK(
-        &values.Pointer,
-        &indices.Pointer,
-        tensor.Pointer,
-        C.int64_t(k),
-        C.int64_t(dim),
-        C.int8_t(l),
-        C.int8_t(s),
-    )))
-    runtime.SetFinalizer(values, (*Tensor).free)
-    runtime.SetFinalizer(indices, (*Tensor).free)
-    return ValueIndexPair{values, indices}
+	values := &Tensor{}
+	indices := &Tensor{}
+	l := 0
+	if largest {
+		l = 1
+	}
+	s := 0
+	if sorted {
+		s = 1
+	}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_TopK(
+		&values.Pointer,
+		&indices.Pointer,
+		tensor.Pointer,
+		C.int64_t(k),
+		C.int64_t(dim),
+		C.int8_t(l),
+		C.int8_t(s),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(values, (*Tensor).free)
+	runtime.SetFinalizer(indices, (*Tensor).free)
+	return ValueIndexPair{values, indices}
 }
 
 // Return the k largest elements of the given input tensor along a given
@@ -1997,7 +2134,7 @@ func TopK(tensor *Tensor, k, dim int64, largest, sorted bool) ValueIndexPair {
 // dimension dim. The boolean option sorted if True, will make sure that the
 // returned k elements are themselves sorted.
 func (tensor *Tensor) TopK(k, dim int64, largest, sorted bool) ValueIndexPair {
-    return TopK(tensor, k, dim, largest, sorted)
+	return TopK(tensor, k, dim, largest, sorted)
 }
 
 // Sort the elements of the input tensor along a given dimension by value. If
@@ -2006,18 +2143,19 @@ func (tensor *Tensor) TopK(k, dim int64, largest, sorted bool) ValueIndexPair {
 // sorted values and indices are the indices of the elements in the original
 // input tensor.
 func Sort(tensor *Tensor, dim int64, descending bool) ValueIndexPair {
-    values := &Tensor{}
-    indices := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_Sort(
-        &values.Pointer,
-        &indices.Pointer,
-        tensor.Pointer,
-        C.int64_t(dim),
-        C.bool(descending),
-    )))
-    runtime.SetFinalizer(values, (*Tensor).free)
-    runtime.SetFinalizer(indices, (*Tensor).free)
-    return ValueIndexPair{values, indices}
+	values := &Tensor{}
+	indices := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_Sort(
+		&values.Pointer,
+		&indices.Pointer,
+		tensor.Pointer,
+		C.int64_t(dim),
+		C.bool(descending),
+	)))
+    runtime.KeepAlive(tensor)
+	runtime.SetFinalizer(values, (*Tensor).free)
+	runtime.SetFinalizer(indices, (*Tensor).free)
+	return ValueIndexPair{values, indices}
 }
 
 // Sort the elements of the input tensor along a given dimension by value. If
@@ -2026,7 +2164,7 @@ func Sort(tensor *Tensor, dim int64, descending bool) ValueIndexPair {
 // sorted values and indices are the indices of the elements in the original
 // input tensor.
 func (tensor *Tensor) Sort(dim int64, descending bool) ValueIndexPair {
-    return Sort(tensor, dim, descending)
+	return Sort(tensor, dim, descending)
 }
 
 // ---------------------------------------------------------------------------
@@ -2134,16 +2272,18 @@ func (tensor *Tensor) Sort(dim int64, descending bool) ValueIndexPair {
 // Perform a matrix multiplication of the matrices A and B. If A is an (n×m)
 // tensor, B is an (m×p) tensor, the output will be an (n×p) tensor.
 func MM(a, b *Tensor) *Tensor {
-    output := &Tensor{}
-    internal.PanicOnCException(unsafe.Pointer(C.Torch_MM(&output.Pointer, a.Pointer, b.Pointer)))
-    runtime.SetFinalizer(output, (*Tensor).free)
-    return output
+	output := &Tensor{}
+	internal.PanicOnCException(unsafe.Pointer(C.Torch_MM(&output.Pointer, a.Pointer, b.Pointer)))
+    runtime.KeepAlive(a)
+    runtime.KeepAlive(b)
+	runtime.SetFinalizer(output, (*Tensor).free)
+	return output
 }
 
 // Perform a matrix multiplication of the matrices A and B. If A is an (n×m)
 // tensor, B is an (m×p) tensor, the output will be an (n×p) tensor.
 func (tensor *Tensor) MM(other *Tensor) *Tensor {
-    return MM(tensor, other)
+	return MM(tensor, other)
 }
 
 // TODO: mv
