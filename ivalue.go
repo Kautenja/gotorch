@@ -65,8 +65,8 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromInt(&ivalue.Pointer, C.int(t))))
 		break
 	// case int64:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromInt(&ivalue.Pointer, C.int(t))))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromInt(&ivalue.Pointer, C.int(t))))
+	// 	break
 	case float32:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromDouble(&ivalue.Pointer, C.double(t))))
 		break
@@ -95,22 +95,22 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 		)))
 		break
 	// case []int:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(
-	//         &ivalue.Pointer,
-	//         (*C.int)(unsafe.Pointer(&t[0])),
-	//         C.int(len(t)),
-	//     )))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(
+	// 		&ivalue.Pointer,
+	// 		(*C.int)(unsafe.Pointer(&t[0])),
+	// 		C.int(len(t)),
+	// 	)))
+	// 	break
 	// case []int32:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(
-	//         &ivalue.Pointer,
-	//         (*C.int)(unsafe.Pointer(&t[0])),
-	//         C.int(len(t)),
-	//     )))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(
+	// 		&ivalue.Pointer,
+	// 		(*C.int)(unsafe.Pointer(&t[0])),
+	// 		C.int(len(t)),
+	// 	)))
+	// 	break
 	// case []int64:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(&ivalue.Pointer, (*C.int)(&t[0]))))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromIntList(&ivalue.Pointer, (*C.int)(&t[0]))))
+	// 	break
 	case []float32:  // TODO: implement C-level function for float32
 		datums := []float64{}
 		for _, datum := range t { datums = append(datums, float64(datum)) }
@@ -128,11 +128,11 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 		)))
 		break
 	// case []complex64:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromComplexDoubleList(&ivalue.Pointer, (*C.complexdouble)(&t[0]))))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromComplexDoubleList(&ivalue.Pointer, (*C.complexdouble)(&t[0]))))
+	// 	break
 	// case []complex128:
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromComplexDoubleList(&ivalue.Pointer, (*C.complexdouble)(&t[0]))))
-	//     break
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromComplexDoubleList(&ivalue.Pointer, (*C.complexdouble)(&t[0]))))
+	// 	break
 	case []*Tensor:
 		tensors := []C.Tensor{}
 		for _, tensor := range t { tensors = append(tensors, tensor.Pointer) }
@@ -142,17 +142,19 @@ func NewIValue(data interface{}) (ivalue *IValue) {
 			C.int(len(tensors)),
 		)))
 		break
-	// case []IValue:
-	//     values := []C.IValue{}
-	//     for _, value := range t { values = append(values, C.IValue(*value.Pointer)) }
-	//     internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromList(&ivalue.Pointer, (*C.IValue)(&values[0]), C.int(len(values)))))
-	//     break
+	// case []*IValue:
+	// 	values := []C.IValue{}
+	// 	for _, value := range t { values = append(values, C.IValue(*value.Pointer)) }
+	// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromList(&ivalue.Pointer, (*C.IValue)(&values[0]), C.int(len(values)))))
+	// 	runtime.KeepAlive(t)
+	// 	break
 	case *Device:
 		internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_FromDevice(&ivalue.Pointer, t.Pointer)))
 		break
 	default:
 		panic(fmt.Sprintf("IValue not supported for data of type %s", reflect.TypeOf(data)))
 	}
+	runtime.KeepAlive(data)
 	runtime.SetFinalizer(ivalue, (*IValue).free)
 	return
 }
@@ -174,6 +176,7 @@ func (ivalue *IValue) free() {
 func (ivalue *IValue) IsNil() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsNone(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -181,6 +184,7 @@ func (ivalue *IValue) IsNil() bool {
 func (ivalue *IValue) IsScalar() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsScalar(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -188,6 +192,7 @@ func (ivalue *IValue) IsScalar() bool {
 func (ivalue *IValue) IsBool() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsBool(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -195,6 +200,7 @@ func (ivalue *IValue) IsBool() bool {
 func (ivalue *IValue) IsInt() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsInt(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -202,6 +208,7 @@ func (ivalue *IValue) IsInt() bool {
 func (ivalue *IValue) IsDouble() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDouble(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -209,6 +216,7 @@ func (ivalue *IValue) IsDouble() bool {
 func (ivalue *IValue) IsComplexDouble() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsComplexDouble(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -216,6 +224,7 @@ func (ivalue *IValue) IsComplexDouble() bool {
 func (ivalue *IValue) IsString() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsString(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -223,6 +232,7 @@ func (ivalue *IValue) IsString() bool {
 func (ivalue *IValue) IsTensor() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTensor(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -230,6 +240,7 @@ func (ivalue *IValue) IsTensor() bool {
 func (ivalue *IValue) IsTuple() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTuple(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -237,6 +248,7 @@ func (ivalue *IValue) IsTuple() bool {
 func (ivalue *IValue) IsList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -244,6 +256,7 @@ func (ivalue *IValue) IsList() bool {
 func (ivalue *IValue) IsBoolList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsBoolList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -251,6 +264,7 @@ func (ivalue *IValue) IsBoolList() bool {
 func (ivalue *IValue) IsIntList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsIntList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -258,6 +272,7 @@ func (ivalue *IValue) IsIntList() bool {
 func (ivalue *IValue) IsDoubleList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDoubleList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -265,6 +280,7 @@ func (ivalue *IValue) IsDoubleList() bool {
 func (ivalue *IValue) IsComplexDoubleList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsComplexDoubleList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -272,20 +288,23 @@ func (ivalue *IValue) IsComplexDoubleList() bool {
 func (ivalue *IValue) IsTensorList() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsTensorList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
 // // Return true if the IValue is an optional tensor list.
 // func (ivalue *IValue) IsOptionalTensorList() bool {
-//  var output C.bool
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsOptionalTensorList(&output, ivalue.Pointer)))
-//  return bool(output)
+// 	var output C.bool
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsOptionalTensorList(&output, ivalue.Pointer)))
+// 	runtime.KeepAlive(ivalue)
+// 	return bool(output)
 // }
 
 // Return true if the IValue is a dictionary.
 func (ivalue *IValue) IsGenericDict() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsGenericDict(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -293,6 +312,7 @@ func (ivalue *IValue) IsGenericDict() bool {
 func (ivalue *IValue) IsDevice() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsDevice(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -300,6 +320,7 @@ func (ivalue *IValue) IsDevice() bool {
 func (ivalue *IValue) IsStorage() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsStorage(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -307,6 +328,7 @@ func (ivalue *IValue) IsStorage() bool {
 func (ivalue *IValue) IsCapsule() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsCapsule(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -314,6 +336,7 @@ func (ivalue *IValue) IsCapsule() bool {
 func (ivalue *IValue) IsCustomClass() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsCustomClass(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -321,6 +344,7 @@ func (ivalue *IValue) IsCustomClass() bool {
 func (ivalue *IValue) IsFuture() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsFuture(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -328,6 +352,7 @@ func (ivalue *IValue) IsFuture() bool {
 func (ivalue *IValue) IsRRef() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsRRef(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -335,27 +360,31 @@ func (ivalue *IValue) IsRRef() bool {
 func (ivalue *IValue) IsQuantizer() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsQuantizer(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
 // // Return true if the IValue is a sym integer.
 // func (ivalue *IValue) IsSymInt() bool {
-//  var output C.bool
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymInt(&output, ivalue.Pointer)))
-//  return bool(output)
+// 	var output C.bool
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymInt(&output, ivalue.Pointer)))
+// 	runtime.KeepAlive(ivalue)
+// 	return bool(output)
 // }
 
 // // Return true if the IValue is a sym float.
 // func (ivalue *IValue) IsSymFloat() bool {
-//  var output C.bool
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymFloat(&output, ivalue.Pointer)))
-//  return bool(output)
+// 	var output C.bool
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsSymFloat(&output, ivalue.Pointer)))
+// 	runtime.KeepAlive(ivalue)
+// 	return bool(output)
 // }
 
 // Return true if the IValue is an object.
 func (ivalue *IValue) IsObject() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsObject(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -363,6 +392,7 @@ func (ivalue *IValue) IsObject() bool {
 func (ivalue *IValue) IsModule() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsModule(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -370,6 +400,7 @@ func (ivalue *IValue) IsModule() bool {
 func (ivalue *IValue) IsPyObject() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsPyObject(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -377,6 +408,7 @@ func (ivalue *IValue) IsPyObject() bool {
 func (ivalue *IValue) IsEnum() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsEnum(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -384,6 +416,7 @@ func (ivalue *IValue) IsEnum() bool {
 func (ivalue *IValue) IsStream() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsStream(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -391,6 +424,7 @@ func (ivalue *IValue) IsStream() bool {
 func (ivalue *IValue) IsGenerator() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsGenerator(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -398,6 +432,7 @@ func (ivalue *IValue) IsGenerator() bool {
 func (ivalue *IValue) IsPtrType() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_IsPtrType(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -409,6 +444,7 @@ func (ivalue *IValue) IsPtrType() bool {
 func (ivalue *IValue) LengthTuple() int64 {
 	var output C.int64_t
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthTuple(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return int64(output)
 }
 
@@ -416,6 +452,7 @@ func (ivalue *IValue) LengthTuple() int64 {
 func (ivalue *IValue) LengthList() int64 {
 	var output C.int64_t
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthList(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return int64(output)
 }
 
@@ -423,6 +460,7 @@ func (ivalue *IValue) LengthList() int64 {
 func (ivalue *IValue) LengthDict() int64 {
 	var output C.int64_t
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_LengthDict(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return int64(output)
 }
 
@@ -434,6 +472,7 @@ func (ivalue *IValue) LengthDict() int64 {
 func (ivalue *IValue) ToNone() string {
 	var output *C.char
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToNone(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	// free is not necessary until the C call succeeds and allocates the string
 	defer C.free(unsafe.Pointer(output))
 	return C.GoString(output)
@@ -446,6 +485,7 @@ func (ivalue *IValue) ToNone() string {
 func (ivalue *IValue) ToBool() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToBool(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return bool(output)
 }
 
@@ -453,6 +493,7 @@ func (ivalue *IValue) ToBool() bool {
 func (ivalue *IValue) ToInt() int {
 	var output C.int32_t
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToInt(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return int(output)
 }
 
@@ -460,6 +501,7 @@ func (ivalue *IValue) ToInt() int {
 func (ivalue *IValue) ToDouble() float64 {
 	var output C.double
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToDouble(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return float64(output)
 }
 
@@ -467,6 +509,7 @@ func (ivalue *IValue) ToDouble() float64 {
 func (ivalue *IValue) ToComplexDouble() complex128 {
 	var output C.complexdouble
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToComplexDouble(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	return complex128(output)
 }
 
@@ -474,6 +517,7 @@ func (ivalue *IValue) ToComplexDouble() complex128 {
 func (ivalue *IValue) ToString() string {
 	var output *C.char
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToString(&output, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	// free is not necessary until the C call succeeds and allocates the string
 	defer C.free(unsafe.Pointer(output))
 	return C.GoString(output)
@@ -483,6 +527,7 @@ func (ivalue *IValue) ToString() string {
 func (ivalue *IValue) ToTensor() *Tensor {
 	output := &Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToTensor(&output.Pointer, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	runtime.SetFinalizer(output, (*Tensor).free)
 	return output
 }
@@ -508,6 +553,7 @@ func (ivalue *IValue) ToTensorList() []*Tensor {
 		C.int64_t(len(pointers)),
 		ivalue.Pointer,
 	)))
+	runtime.KeepAlive(ivalue)
 	// Wrap the pointers with finalized Go structs
 	tensors := []*Tensor{}
 	for index, _ := range pointers {
@@ -530,6 +576,7 @@ func (ivalue *IValue) ToList() []*IValue {
 		C.int64_t(len(pointers)),
 		ivalue.Pointer,
 	)))
+	runtime.KeepAlive(ivalue)
 	// Wrap the pointers with finalized Go structs
 	ivalues := []*IValue{}
 	for _, pointer := range pointers {
@@ -552,6 +599,7 @@ func (ivalue *IValue) ToTuple() []*IValue {
 		C.int64_t(len(pointers)),
 		ivalue.Pointer,
 	)))
+	runtime.KeepAlive(ivalue)
 	// Wrap the pointers with finalized Go structs
 	ivalues := []*IValue{}
 	for _, pointer := range pointers {
@@ -575,6 +623,7 @@ func (ivalue *IValue) ToGenericDict() map[interface{}]*IValue {
 		C.int64_t(length),
 		ivalue.Pointer,
 	)))
+	runtime.KeepAlive(ivalue)
 	// Parse the zipped dictionary into a Go map.
 	var output = make(map[interface{}]*IValue)
 	for index, keyPointer := range keyPointers {
@@ -617,6 +666,7 @@ func (ivalue *IValue) ToGenericDict() map[interface{}]*IValue {
 func (ivalue *IValue) ToDevice() (device *Device) {
 	device = &Device{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_IValue_ToDevice(&device.Pointer, ivalue.Pointer)))
+	runtime.KeepAlive(ivalue)
 	runtime.SetFinalizer(device, (*Device).free)
 	return
 }
