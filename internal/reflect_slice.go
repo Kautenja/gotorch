@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-package torch_internal
+package internal
 
 import (
 	"fmt"

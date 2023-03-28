@@ -35,9 +35,10 @@ import (
 	"unsafe"
 	"runtime"
 	"github.com/Kautenja/gotorch"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
+// Free the C-allocated heap memory associated with the given tensor.
 func freeTensor(tensor *torch.Tensor) {
 	if tensor.Pointer == nil {
 		panic("Attempting to free a tensor that has already been freed!")
@@ -97,8 +98,6 @@ func freeTensor(tensor *torch.Tensor) {
 // MARK: torch::nn::functional::huber_loss
 // MARK: torch::nn::functional::instance_norm
 
-// MARK: torch::nn::functional::interpolate
-
 // Interpolation algorithms implemented by libtorch.
 type InterpolateMode int64
 const (
@@ -111,7 +110,13 @@ const (
 	InterpolateNearestExact
 )
 
-// Interpolate a tensor by size.
+// Down/up sample the input to either the given size. The algorithm used for
+// interpolation is determined by mode. Currently temporal, spatial and
+// volumetric sampling are supported, i.e. expected inputs are 3-D, 4-D or 5-D
+// in shape. The input dimensions are interpreted in the form:
+// mini-batch x channels x [optional depth] x [optional height] x width.
+// The modes available for resizing are: nearest, linear (3D-only), bilinear,
+// bicubic (4D-only), trilinear (5D-only), area, nearest-exact
 func InterpolateSize(
 	input *torch.Tensor,
 	size []int64,
@@ -129,11 +134,18 @@ func InterpolateSize(
 		C.bool(alignCorners),
 		C.bool(antialias),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }
 
-// Interpolate a tensor by scale.
+// Down/up sample the input to either the given scale factor. The algorithm
+// used for interpolation is determined by mode. Currently temporal, spatial
+// and volumetric sampling are supported, i.e. expected inputs are 3-D, 4-D or
+// 5-D in shape. The input dimensions are interpreted in the form:
+// mini-batch x channels x [optional depth] x [optional height] x width.
+// The modes available for resizing are: nearest, linear (3D-only), bilinear,
+// bicubic (4D-only), trilinear (5D-only), area, nearest-exact
 func InterpolateScale(
 	input *torch.Tensor,
 	scale []float64,
@@ -151,6 +163,7 @@ func InterpolateScale(
 		C.bool(alignCorners),
 		C.bool(antialias),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }
@@ -196,9 +209,13 @@ func InterpolateScale(
 // MARK: torch::nn::functional::multilabel_soft_margin_loss
 // MARK: torch::nn::functional::nll_loss
 
-// MARK: torch::nn::functional::normalize
-
-func Normalize(input *torch.Tensor, p float64, dim int, eps float64) (output *torch.Tensor) {
+// Perform L_p normalization of inputs over specified dimension.
+func Normalize(
+	input *torch.Tensor,
+	p float64,
+	dim int,
+	eps float64,
+) (output *torch.Tensor) {
 	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Normalize(
 		(*C.Tensor)(&output.Pointer),
@@ -207,12 +224,12 @@ func Normalize(input *torch.Tensor, p float64, dim int, eps float64) (output *to
 		C.int64_t(dim),
 		C.double(eps),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }
 
 // MARK: torch::nn::functional::one_hot
-// MARK: torch::nn::functional::pad
 
 // Padding algorithms implemented by libtorch.
 type PadMode int64
@@ -245,6 +262,7 @@ func Pad(
 		C.int64_t(mode),
 		C.double(value_),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }
@@ -256,17 +274,20 @@ func Pad(
 // MARK: torch::nn::functional::poisson_nll_loss
 // MARK: torch::nn::functional::prelu
 
-func Relu(tensor *torch.Tensor, inplace bool) (output *torch.Tensor) {
+// Apply the rectified linear unit function element-wise.
+func Relu(input *torch.Tensor, inplace bool) (output *torch.Tensor) {
 	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Relu(
 		(*C.Tensor)(&output.Pointer),
-		(C.Tensor)(tensor.Pointer),
+		(C.Tensor)(input.Pointer),
 		C.bool(inplace),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }
 
+// MARK: torch::nn::functional::relu_
 // MARK: torch::nn::functional::relu6
 // MARK: torch::nn::functional::rrelu
 // MARK: torch::nn::functional::selu
@@ -274,13 +295,15 @@ func Relu(tensor *torch.Tensor, inplace bool) (output *torch.Tensor) {
 // MARK: torch::nn::functional::smooth_l1_loss
 // MARK: torch::nn::functional::soft_margin_loss
 
-func Softmax(tensor *torch.Tensor, dim int64) (output *torch.Tensor) {
+// Apply a softmax function.
+func Softmax(input *torch.Tensor, dim int64) (output *torch.Tensor) {
 	output = &torch.Tensor{}
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_NN_Functional_Softmax(
 		(*C.Tensor)(&output.Pointer),
-		(C.Tensor)(tensor.Pointer),
+		(C.Tensor)(input.Pointer),
 		C.int64_t(dim),
 	)))
+	runtime.KeepAlive(input)
 	runtime.SetFinalizer(output, freeTensor)
 	return
 }

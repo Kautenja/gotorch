@@ -34,5 +34,5 @@ func TestLibtorchVersion(t *testing.T) {
 }
 
 func TestGoTorchVersion(t *testing.T) {
-	assert.Equal(t, "0.1.3", torch.Version())
+	assert.Equal(t, "0.1.4", torch.Version())
 }

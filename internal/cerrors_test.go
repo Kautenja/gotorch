@@ -22,12 +22,12 @@
 // SOFTWARE.
 //
 
-package torch_internal_test
+package internal_test
 
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	internal "github.com/Kautenja/gotorch/internal"
+	"github.com/Kautenja/gotorch/internal"
 )
 
 func Test_PanicOnCException_WithNilInput(t *testing.T) {
