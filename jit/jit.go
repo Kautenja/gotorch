@@ -42,6 +42,7 @@ type JitModule struct {
 	Pointer C.JitModule
 }
 
+// Load the JIT module from the given path and map it onto a compute device.
 func Load(path string, device *torch.Device) (*JitModule, error) {
 	module := &JitModule{}
 	path_cstring := C.CString(path)
@@ -51,6 +52,7 @@ func Load(path string, device *torch.Device) (*JitModule, error) {
 		path_cstring,
 		(C.Device)(device.Pointer),
 	))
+	runtime.KeepAlive(device)
 	if internalErr != nil {
 		return nil, internal.NewTorchError(internalErr)
 	}
@@ -83,6 +85,7 @@ func (module *JitModule) Save(path string) error {
 // Convert the module to a human-readable string representation.
 func (module *JitModule) String() string {
 	cstring := C.Torch_Jit_Module_String(module.Pointer)
+	runtime.KeepAlive(module)
 	defer C.free(unsafe.Pointer(cstring))
 	output := C.GoString(cstring)
 	return output
@@ -92,31 +95,36 @@ func (module *JitModule) String() string {
 func (module *JitModule) IsTraining() bool {
 	var output C.bool
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_IsTraining(&output, module.Pointer)))
+	runtime.KeepAlive(module)
 	return bool(output)
 }
 
 // // Return true if the module is optimized for inference, false otherwise.
 // func (module *JitModule) IsOptimized() bool {
-//  var output C.bool
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_IsOptimized(&output, module.Pointer)))
-//  return bool(output)
+// 	var output C.bool
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_IsOptimized(&output, module.Pointer)))
+// 	runtime.KeepAlive(module)
+// 	return bool(output)
 // }
 
 // // Enable/disable JIT optimization features for the module.
 // func (module *JitModule) SetOptimized(mode bool) *JitModule {
-//  internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_SetOptimized(module.Pointer, C.bool(mode))))
-//  return module
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_SetOptimized(module.Pointer, C.bool(mode))))
+// 	runtime.KeepAlive(module)
+// 	return module
 // }
 
 // Enable/disable training features for the module.
 func (module *JitModule) Train(mode bool) *JitModule {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_Train(module.Pointer, C.bool(mode))))
+	runtime.KeepAlive(module)
 	return module
 }
 
 // Set the module to evaluation (e.g., inference) mode.
 func (module *JitModule) Eval() *JitModule {
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Jit_Module_Eval(module.Pointer)))
+	runtime.KeepAlive(module)
 	return module
 }
 
@@ -135,6 +143,7 @@ func (module *JitModule) CopyTo(device *torch.Device) *JitModule {
 		module.Pointer,
 		(C.Device)(device.Pointer),
 	)))
+	runtime.KeepAlive(device)
 	return module
 }
 
@@ -168,6 +177,7 @@ func (module *JitModule) Forward(inputs []*torch.IValue) (output *torch.IValue) 
 		&ivalues[0],
 		C.int64_t(len(ivalues)),
 	)))
+	runtime.KeepAlive(inputs)
 	// We can't access the `free` method of the IValue, so redefine it here...
 	runtime.SetFinalizer(output, func(ivalue *torch.IValue) {
 		if ivalue.Pointer == nil {
