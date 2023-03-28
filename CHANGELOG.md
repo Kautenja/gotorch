@@ -1,5 +1,32 @@
 # Change log
 
+## v1.11.0-0.1.4
+
+-   Resolve non-deterministic race condition between Go struct finalizers and
+    calls to methods that access C resources. Update functions with
+    `runtime.KeepAlive` as needed to prevent a segmentation fault from
+    occurring due to early finalization of Go structs. I.e., this
+
+    ```go
+    func Foo(input *Tensor) (output *Tensor) {
+        output = &Tensor{}
+        C.SomeCFunction(&output.Pointer, input.Pointer)
+        return
+    }
+    ```
+
+    becomes this
+
+    ```go
+    func Foo(input *Tensor) (output *Tensor) {
+        output = &Tensor{}
+        C.SomeCFunction(&output.Pointer, input.Pointer)
+        // Ensure the input is not finalized until SomeCFunction returns
+        runtime.KeepAlive(input)
+        return
+    }
+    ```
+
 ## v1.11.0-0.1.3
 
 Refactor usage of `SetFinalizer` following this
