@@ -79,50 +79,53 @@ func (options *TensorOptions) Dtype(value Dtype) *TensorOptions {
 		options.Pointer,
 		C.int8_t(value),
 	)))
+	runtime.KeepAlive(options)
 	return output.withFinalizerSet()
 }
 
-// TODO:
+// // TODO:
 // enum class Layout : int8_t {
-//   Strided,
-//   Sparse,
-//   SparseCsr,
-//   Mkldnn,
-//   SparseCsc,
-//   SparseBsr,
-//   SparseBsc,
-//   NumOptions
+// 	Strided,
+// 	Sparse,
+// 	SparseCsr,
+// 	Mkldnn,
+// 	SparseCsc,
+// 	SparseBsr,
+// 	SparseBsc,
+// 	NumOptions
 // };
 
 // // Create a new TensorOptions with the given data layout.
 // func (options *TensorOptions) Layout(value Layout) *TensorOptions {
-//     output := &TensorOptions{}
-//     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Layout(
-//         &output.Pointer,
-//         options.Pointer,
-//         C.int8_t(value),
-//     )))
-//     return output.withFinalizerSet()
+// 	output := &TensorOptions{}
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_Layout(
+// 		&output.Pointer,
+// 		options.Pointer,
+// 		C.int8_t(value),
+// 	)))
+// 	runtime.KeepAlive(options)
+// 	return output.withFinalizerSet()
 // }
 
-// TODO:
+// // TODO:
 // enum class MemoryFormat : int8_t {
-//   Contiguous,
-//   Preserve,
-//   ChannelsLast,
-//   ChannelsLast3d,
-//   NumOptions
+// 	Contiguous,
+// 	Preserve,
+// 	ChannelsLast,
+// 	ChannelsLast3d,
+// 	NumOptions
 // };
 
 // // Create a new TensorOptions with the given memory format.
 // func (options *TensorOptions) MemoryFormat(value MemoryFormat) *TensorOptions {
-//     output := &TensorOptions{}
-//     internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_MemoryFormat(
-//         &output.Pointer,
-//         options.Pointer,
-//         C.int8_t(value),
-//     )))
-//     return output.withFinalizerSet()
+// 	output := &TensorOptions{}
+// 	internal.PanicOnCException(unsafe.Pointer(C.Torch_TensorOptions_MemoryFormat(
+// 		&output.Pointer,
+// 		options.Pointer,
+// 		C.int8_t(value),
+// 	)))
+// 	runtime.KeepAlive(options)
+// 	return output.withFinalizerSet()
 // }
 
 // Create a new TensorOptions with the given compute device.
@@ -133,6 +136,7 @@ func (options *TensorOptions) Device(device Device) *TensorOptions {
 		options.Pointer,
 		(C.Device)(device.Pointer),
 	)))
+	runtime.KeepAlive(options)
 	return output.withFinalizerSet()
 }
 
@@ -144,6 +148,7 @@ func (options *TensorOptions) RequiresGrad(requiresGrad bool) *TensorOptions {
 		options.Pointer,
 		C.bool(requiresGrad),
 	)))
+	runtime.KeepAlive(options)
 	return output.withFinalizerSet()
 }
 
@@ -155,5 +160,6 @@ func (options *TensorOptions) PinnedMemory(pinnedMemory bool) *TensorOptions {
 		options.Pointer,
 		C.bool(pinnedMemory),
 	)))
+	runtime.KeepAlive(options)
 	return output.withFinalizerSet()
 }
