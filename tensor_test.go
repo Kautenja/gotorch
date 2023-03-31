@@ -34,6 +34,9 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
+	"runtime"
+	"runtime/debug"
 	"unsafe"
 	"path/filepath"
 	"github.com/stretchr/testify/assert"
@@ -254,6 +257,21 @@ func TestTensorToBytesMatrixInt64(t *testing.T) {
 	assert.Equal(t, int64(222), (int64)(binary.LittleEndian.Uint64(buffer[8:16])))
 	assert.Equal(t, int32(101), (int32)(binary.LittleEndian.Uint32(buffer[16:24])))
 	assert.Equal(t, int32(909), (int32)(binary.LittleEndian.Uint32(buffer[24:32])))
+}
+
+func TestTensorToBytesIsUnsafe(t *testing.T) {
+	// disable GC sow e can control when it happens.
+	defer debug.SetGCPercent(debug.SetGCPercent(-1))
+	expected := float32(0.222)
+	tensor := torch.NewTensor([]float32{expected})
+	buffer := tensor.ToBytes()
+	assert.Equal(t, float32(0.222), math.Float32frombits(binary.LittleEndian.Uint32(buffer)))
+	// If we trigger the garbage collector now, the underlying tensor data will
+	// be freed, which invalidates ToBytes
+	runtime.GC()
+	time.Sleep(100 * time.Millisecond)
+	assert.Equal(t, 4, len(buffer))
+	assert.Equal(t, float32(0.0), math.Float32frombits(binary.LittleEndian.Uint32(buffer)))
 }
 
 // MARK: Clone
