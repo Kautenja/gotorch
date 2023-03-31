@@ -148,7 +148,6 @@ func TestClipBoxesToImageClipsBoxesInSpatialLayout(t *testing.T) {
 		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
 	output := ops.ClipBoxesToImage(boxes, 50, 100)
-	t.Log(output)
 	// Create the expected output tensor.
 	a = torch.NewTensor([][]int64{{0, 0,  10, 10}})
 	b = torch.NewTensor([][]int64{{0, 0, 100, 50}})
@@ -158,7 +157,6 @@ func TestClipBoxesToImageClipsBoxesInSpatialLayout(t *testing.T) {
 		torch.Stack([]*torch.Tensor{a, b}, -1),
 		torch.Stack([]*torch.Tensor{c, d}, -1),
 	}, -1)
-	t.Log(expected)
 	assert.True(t, output.Equal(expected))
 	assert.False(t, output.Equal(boxes))
 }
