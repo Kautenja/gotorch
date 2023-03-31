@@ -108,10 +108,12 @@ func NewTensor(data interface{}) *Tensor {
 }
 
 // Convert a tensor to a raw binary representation as a byte slice. Note that
-// this is a copy-free operation and simply returns a slice with it's header
+// this is a copy-free operation and simply returns a slice with its header
 // updated to point to the underlying tensor data. If the tensor is garbage
-// collected, the slice will be invalidated.
-func (tensor *Tensor) ToBytes() []byte {
+// collected, the slice will be invalidated. Usage of this function typically
+// requires calls to `runtime.KeepAlive(tensor)` for the input tensor to
+// prevent accidentally freeing the tensor before the byte slice is consumed.
+func (tensor *Tensor) ToBytesUnsafe() []byte {
 	// Create a pointer to reference the underlying data.
 	var buffer *C.uint8_t
 	internal.PanicOnCException(unsafe.Pointer(C.Torch_Tensor_ToBytes(&buffer, tensor.Pointer)))
@@ -121,6 +123,19 @@ func (tensor *Tensor) ToBytes() []byte {
 	header.Len = int(tensor.Dtype().NumBytes() * tensor.Numel())
 	header.Cap = header.Len
 	header.Data = uintptr(unsafe.Pointer(buffer))
+	return slice
+}
+
+// Convert a tensor to a raw binary representation as a byte slice. Note that
+// this operation implies a safe copy of the underlying data. There are no
+// garbage collector side-effects from usage of this function.
+func (tensor *Tensor) ToBytes() []byte {
+	// Make a call to the unsafe version of ToBytes and create a deep copy of
+	// the byte slice that is returned.
+	slice := append([]byte{}, tensor.ToBytesUnsafe()...)
+	// We must place a keep alive here to ensure the tensor is not finalized
+	// before we finish copying the data into the new slice.
+	runtime.KeepAlive(tensor)
 	return slice
 }
 
