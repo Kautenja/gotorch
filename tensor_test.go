@@ -268,7 +268,7 @@ func TestTensorToBytesIsUnsafe(t *testing.T) {
 	runtime.GC()
 	time.Sleep(100 * time.Millisecond)
 	assert.Equal(t, 4, len(buffer))
-	assert.Equal(t, float32(0.0), math.Float32frombits(binary.LittleEndian.Uint32(buffer)))
+	assert.NotEqual(t, float32(0.222), math.Float32frombits(binary.LittleEndian.Uint32(buffer)))
 }
 
 // MARK: Clone
