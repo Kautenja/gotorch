@@ -36,7 +36,6 @@ import (
 	"testing"
 	"time"
 	"runtime"
-	"runtime/debug"
 	"unsafe"
 	"path/filepath"
 	"github.com/stretchr/testify/assert"
@@ -260,8 +259,6 @@ func TestTensorToBytesMatrixInt64(t *testing.T) {
 }
 
 func TestTensorToBytesIsUnsafe(t *testing.T) {
-	// disable GC sow e can control when it happens.
-	defer debug.SetGCPercent(debug.SetGCPercent(-1))
 	expected := float32(0.222)
 	tensor := torch.NewTensor([]float32{expected})
 	buffer := tensor.ToBytes()
