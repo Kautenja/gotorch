@@ -130,13 +130,15 @@ func (tensor *Tensor) ToBytesUnsafe() []byte {
 // this operation implies a safe copy of the underlying data. There are no
 // garbage collector side-effects from usage of this function.
 func (tensor *Tensor) ToBytes() []byte {
-	// Make a call to the unsafe version of ToBytes and create a deep copy of
-	// the byte slice that is returned.
-	slice := append([]byte{}, tensor.ToBytesUnsafe()...)
+	// Get the bytes in an unsafe fashion then copy the data to a new slice.
+	// make+copy is optimal: https://github.com/golang/go/issues/26252
+	slice := tensor.ToBytesUnsafe()
+	output := make([]byte, len(slice))
+	copy(output, slice)
 	// We must place a keep alive here to ensure the tensor is not finalized
 	// before we finish copying the data into the new slice.
 	runtime.KeepAlive(tensor)
-	return slice
+	return output
 }
 
 // Create a clone of an existing tensor.
