@@ -1,5 +1,13 @@
 # Change log
 
+## v1.11.0-0.1.5
+
+-   Update `ToBytes` to be a safe operation that cannot result in seg fault
+    -   Introduce new `ToBytesUnsafe` that preserves old functionality for
+        use cases where tighter integration with the runtime may yield more
+        optimized performance at the cost of error-prone code.
+-   Update `ToTensor` to ensure safety (cannot seg fault)
+
 ## v1.11.0-0.1.4
 
 -   Resolve non-deterministic race condition between Go struct finalizers and
