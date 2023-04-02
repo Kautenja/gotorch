@@ -28,6 +28,8 @@ import (
 	"testing"
 	"image"
 	"image/color"
+	"runtime"
+	"time"
 	"github.com/stretchr/testify/assert"
 	"github.com/Kautenja/gotorch"
 	"github.com/Kautenja/gotorch/vision/transforms/functional"
@@ -134,4 +136,21 @@ func TestToTensorRaisesErrorOnUniformImage(t *testing.T) {
 	assert.PanicsWithValue(t, "ToTensor not implemented for image of type Uniform", func() {
 		_ = vision_transforms_functional.ToTensor(image)
 	})
+}
+
+// This test case ensures that ToTensor is a memory safe operation. I.e., if
+// the garbage collector cleans up the image, the tensor data should remain
+// valid. ToTensor should imply a copy operation.
+func TestToTensorIsSafe(t *testing.T) {
+	// Create a 2x2 image as an *image.Image and as a *torch.Tensor.
+	image := image.NewGray(image.Rect(0, 0, 2, 2))
+	expected := torch.Zeros([]int64{3, 2, 2}, torch.NewTensorOptions())
+	tensor := vision_transforms_functional.ToTensor(image)
+	// Sanity check the equality of the ToTensor output before testing.
+	assert.True(t, torch.AllClose(expected, tensor, 1e-5, 1e-3), "Got %v, expected %v", tensor, expected)
+	// Trigger the garbage collector to check the safety of ToTensor.
+	runtime.GC()
+	time.Sleep(100 * time.Millisecond)
+	// Expect ToTensor to be a safe operation (tensor should be valid still.)
+	assert.True(t, torch.AllClose(expected, tensor, 1e-5, 1e-3), "Got %v, expected %v", tensor, expected)
 }
