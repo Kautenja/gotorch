@@ -27,13 +27,14 @@ package vision_transforms_functional
 import (
 	"fmt"
 	"unsafe"
+	"runtime"
 	"image"
 	"image/draw"
 	"github.com/Kautenja/gotorch"
 )
 
 // Convert an image.Image to a torch Tensor.
-func ToTensor(frame image.Image) *torch.Tensor {
+func ToTensor(frame image.Image) (output *torch.Tensor) {
 	window := frame.Bounds()
 	height := int64(window.Dy())
 	width := int64(window.Dx())
@@ -48,9 +49,11 @@ func ToTensor(frame image.Image) *torch.Tensor {
 		draw.Draw(output, output.Bounds(), frame, window.Min, draw.Src)
 		tensor = torch.TensorFromBlob(unsafe.Pointer(&output.Pix[0]), torch.Byte, []int64{height, width, 4})
 	}
-	return tensor.
+	output = tensor.
 		CastTo(torch.Float).                 // char -> float
 		Div(torch.FullLike(tensor, 255.0)).  // [0., 255.] -> [0., 1.]
 		Permute(2, 0, 1).                    // HWC -> CHW
 		Slice(0, 0, 3, 1)                    // RGBA -> RGB
+	runtime.KeepAlive(frame)
+	return
 }
