@@ -33,7 +33,7 @@ import (
 
 // Return the version of the GoTorch library.
 func Version() string {
-	return "0.1.4"
+	return "0.1.5"
 }
 
 // Return the version of the libtorch back-end.
